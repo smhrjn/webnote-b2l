@@ -1,0 +1,25 @@
+{
+  "name": "webnote-b2l",
+  "version": "0.1.0",
+  "description": "\"app created in build-to-learn chingu walrus cohort @freecodecamp\"",
+  "main": "server.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leovcunha/webnote-b2l.git"
+  },
+  "keywords": [
+    "note",
+    "list",
+    "app"
+  ],
+  "author": "Leo && André",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leovcunha/webnote-b2l/issues"
+  },
+  "homepage": "https://github.com/leovcunha/webnote-b2l#readme"
+}
