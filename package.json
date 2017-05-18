@@ -1,8 +1,13 @@
 {
   "name": "webnote-b2l",
   "version": "0.1.0",
-  "description": "\"app created in build-to-learn chingu walrus cohort @freecodecamp\"",
+  "description": "app created in build-to-learn chingu walrus cohort @freecodecamp",
   "main": "server.js",
+  "dependencies": {
+    "express": "~4.0.0",
+    "mongoose": "~3.6.13",
+    "body-parser": "~1.0.1"
+  },
   "scripts": {
     "test": "node test.js",
     "start": "node server.js"
