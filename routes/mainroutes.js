@@ -19,10 +19,18 @@ module.exports = (app) => {
 	A resource representing user settings: users/n/settings.
 	*/
 
-	// POST USERS/ID + senha - > USER Exists? if !err return WEB UI + List of saved notes
-	app.get('/user/:id', (req, res) => {
-		console.log('Sending user id');
-		User.findById(req.params.id, (err, usrdata) => {
+	// // POST USERS/ID + senha - > USER Exists? if !err return WEB UI + List of saved notes
+	// app.get('/user/:id', (req, res) => {
+	// 	console.log('Sending user id');
+	// 	User.findById(req.params.id, (err, usrdata) => {
+	// 		if (err) return res.send('Error' + err);
+	// 		res.json(usrdata);
+	// 	});
+	// });
+
+	app.get('/users', (req, res) => {
+		console.log('Sending users');
+		User.find(req.params.id, (err, usrdata) => {
 			if (err) return res.send('Error' + err);
 			res.json(usrdata);
 		});

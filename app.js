@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -16,7 +17,7 @@ require('./routes/mainroutes.js')(app);
 
 app.get('*', (req, res) => {
 	// load the single view file ( will handle the page changes on the front-end)
-	res.sendFile('./index.html');
+	res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(process.env.PORT || 8080, (err) => {
