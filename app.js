@@ -7,7 +7,6 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
 
-
 require('./routes/mainroutes.js')(app);
 
 app.get('*', function(req, res) {
