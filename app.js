@@ -2,6 +2,9 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
+
+const logger = morgan('tiny');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://smhrjn:abc123@ds131492.mlab.com:31492/notes');
@@ -12,7 +15,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('./public'));
-
+app.use(logger);
 
 require('./routes/mainroutes.js')(app);
 
