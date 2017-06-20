@@ -3,15 +3,6 @@
   "version": "0.1.0",
   "description": "app created in build-to-learn chingu walrus cohort @freecodecamp",
   "main": "server.js",
-  "dependencies": {
-    "express": "~4.0.0",
-    "mongoose": "~3.6.13",
-    "body-parser": "~1.0.1"
-  },
-  "scripts": {
-    "test": "node test.js",
-    "start": "node server.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leovcunha/webnote-b2l.git"
@@ -26,5 +17,20 @@
   "bugs": {
     "url": "https://github.com/leovcunha/webnote-b2l/issues"
   },
-  "homepage": "https://github.com/leovcunha/webnote-b2l#readme"
+  "homepage": "https://github.com/leovcunha/webnote-b2l#readme",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongoose": "^4.10.6"
+  },
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "eslint-config-google": "^0.8.0",
+    "eslint-plugin-html": "^3.0.0",
+    "eslint-plugin-import": "^2.3.0"
+  }
 }

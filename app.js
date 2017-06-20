@@ -1,19 +1,27 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017');
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-var app = express();
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://smhrjn:abc123@ds131492.mlab.com:31492/notes');
+mongoose.connection.on('error', (err) => console.log('connection error: ' + err));
+mongoose.connection.once('open', () => console.log('connected to database'));
+
+const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static('./public'));
 
 
 require('./routes/mainroutes.js')(app);
 
-app.get('*', function(req, res) {
-        res.sendfile('./index.html'); // load the single view file ( will handle the page changes on the front-end)
+app.get('*', (req, res) => {
+	// load the single view file ( will handle the page changes on the front-end)
+	res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-var server = app.listen(process.env.PORT || 8080);
-
-
+app.listen(process.env.PORT || 8080, (err) => {
+	if (err) return console.log('error occured: ' + err);
+	console.log('listening on port 8080');
+});
