@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 require('./server/router/mainroutes.js')(app);
 
 if (env === 'production') {
-	app.use(express.static(config.output.path));
+	app.use(express.static(path.join(__dirname, 'dist')));
 	app.get('*', (req, res) => {
 		// load the single view file ( will handle the page changes on the front-end)
 		res.sendFile(path.join(__dirname, 'dist/index.html'));
