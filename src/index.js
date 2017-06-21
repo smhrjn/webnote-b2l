@@ -2,7 +2,7 @@ import './css/main.css';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import router from './router/app';
+import router from './router/index-routes';
 
 Vue.use(VueRouter);
 

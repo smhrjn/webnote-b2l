@@ -10,8 +10,11 @@
 	<header class="container">
 		<h1>Notes</h1>
 	</header>
+
+	<hr>
+
 	<section class="hero container" id="app">
-		<hr>
+
 		<ul>
 			<router-link to="/" exact tag="li">
 				<a>Home</a>
@@ -20,15 +23,13 @@
 				<a>About</a>
 			</router-link>
 		</ul>
+
 		<hr>
 
 		<router-view class="router-view shadow"></router-view>
 
 		<hr>
 
-		<section>
-			<h3>List of notes from user goes here</h3>
-		</section>
 		<section>
 			<form action="/user/new" method="post">
 				Name:<br>
@@ -38,9 +39,7 @@
 				<input type="submit" value="Submit">
 			</form>
 		</section>
-		<section>
-			<button>New</button>
-		</section>
+
 	</section>
 </body>
 
