@@ -2,9 +2,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const config = require('./webpack.config');
 
-const env = process.env.NODE_ENV ||'development';
+const env = process.env.NODE_ENV || 'development';
 const port = process.env.PORT || 8080;
 
 mongoose.Promise = global.Promise;
@@ -28,6 +27,7 @@ if (env === 'production') {
 
 if (env === 'development') {
 	const logger = require('morgan');
+	const config = require('./webpack.config');
 	const webpack = require('webpack');
 	const webpackDevMiddleware = require('webpack-dev-middleware');
 	const compiler = webpack(config);
