@@ -15,7 +15,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-require('./server/router/mainroutes.js')(app);
+require('./server/router/app-routes.js')(app);
 
 if (env === 'production') {
 	app.use(express.static(path.join(__dirname, 'dist')));
