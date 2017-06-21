@@ -18,7 +18,7 @@ module.exports = {
 	target: 'web',
 	entry: {
 		vendor: path.resolve(__dirname, 'src/vendor/vendor'),
-		main: path.resolve(__dirname, 'app')
+		main: path.resolve(__dirname, 'src/index.js')
 	},
 	output: {
 		path: path.resolve(__dirname, 'src'),
@@ -38,7 +38,6 @@ module.exports = {
 					use: [{
 						loader: 'css-loader'
 					},
-					'postcss-loader',
 					{
 						loader: 'sass-loader'
 					}],
