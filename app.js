@@ -2,9 +2,6 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const logger = require('morgan');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
 const config = require('./webpack.config');
 
 const env = process.env.NODE_ENV ||'development';
@@ -18,26 +15,32 @@ mongoose.connection.once('open', () => console.log('connected to database'));
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(logger('dev'));
+
+require('./server/router/mainroutes.js')(app);
 
 if (env === 'production') {
 	app.use(express.static(config.output.path));
+	app.get('*', (req, res) => {
+		// load the single view file ( will handle the page changes on the front-end)
+		res.sendFile(path.join(__dirname, 'dist/index.html'));
+	});
 }
 
 if (env === 'development') {
+	const logger = require('morgan');
+	const webpack = require('webpack');
+	const webpackDevMiddleware = require('webpack-dev-middleware');
 	const compiler = webpack(config);
+	app.use(logger('dev'));
 	app.use(webpackDevMiddleware(compiler, {
 		noInfo: true,
 		publicPath: config.output.publicPath
 	}));
+	app.get('*', (req, res) => {
+		// load the single view file ( will handle the page changes on the front-end)
+		res.sendFile(path.join(__dirname, 'src/index.html'));
+	});
 }
-
-require('./server/router/mainroutes.js')(app);
-
-app.get('*', (req, res) => {
-	// load the single view file ( will handle the page changes on the front-end)
-	res.sendFile(path.join(__dirname, 'src/index.html'));
-});
 
 app.listen(port, (err) => {
 	if (err) {
