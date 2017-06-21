@@ -8,7 +8,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const config = require('./webpack.config');
 
 const env = process.env.NODE_ENV ||'development';
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://red-panda:webnotes2@ds133192.mlab.com:33192/webnotes');
