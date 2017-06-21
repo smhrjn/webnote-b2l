@@ -1,29 +1,26 @@
 <template>
   <div id="app">
-    <message>
-			<ul v-if="users && users.length">
-				<li v-for="user of users">
-					<p><strong>{{user._id}}</strong></p>
-					<p>{{user.name}}</p>
-					<p>{{user.email}}</p>
-				</li>
-			</ul>
+    <div v-if="users && users.length">
+			<card v-for="user of users">
+				<p>Name: {{user.name}}</p>
+				<p>Email: {{user.email}}</p>
+			</card>
+		</div>
 
-			<ul v-if="errors && errors.length">
-				<li v-for="error of errors">
-					{{error.message}}
-				</li>
-			</ul>
-		</message>
+		<div v-if="errors && errors.length">
+			<card v-for="error of errors">
+				{{error.message}}
+			</card>
+		</div>
   </div>
 </template>
 
 <script>
 	import Axios from 'axios';
-	import Message from '../components/Message.vue';
+	import Card from '../components/Card.vue';
 	export default {
 		name: 'app',
-		components: { Message },
+		components: { Card },
 		data() {
 			return {
 				users: [],
