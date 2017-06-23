@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <div v-if="users && users.length">
-			<card v-for="user of users">
-				<p>Name: {{user.name}}</p>
-				<p>Email: {{user.email}}</p>
-			</card>
+    <div v-if="users && users.length" class="row center-xs center-s center-md center-lg">
+			<div v-for="user of users" class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+				<card class="card-content">
+					<p>Name: {{user.name}}</p>
+					<p>Email: {{user.email}}</p>
+				</card>
+			</div>
 		</div>
 
-		<div v-if="errors && errors.length">
-			<card v-for="error of errors">
+		<div v-if="errors && errors.length" class="row">
+			<card v-for="error of errors" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
 				{{error.message}}
 			</card>
 		</div>
@@ -40,5 +42,7 @@
 </script>
 
 <style scoped>
-
+	.card-content {
+		margin: 5px 5px;
+	}
 </style>

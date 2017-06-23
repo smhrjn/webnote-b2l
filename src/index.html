@@ -13,7 +13,7 @@
 
 	<hr>
 
-	<section class="hero container" id="app">
+	<section class="app" id="app">
 
 		<ul>
 			<router-link to="/" exact tag="li">
@@ -26,12 +26,12 @@
 
 		<hr>
 
-		<router-view class="router-view shadow"></router-view>
+		<router-view class="router-view"></router-view>
 
 		<hr>
 
 		<section>
-			<form action="/user/new" method="post">
+			<form action="/user/new" method="post" class="new-user-form">
 				Name:<br>
 				<input type="text" name="name" value="name"><br>
 				Email:<br>

@@ -1,5 +1,5 @@
 <template>
-	<div class="card">
+	<div class="card-component">
 		<p>
 			<slot></slot>
 		</p>
@@ -13,12 +13,13 @@
 </script>
 
 <style scoped>
-	.card {
-		display: flex;
-		flex-direction: row;
+	.card-component {
 		border: 1px solid;
 		background-color: #dddddd;
-		margin: 1px;
-		padding: 1px;
+		box-shadow: 2px 2px 1px 0px rgba(14,15,14,0.5);
+	}
+
+	.card-component:hover {
+		box-shadow: 3px 3px 1px 1px rgba(14,15,14,0.5);
 	}
 </style>

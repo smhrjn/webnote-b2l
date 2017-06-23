@@ -1,3 +1,5 @@
+import 'normalize.css/normalize.css';
+import 'flexboxgrid/dist/flexboxgrid.css';
 import './css/main.css';
 
 import Vue from 'vue';
