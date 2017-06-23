@@ -14,7 +14,6 @@
 
 <style scoped>
 	.card-component {
-		border: 1px solid;
 		background-color: #dddddd;
 		box-shadow: 2px 2px 1px 0px rgba(14,15,14,0.5);
 	}
