@@ -1,10 +1,11 @@
 
-html, body, div {
-	width: 80%;
-	padding: 1rem;
+.new-user-form {
 	margin: auto;
 }
 
-.new-user-form {
-	margin: auto;
+@media (min-width: 768px) {
+	html {
+		width: 80%;
+		margin: auto;
+	}
 }
