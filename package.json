@@ -20,17 +20,57 @@
   "homepage": "https://github.com/leovcunha/webnote-b2l#readme",
   "scripts": {
     "test": "node test.js",
-    "start": "node app.js"
+    "start": "cross-env NODE_ENV=development node app.js",
+    "prebuild": "rimraf ./dist && mkdir dist",
+    "build": "cross-env NODE_ENV=production node buildScripts/build.js",
+    "serve": "cross-env NODE_ENV=production node app.js",
+    "preheroku": "npm run build",
+    "heroku": "git add . && git commit -m npmDeploy && git push heroku mhrjn:master"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "mongoose": "^4.10.6"
+    "flexboxgrid": "^6.3.1",
+    "mongoose": "^4.10.6",
+    "normalize.css": "^7.0.0",
+    "vue": "^2.3.4",
+    "vue-router": "^2.6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.0.1",
+    "css-loader": "^0.28.4",
     "eslint": "^4.0.0",
     "eslint-config-google": "^0.8.0",
     "eslint-plugin-html": "^3.0.0",
-    "eslint-plugin-import": "^2.3.0"
-  }
+    "eslint-plugin-import": "^2.3.0",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "html-webpack-plugin": "^2.28.0",
+    "morgan": "^1.8.2",
+    "node-sass": "^4.5.3",
+    "npm-run-all": "^4.0.2",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "vue-loader": "^12.2.1",
+    "vue-template-compiler": "^2.3.4",
+    "webpack": "^3.0.0",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-dev-server": "^2.5.0",
+    "webpack-md5-hash": "0.0.5"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

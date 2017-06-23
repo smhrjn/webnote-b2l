@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Notes = require('../models/notes');
+const Note = require('../models/note');
 
 module.exports = (app) => {
 	/*
@@ -58,7 +58,7 @@ module.exports = (app) => {
 
 	// alter to return only title and id
 	app.get('/user/:id/notes', (req, res) => {
-		Notes.find({
+		Note.find({
 			user: req.params.id
 		}, (err, usrnotes) => {
 			if (err) return res.send(err);
@@ -66,8 +66,8 @@ module.exports = (app) => {
 		});
 	});
 
-	app.post('/user/:id/notes', (req, res) => {
-		let newnote = new Notes();
+	app.post('/user/:id/note', (req, res) => {
+		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
 		newnote.user = req.params.id;

@@ -1,0 +1,11 @@
+
+.new-user-form {
+	margin: auto;
+}
+
+@media (min-width: 768px) {
+	html {
+		width: 80%;
+		margin: auto;
+	}
+}
