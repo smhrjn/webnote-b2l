@@ -14,7 +14,7 @@
 	<hr>
 
 	<section class="app" id="app">
-
+		<router-view name="nav">
 		<ul>
 			<router-link to="/" exact tag="li">
 				<a>Home</a>
@@ -23,13 +23,15 @@
 				<a>About</a>
 			</router-link>
 		</ul>
+		</router-view>
 
 		<hr>
 
-		<router-view class="router-view"></router-view>
+		<router-view class="view one"></router-view>
 
 		<hr>
 
+		<router-view name="footer">
 		<section>
 			<form action="/user/new" method="post" class="new-user-form">
 				Name:<br>
@@ -39,7 +41,7 @@
 				<input type="submit" value="Submit">
 			</form>
 		</section>
-
+		</router-view>
 	</section>
 </body>
 

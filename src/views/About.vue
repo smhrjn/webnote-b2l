@@ -10,9 +10,9 @@ export default {
 	data() {
 		return {
 			message: 'message for about page'
-		}
+		};
 	}
-}
+};
 </script>
 
 <style scoped>
