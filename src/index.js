@@ -8,10 +8,15 @@ import router from './router/index-routes';
 
 Vue.use(VueRouter);
 
+import headerview from './views/Header.vue';
+import footerview from './views/Footer.vue';
+
 new Vue({
 	el: '#app',
 
 	router,
+
+	components: {headerview, footerview},
 
 	data() {
 		return {

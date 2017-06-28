@@ -1,6 +1,6 @@
 <template>
-	<div class="footer-component">
-		Copyright 2017
+	<div class="header-component">
+		Notes
 	</div>
 </template>
 
@@ -11,7 +11,7 @@
 </script>
 
 <style scoped>
-	.footer-component {
+	.header-component {
 		background-color: #dddddd;
 	}
 </style>
