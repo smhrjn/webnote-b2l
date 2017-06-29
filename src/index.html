@@ -20,21 +20,11 @@
 			<headerview class="header row">Header is Loaded Here.</headerview>
 
 			<section class="main-content row">
-				<router-view name="nav" class="router-view col-sm-3 hide-xs"></router-view>
-				<router-view class="router-view col-sm-9"></router-view>
+				<router-view name="nav" class="router-view col-sm-3 col-xs-12"></router-view>
+				<router-view class="router-view col-sm-9 col-xs-12"></router-view>
 			</section>
 
 			<footerview class="footer row"></footerview>
-
-			<section>
-				<form action="/user/new" method="post" class="new-user-form">
-					Name:<br>
-					<input type="text" name="name" value="name"><br>
-					Email:<br>
-					<input type="email" name="email" value="email"><br><br>
-					<input type="submit" value="Submit">
-				</form>
-			</section>
 
 		</section>
 

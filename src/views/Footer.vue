@@ -18,5 +18,8 @@
 		font-size: 0.8rem;
 		color: $extra-color;
 		justify-content: center;
+		align-content: center;
+		min-height: 3rem;
+		color: $accent-color;
 	}
 </style>

@@ -62,10 +62,8 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	// .card-content {
-	// 	margin: 5px 5px;
-	// }
 	.app-component {
 		background-color: $accent-color;
+		flex-grow: 1;
 	}
 </style>

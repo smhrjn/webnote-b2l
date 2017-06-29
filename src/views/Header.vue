@@ -16,7 +16,9 @@
 	.header-component {
 		background-color: $primary-color;
 		font-size: 2rem;
-		color: $extra-color-minor;
+		color: $accent-color;
 		justify-content: center;
+		align-content: center;
+		min-height: 5rem;
 	}
 </style>

@@ -6,34 +6,7 @@
   margin-left: 0.0rem;
 }
 
-// general styles
-body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background: $extra-color-minor;
-}
-
-.main-content {
-	min-height: calc(100vh - 4em);
-	justify-content: space-between;
-}
-
-.router-view {
-	flex-grow: 1;
-	flex-shrink: 0;
-	flex-basis: auto;
-}
-
-.new-user-form {
-	margin: auto;
-}
-
-@media screen and (min-width: 64em) {
-	html {
-		width: 80%;
-		margin: auto;
-	}
-}
-
+// additional hide classes
 @media only screen and (min-width: 75em) {
   .hide-lg {
     display: none !important;
@@ -62,5 +35,41 @@ body {
 @media only screen and (max-width: 64em) {
   .hide-sm-down {
     display: none !important;
+  }
+}
+
+// general styles
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: $extra-color-minor;
+}
+
+.main-content {
+	min-height: calc(100vh - 4em);
+	justify-content: space-between;
+}
+
+.router-view {
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: auto;
+}
+
+.new-user-form {
+	margin: auto;
+}
+
+// media query large
+@media screen and (min-width: 64em) {
+	html {
+		width: 80%;
+		margin: auto;
+	}
+}
+
+// media query xs
+@media only screen and (max-width: 48em) {
+  .main-content {
+    flex-direction: column;
   }
 }
