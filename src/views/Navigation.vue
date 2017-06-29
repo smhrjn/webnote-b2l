@@ -21,7 +21,7 @@
 	@import "~styles/variables.scss";
 
 	.nav-component {
-		background-color: $secondary-color;
+		background-color: $extra-color;
 		justify-content: center;
 
 		@at-root #{&}__ul {

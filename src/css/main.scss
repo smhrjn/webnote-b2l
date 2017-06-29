@@ -1,3 +1,5 @@
+@import "~styles/variables.scss";
+
 // overrides for flexboxgrid.scss
 .row {
   margin-right: 0.0rem;
@@ -7,10 +9,18 @@
 // general styles
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: $extra-color-minor;
 }
 
 .main-content {
 	min-height: calc(100vh - 4em);
+	justify-content: space-between;
+}
+
+.router-view {
+	flex-grow: 1;
+	flex-shrink: 0;
+	flex-basis: auto;
 }
 
 .new-user-form {
