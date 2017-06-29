@@ -18,7 +18,7 @@
 		font-size: 2rem;
 		color: $accent-color;
 		justify-content: center;
-		align-content: center;
+		align-items: center;
 		min-height: 5rem;
 	}
 </style>
