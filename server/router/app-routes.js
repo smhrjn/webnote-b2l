@@ -6,27 +6,19 @@ module.exports = (app) => {
 	// api ---------------------------------------------------------------------
 	users/*. Collection of Users (internal)
 	API:
-	POST USERS/ID + senha - > USER Exists? if !err return WEB UI + List of saved notes
-	POST USERS/New -> cria novo usuario (oauth Facebook) ====> ok
-	notes: users/n/notes/n.
-	notes stylesheet: users/n/notes/id/style
+	POST USERS/ID + pw - > USER Exists? if !err return WEB UI + List of saved notes
+	POST USERS/New -> cria novo usuario (json web tokens) ====> ok
+
+	notes: users/:id/notes.
 	API:
-	GET users/n/notes/-> list of saved notes
-	POST users/n/notes- > create/save new note
-	PUT users/n/notes:id -> updates saved note
-	DELETE users/n/notes:id -> deteles saved note
-	A resource representing the user profile: users/n/profile.
-	A resource representing user settings: users/n/settings.
+	GET user/:id/notes/-> list of user's saved notes id and title ==> ok
+	POST user/:id/note- > create/save new note ==> ok
+	GET user/:id/:noteid -> read saved note details
+	PUT user/:id/:noteid -> updates saved note
+	DELETE user/:id/:noteid -> deteles saved note
+	A resource representing user settings: user/:id/settings.
 	*/
 
-	// // POST USERS/ID + senha - > USER Exists? if !err return WEB UI + List of saved notes
-	// app.get('/user/:id', (req, res) => {
-	// 	console.log('Sending user id');
-	// 	User.findById(req.params.id, (err, usrdata) => {
-	// 		if (err) return res.send('Error' + err);
-	// 		res.json(usrdata);
-	// 	});
-	// });
 
 	app.get('/users', (req, res) => {
 		console.log('Sending users');
@@ -36,13 +28,13 @@ module.exports = (app) => {
 		});
 	});
 
-	// create todo and send back all todos after creation
+	// create user 
 	app.post('/user/new', (req, res) => {
 		let newuser = new User();
 		newuser.name = req.body.name;
 		newuser.email = req.body.email;
 		console.log('creating user' + newuser);
-		// create a todo, information comes from AJAX request from Angular
+		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {
 			console.log('inside save');
 			if (err) {
@@ -56,28 +48,43 @@ module.exports = (app) => {
 		});
 	});
 
-	// alter to return only title and id
+	// return id and title of notes created by user 
 	app.get('/user/:id/notes', (req, res) => {
-		Note.find({
-			user: req.params.id
-		}, (err, usrnotes) => {
-			if (err) return res.send(err);
-			res.json(usrnotes);
+		User.findById(req.params.id).
+		populate('notelist', { _id: 1, title: 1}).
+		exec((err, usrnotes) => {
+			if (err) return res.send('Error' + err);
+    		res.json(usrnotes.notelist);
 		});
-	});
-
+  	});
+	
+    //create new note
 	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
+		
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
-		newnote.user = req.params.id;
-		// create a todo, information comes from AJAX request from Angular
+		// create a note, information comes from AJAX request
 		newnote.save((err) => {
 			if (err) return res.send(err);
-			res.json({
-				message: 'note created!'
-			});
-			console.log('success');
+		});
+		User.findOneAndUpdate({_id: req.params.id}, {$push: {notelist: newnote._id}},
+			(err) => {
+				if (err) return res.send(err);
+				res.json({
+				message: 'note created'
+				});
+			}
+		);
+		console.log('success');
+	
+	});
+	//get note detais
+	app.get('/user/:id/:noteid', (req, res) => {
+		Note.findById(req.params.noteid, (err, noteData) => {
+			if (err) return res.send('Error' + err);
+			res.json(noteData);
 		});
 	});
+	
 };
