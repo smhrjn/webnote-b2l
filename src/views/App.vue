@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app-component">
     <div v-if="users && users.length" class="row center-xs center-s center-md center-lg">
 			<div v-for="user of users" :key="user.name" class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
 				<card class="card-content">
@@ -41,8 +41,13 @@
 	};
 </script>
 
-<style scoped>
-	.card-content {
-		margin: 5px 5px;
+<style lang="scss">
+	@import "~styles/variables.scss";
+
+	// .card-content {
+	// 	margin: 5px 5px;
+	// }
+	.app-component {
+		background-color: $accent-color;
 	}
 </style>

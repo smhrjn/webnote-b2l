@@ -70,7 +70,8 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			vue$: 'vue/dist/vue.esm.js'
+			vue$: 'vue/dist/vue.esm.js',
+			styles: path.resolve(__dirname, './src/css')
 		}
 	},
 	plugins: [
@@ -80,7 +81,7 @@ module.exports = {
 			name: 'vendor'
 		}),
 		new HtmlWebpackPlugin({
-			template: 'src/index.html',
+			template: './src/index.html',
 			minify: {
 				removeComments: true,
 				collapseWhitespace: true,

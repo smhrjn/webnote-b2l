@@ -1,0 +1,56 @@
+// overrides for flexboxgrid.scss
+.row {
+  margin-right: 0.0rem;
+  margin-left: 0.0rem;
+}
+
+// general styles
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-content {
+	min-height: calc(100vh - 4em);
+}
+
+.new-user-form {
+	margin: auto;
+}
+
+@media screen and (min-width: 64em) {
+	html {
+		width: 80%;
+		margin: auto;
+	}
+}
+
+@media only screen and (min-width: 75em) {
+  .hide-lg {
+    display: none !important;
+  }
+}
+@media only screen and (min-width: 64em) and (max-width: 75em) {
+  .hide-md {
+    display: none !important;
+  }
+}
+@media only screen and (min-width: 48em) and (max-width: 64em) {
+  .hide-sm {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 48em) {
+  .hide-xs {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 75em) {
+  .hide-md-down {
+    display: none !important;
+  }
+}
+@media only screen and (max-width: 64em) {
+  .hide-sm-down {
+    display: none !important;
+  }
+}

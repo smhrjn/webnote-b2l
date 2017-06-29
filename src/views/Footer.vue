@@ -10,8 +10,13 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss">
+	@import "~styles/variables.scss";
+
 	.footer-component {
-		background-color: #dddddd;
+		background-color: $primary-color;
+		font-size: 0.8rem;
+		color: $extra-color;
+		justify-content: center;
 	}
 </style>

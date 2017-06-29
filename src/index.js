@@ -1,6 +1,5 @@
-import 'normalize.css/normalize.css';
-import 'flexboxgrid/dist/flexboxgrid.css';
-import './css/main.css';
+import './css/variables.scss';
+import './css/main.scss';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

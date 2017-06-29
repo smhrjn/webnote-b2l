@@ -1,11 +1,11 @@
 <template>
 	<div class="nav-component">
-		<ul>
+		<ul class="nav-component__ul">
 			<router-link to="/" exact tag="li">
-				<a>Home</a>
+				<a class="nav-component__a">Home</a>
 			</router-link>
 			<router-link to="/about" tag="li">
-				<a>About</a>
+				<a class="nav-component__a">About</a>
 			</router-link>
 		</ul>
 	</div>
@@ -17,9 +17,22 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss">
+	@import "~styles/variables.scss";
+
 	.nav-component {
-		background-color: #dddddd;
-		min-height: calc(100vh - 5em);
+		background-color: $secondary-color;
+		justify-content: center;
+
+		@at-root #{&}__ul {
+			padding: 0px;
+			margin: 0px;
+			list-style-type: none;
+			text-align: center;
+ 		 }
+
+  	@at-root #{&}__a {
+			text-decoration: none;
+  	}
 	}
 </style>

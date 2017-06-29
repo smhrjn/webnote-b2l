@@ -10,8 +10,13 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss">
+	@import "~styles/variables.scss";
+
 	.header-component {
-		background-color: #dddddd;
+		background-color: $primary-color;
+		font-size: 2rem;
+		color: $extra-color;
+		justify-content: center;
 	}
 </style>

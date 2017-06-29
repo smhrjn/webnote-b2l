@@ -12,9 +12,11 @@
 	};
 </script>
 
-<style scoped>
+<style lang="scss">
+	@import "~styles/variables.scss";
+
 	.card-component {
-		background-color: #dddddd;
+		background-color: $secondary-color;
 		box-shadow: 2px 2px 1px 0px rgba(14,15,14,0.5);
 	}
 
