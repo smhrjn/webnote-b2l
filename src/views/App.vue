@@ -3,8 +3,26 @@
     <div v-if="users && users.length" class="row center-xs center-s center-md center-lg">
 			<div v-for="user of users" :key="user.name" class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
 				<card class="card-content">
-					<p>Name: {{user.name}}</p>
-					<p>Email: {{user.email}}</p>
+					<h2>Title</h2>
+					<h3>Date</h3>
+					{{user.name}} | {{user.email}}
+					<div>dafaasd fsa fsd fsaf afdfas
+						fdasfsdafdasfds
+						fsdfasfsa
+						fdsfdas
+						fdsf
+						saf
+						dasf
+						sdfs
+						fsaf
+						asf
+						fafs
+						dfdsf
+						saf
+						sf
+						sdfsd
+						f
+					</div>
 				</card>
 			</div>
 		</div>
@@ -44,10 +62,8 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	// .card-content {
-	// 	margin: 5px 5px;
-	// }
 	.app-component {
 		background-color: $accent-color;
+		flex-grow: 1;
 	}
 </style>
