@@ -81,10 +81,37 @@ module.exports = (app) => {
 	});
 	//get note detais
 	app.get('/user/:id/:noteid', (req, res) => {
-		Note.findById(req.params.noteid, (err, noteData) => {
+		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send('Error' + err);
-			res.json(noteData);
+			res.json(note);
 		});
 	});
+	//update note details
+	app.put('/user/:id/:noteid', (req, res) => {
+		Note.findById(req.params.noteid, 
+			(err, note) => {
+				if (err) return res.send(err);
+            	note.title = req.body.title;
+				note.body = req.body.body;
+				note.save((err) => {
+					if (err) return res.send(err);
+				});
+				res.json({
+				message: 'note updated'
+				});
+				
+			});
+	});	
+	
+	//remove note details
+	app.delete('/user/:id/:noteid', (req, res) => {
+		Note.findByIdAndRemove(req.params.noteid,
+			(err) => {
+				if (err) return res.send(err);
+            	res.json({
+				message: 'note deleted'
+				});
+			});
+	});		
 	
 };
