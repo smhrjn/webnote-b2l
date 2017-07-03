@@ -25,7 +25,7 @@
     "build": "cross-env NODE_ENV=production node buildScripts/build.js",
     "serve": "cross-env NODE_ENV=production node app.js",
     "preheroku": "npm run build",
-    "heroku": "git add . && git commit -m npmDeploy && git push heroku mhrjn:master"
+    "heroku": "git add . && git commit -m npmDeploy && git push --force heroku mhrjn:master && git push origin mhrjn"
   },
   "dependencies": {
     "axios": "^0.16.2",

@@ -1,46 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Notes</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
 
-<head>
-	<meta charset="utf-8">
-	<title>Notes</title>
-</head>
+		<section class="app" id="app">
 
-<body>
-	<header class="container">
-		<h1>Notes</h1>
-	</header>
+			<headerview class="header row">Header is Loaded Here.</headerview>
 
-	<hr>
+			<section class="main-content row">
+				<router-view name="nav" class="router-view col-sm-3 col-xs-12"></router-view>
+				<router-view class="router-view col-sm-9 col-xs-12"></router-view>
+			</section>
 
-	<section class="app" id="app">
+			<footerview class="footer row"></footerview>
 
-		<ul>
-			<router-link to="/" exact tag="li">
-				<a>Home</a>
-			</router-link>
-			<router-link to="/about" tag="li">
-				<a>About</a>
-			</router-link>
-		</ul>
-
-		<hr>
-
-		<router-view class="router-view"></router-view>
-
-		<hr>
-
-		<section>
-			<form action="/user/new" method="post" class="new-user-form">
-				Name:<br>
-				<input type="text" name="name" value="name"><br>
-				Email:<br>
-				<input type="email" name="email" value="email"><br><br>
-				<input type="submit" value="Submit">
-			</form>
 		</section>
 
-	</section>
-</body>
-
+	</body>
 </html>

@@ -1,19 +1,35 @@
 import VueRouter from 'vue-router';
 import App from '../views/App.vue';
+import Navigation from '../views/Navigation.vue';
+import NewUser from '../views/New-user.vue';
 import About from '../views/About.vue';
 
 const routes = [
 	{
 		path: '/',
-		component: App
+		components: {
+			default: App,
+			nav: Navigation
+		}
+	},
+	{
+		path: '/newuser',
+		components: {
+			default: NewUser,
+			nav: Navigation
+		}
 	},
 	{
 		path: '/about',
-		component: About
+		components: {
+			default: About,
+			nav: Navigation
+		}
 	}
 ];
 
 export default new VueRouter({
 	routes,
-	linkActiveClass: 'is-active'
+	linkActiveClass: 'is-active',
+	mode: 'history'
 });
