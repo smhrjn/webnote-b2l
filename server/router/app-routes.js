@@ -1,12 +1,14 @@
 const User = require('../models/user');
 const Note = require('../models/note');
+const jwt = require('jsonwebtoken');
+
 
 module.exports = (app) => {
 	/*
 	// api ---------------------------------------------------------------------
 	users/*. Collection of Users (internal)
 	API:
-	POST USERS/ID + pw - > USER Exists? if !err return WEB UI + List of saved notes
+	POST /login + pw - > USER Exists? if !err return WEB UI + List of saved notes
 	POST USERS/New -> cria novo usuario (json web tokens) ====> ok
 
 	notes: users/:id/notes.
@@ -18,7 +20,32 @@ module.exports = (app) => {
 	DELETE user/:id/:noteid -> deteles saved note
 	A resource representing user settings: user/:id/settings.
 	*/
-
+	app.post('/login', (req, res) => {
+		User.findOne({ name: req.body.name }, (err, user) => {
+			if (err) return res.send('Error' + err);
+			
+			if (!user) {
+				res.json({
+					sucess: false,
+					message: 'User not found'
+				});
+			} else if (user) {
+				
+				user.validate(req.body.password, (isMatch) => {
+					if (!isMatch) res.json({ success: false, message: 'Wrong password.' });
+					
+					else {
+						const token = jwt.sign(user, app.get('security'), { expiresIn: '1h'});
+						res.json({
+							success: true,
+							message: 'token created',
+							token: token
+						})
+					}
+				});
+			}
+		});
+	});
 
 	app.get('/users', (req, res) => {
 		console.log('Sending users');
@@ -33,6 +60,7 @@ module.exports = (app) => {
 		let newuser = new User();
 		newuser.name = req.body.name;
 		newuser.email = req.body.email;
+		newuser.password = req.body.password;
 		console.log('creating user' + newuser);
 		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {
