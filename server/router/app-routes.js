@@ -28,7 +28,7 @@ module.exports = (app) => {
 		});
 	});
 
-	// create user 
+	// create user
 	app.post('/user/new', (req, res) => {
 		let newuser = new User();
 		newuser.name = req.body.name;
@@ -48,43 +48,50 @@ module.exports = (app) => {
 		});
 	});
 
-	// return id and title of notes created by user 
+	// return id and title of notes created by user
 	app.get('/user/:id/notes', (req, res) => {
-		User.findById(req.params.id).
-		populate('notelist', { _id: 1, title: 1}).
-		exec((err, usrnotes) => {
-			if (err) return res.send('Error' + err);
-    		res.json(usrnotes.notelist);
-		});
-  	});
-	
-    //create new note
+		User.findById(req.params.id)
+			.populate('notelist', {
+				_id: 1,
+				title: 1
+			})
+			.exec((err, usrnotes) => {
+				if (err) return res.send('Error' + err);
+				res.json(usrnotes.notelist);
+			});
+	});
+
+	// create new note
 	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
-		
+
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
 		// create a note, information comes from AJAX request
 		newnote.save((err) => {
 			if (err) return res.send(err);
 		});
-		User.findOneAndUpdate({_id: req.params.id}, {$push: {notelist: newnote._id}},
-			(err) => {
-				if (err) return res.send(err);
-				res.json({
-				message: 'note created'
-				});
+		User.findOneAndUpdate({
+			_id: req.params.id
+		}, {
+			$push: {
+				notelist: newnote._id
 			}
-		);
+		},
+		(err) => {
+			if (err) return res.send(err);
+			res.json({
+				message: 'note created'
+			});
+		});
 		console.log('success');
-	
 	});
-	//get note detais
+
+	// get note detais
 	app.get('/user/:id/:noteid', (req, res) => {
 		Note.findById(req.params.noteid, (err, noteData) => {
 			if (err) return res.send('Error' + err);
 			res.json(noteData);
 		});
 	});
-	
 };
