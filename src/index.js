@@ -15,7 +15,7 @@ new Vue({
 
 	router,
 
-	components: {headerview, footerview},
+	components: { headerview, footerview },
 
 	data() {
 		return {
