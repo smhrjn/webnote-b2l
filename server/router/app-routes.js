@@ -28,7 +28,7 @@ module.exports = (app) => {
 		});
 	});
 
-	// create user 
+	// create user
 	app.post('/user/new', (req, res) => {
 		let newuser = new User();
 		newuser.name = req.body.name;
@@ -48,7 +48,7 @@ module.exports = (app) => {
 		});
 	});
 
-	// return id and title of notes created by user 
+	// return id and title of notes created by user
 	app.get('/user/:id/notes', (req, res) => {
 		User.findById(req.params.id).
 		populate('notelist', { _id: 1, title: 1}).
@@ -57,11 +57,11 @@ module.exports = (app) => {
     		res.json(usrnotes.notelist);
 		});
   	});
-	
+
     //create new note
 	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
-		
+
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
 		// create a note, information comes from AJAX request
@@ -77,7 +77,7 @@ module.exports = (app) => {
 			}
 		);
 		console.log('success');
-	
+
 	});
 	//get note detais
 	app.get('/user/:id/:noteid', (req, res) => {
@@ -86,5 +86,5 @@ module.exports = (app) => {
 			res.json(noteData);
 		});
 	});
-	
+
 };
