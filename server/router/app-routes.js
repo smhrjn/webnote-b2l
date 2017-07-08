@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const Note = require('../models/note');
+const tokenCheck = require('../middleware/token-check.js');
+const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
 
 
@@ -35,10 +37,11 @@ module.exports = (app) => {
 					if (!isMatch) res.json({ success: false, message: 'Wrong password.' });
 					
 					else {
-						const token = jwt.sign(user, app.get('security'), { expiresIn: '1h'});
+						const token = jwt.sign(user, pass.secret, { issuer: (user.id).toString(), expiresIn: '1h'});
 						res.json({
 							success: true,
 							message: 'token created',
+							userId: user._id,
 							token: token
 						})
 					}
@@ -77,7 +80,7 @@ module.exports = (app) => {
 	});
 
 	// return id and title of notes created by user 
-	app.get('/user/:id/notes', (req, res) => {
+	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		User.findById(req.params.id).
 		populate('notelist', { _id: 1, title: 1}).
 		exec((err, usrnotes) => {
@@ -87,7 +90,7 @@ module.exports = (app) => {
   	});
 	
     //create new note
-	app.post('/user/:id/note', (req, res) => {
+	app.post('/user/:id/note', tokenCheck, (req, res) => {
 		let newnote = new Note();
 		
 		newnote.title = req.body.title;
@@ -108,14 +111,14 @@ module.exports = (app) => {
 	
 	});
 	//get note detais
-	app.get('/user/:id/:noteid', (req, res) => {
+	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send('Error' + err);
 			res.json(note);
 		});
 	});
 	//update note details
-	app.put('/user/:id/:noteid', (req, res) => {
+	app.put('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, 
 			(err, note) => {
 				if (err) return res.send(err);
@@ -132,7 +135,7 @@ module.exports = (app) => {
 	});	
 	
 	//remove note details
-	app.delete('/user/:id/:noteid', (req, res) => {
+	app.delete('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findByIdAndRemove(req.params.noteid,
 			(err) => {
 				if (err) return res.send(err);
