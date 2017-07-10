@@ -23,7 +23,7 @@ const userSchema = new Schema({
 	}]
 });
 
-userSchema.pre('save', (next) => {
+userSchema.pre('save', function(next) {
 	const user = this;
 	bcrypt.hash(user.password, 10, (err, hash) => {
 		if (err) return next(err);
@@ -32,7 +32,7 @@ userSchema.pre('save', (next) => {
 	});
 });
 
-userSchema.methods.validate = (pw, next) => {
+userSchema.methods.validate = function(pw, next) {
 	bcrypt.compare(pw, this.password, (err, isMatch) => {
 		if (err) return next(err);
 		next(isMatch);

@@ -1,20 +1,14 @@
 <template>
-	<div class="new-user-component">
+	<div class="login-component">
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-user-form">
 				Name:<br>
 				<input type="text" name="name" v-model="userName"><br>
-				<p v-if="errorsSignUp.userName !== undefined" class="card-content__error">{{ errorsSignUp.userName }}</p>
-				Email:<br>
-				<input type="email" name="email" v-model="email"><br>
-				<p v-if="errorsSignUp.email !== undefined" class="card-content__error">{{ errorsSignUp.email }}</p>
+				<p v-if="errorsLogin.userName !== undefined" class="card-content__error">{{ errorsLogin.userName }}</p>
 				Password:<br>
 				<input type="password" name="password" v-model="password"><br>
-				<p v-if="errorsSignUp.password !== undefined" class="card-content__error">{{ errorsSignUp.password }}</p>
-				Confirm Password:<br>
-				<input type="password" name="passwordRepeat" v-model="passwordRepeat"><br>
-				<p v-if="errorsSignUp.passwordRepeat !== undefined" class="card-content__error">{{ errorsSignUp.passwordRepeat }}</p>
-				<input type="submit" value="Submit">
+				<p v-if="errorsLogin.password !== undefined" class="card-content__error">{{ errorsLogin.password }}</p>
+				<input type="submit" value="To My Notes">
 			</form>
 		</card>
 	</div>
@@ -29,14 +23,10 @@
 		data() {
 			return {
 				userName: '',
-				email: '',
 				password: '',
-				passwordRepeat: '',
-				errorsSignUp: {
+				errorsLogin: {
 					userName: undefined,
-					email: undefined,
-					password: undefined,
-					passwordRepeat: undefined,
+					password: undefined
 				}
 			};
 		},
@@ -44,29 +34,28 @@
 			onSubmit() {
 				let errorCount = 0;
 				if (this.userName === '') {
-					this.errorsSignUp.userName = 'Please Provide User Name';
+					this.errorsLogin.userName = 'Please Provide User Name';
 					errorCount++;
 				}
 				if (this.email === '') {
-					this.errorsSignUp.email = 'Please Provide Email Address';
+					this.errorsLogin.email = 'Please Provide Email Address';
 					errorCount++;
 				}
 				if (this.password === '') {
-					this.errorsSignUp.password = 'Please Provide Password';
+					this.errorsLogin.password = 'Please Provide Password';
 					errorCount++;
 				}
 				if (this.passwordRepeat === '') {
-					this.errorsSignUp.passwordRepeat = 'Please Confirm Password';
+					this.errorsLogin.passwordRepeat = 'Please Confirm Password';
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					Axios.post(`/user/new`, {
+					Axios.post(`/login`, {
 						name: this.userName,
 						email: this.email,
-						password: this.password
 					})
 						.then(response => {
-							alert('User Created');
+							alert(response);
 						})
 						.catch(e => {
 							alert('Error: ' + e.message);
@@ -74,11 +63,9 @@
 				}
 			},
 			resetError() {
-				this.errorsSignUp = {
+				this.errorsLogin = {
 					userName: undefined,
-					email: undefined,
-					password: undefined,
-					passwordRepeat: undefined,
+					password: undefined
 				};
 			}
 		}
@@ -88,7 +75,7 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	.new-user-component {
+	.login-component {
 		background-color: $accent-color;
 		text-align: center;
 	}

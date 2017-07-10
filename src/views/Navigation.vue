@@ -8,7 +8,10 @@
 				<a class="nav-component__a">About</a>
 			</router-link>
 			<router-link to="/newuser" tag="li" class="nav-component__li">
-				<a class="nav-component__a">Add User</a>
+				<a class="nav-component__a">Sign Up</a>
+			</router-link>
+			<router-link to="/login" tag="li" class="nav-component__li">
+				<a class="nav-component__a">Log in</a>
 			</router-link>
 		</ul>
 	</div>
