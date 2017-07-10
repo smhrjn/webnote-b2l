@@ -8,7 +8,7 @@
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'about',
-		components: {Card},
+		components: { Card },
 		data() {
 			return {
 				message: 'message for about page'

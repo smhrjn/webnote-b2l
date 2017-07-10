@@ -58,7 +58,7 @@ module.exports = (app) => {
 		});
 	});
 
-	// create user 
+	// create user
 	app.post('/user/new', (req, res) => {
 		let newuser = new User();
 		newuser.name = req.body.name;
@@ -91,25 +91,31 @@ module.exports = (app) => {
 	
     //create new note
 	app.post('/user/:id/note', tokenCheck, (req, res) => {
+
 		let newnote = new Note();
-		
+
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
 		// create a note, information comes from AJAX request
 		newnote.save((err) => {
 			if (err) return res.send(err);
 		});
-		User.findOneAndUpdate({_id: req.params.id}, {$push: {notelist: newnote._id}},
-			(err) => {
-				if (err) return res.send(err);
-				res.json({
-				message: 'note created'
-				});
+		User.findOneAndUpdate({
+			_id: req.params.id
+		}, {
+			$push: {
+				notelist: newnote._id
 			}
-		);
+		},
+		(err) => {
+			if (err) return res.send(err);
+			res.json({
+				message: 'note created'
+			});
+		});
 		console.log('success');
-	
 	});
+
 	//get note detais
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
@@ -117,6 +123,7 @@ module.exports = (app) => {
 			res.json(note);
 		});
 	});
+
 	//update note details
 	app.put('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, 
@@ -144,5 +151,5 @@ module.exports = (app) => {
 				});
 			});
 	});		
-	
+
 };
