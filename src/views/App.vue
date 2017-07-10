@@ -27,8 +27,8 @@
 			</div>
 		</div>
 
-		<div v-if="errors && errors.length" class="row">
-			<card v-for="error of errors" :key="error" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
+		<div v-if="errorsApp && errorsApp.length" class="row">
+			<card v-for="error of errorsApp" :key="error" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
 				{{error.message}}
 			</card>
 		</div>
@@ -44,7 +44,7 @@
 		data() {
 			return {
 				users: [],
-				errors: []
+				errorsApp: []
 			};
 		},
 		created() {
@@ -53,7 +53,7 @@
 					this.users = response.data;
 				})
 				.catch(e => {
-					this.errors.push(e);
+					this.errorsApp.push(e);
 				});
 		}
 	};
