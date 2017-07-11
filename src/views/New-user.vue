@@ -1,21 +1,29 @@
 <template>
 	<div class="new-user-component">
-		<card class="card-content">
+		<card class="card-content" v-if="show === 'form'">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-user-form">
-				Name:<br>
+				<label for="name">Name</label><br>
 				<input type="text" name="name" v-model="userName"><br>
 				<p v-if="errorsSignUp.userName !== undefined" class="card-content__error">{{ errorsSignUp.userName }}</p>
-				Email:<br>
+				<label for="email">Email</label><br>
 				<input type="email" name="email" v-model="email"><br>
 				<p v-if="errorsSignUp.email !== undefined" class="card-content__error">{{ errorsSignUp.email }}</p>
-				Password:<br>
+				<label for="password">Password</label><br>
 				<input type="password" name="password" v-model="password"><br>
 				<p v-if="errorsSignUp.password !== undefined" class="card-content__error">{{ errorsSignUp.password }}</p>
-				Confirm Password:<br>
+				<label for="passwordRepeat">Confirm Passwort</label><br>
 				<input type="password" name="passwordRepeat" v-model="passwordRepeat"><br>
 				<p v-if="errorsSignUp.passwordRepeat !== undefined" class="card-content__error">{{ errorsSignUp.passwordRepeat }}</p>
 				<input type="submit" value="Submit">
 			</form>
+		</card>
+		<card class="card-content" v-if="show === 'retry'">
+			<div>User could not be created: {{ serverError }}</div>
+			<button @click="show = 'form'">Try Again</button>
+		</card>
+		<card class="card-content" v-if="show === 'toLogin'">
+			<div>User created successfully.</div>
+			<button @click="toLogin">Log in</button>
 		</card>
 	</div>
 </template>
@@ -28,16 +36,18 @@
 		components: { Card },
 		data() {
 			return {
-				userName: '',
-				email: '',
-				password: '',
-				passwordRepeat: '',
+				show: 'form',
+				userName: 'me',
+				email: 'me@mymail.com',
+				password: 'myPassword',
+				passwordRepeat: 'myPassword',
 				errorsSignUp: {
 					userName: undefined,
 					email: undefined,
 					password: undefined,
 					passwordRepeat: undefined,
-				}
+				},
+				serverError: ''
 			};
 		},
 		methods: {
@@ -66,7 +76,12 @@
 						password: this.password
 					})
 						.then(response => {
-							alert('User Created');
+							if (response.data.error) {
+								this.serverError = response.data.error;
+								this.show = 'retry';
+							} else {
+								this.show = 'toLogin';
+							}
 						})
 						.catch(e => {
 							alert('Error: ' + e.message);
@@ -80,6 +95,9 @@
 					password: undefined,
 					passwordRepeat: undefined,
 				};
+			},
+			toLogin() {
+				this.$router.push('/login');
 			}
 		}
 	};

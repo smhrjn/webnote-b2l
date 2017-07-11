@@ -66,8 +66,8 @@ module.exports = (app) => {
 		newuser.save((err) => {
 			console.log('inside save');
 			if (err) {
-				console.log('error:' + err);
-				return res.send(err);
+				console.log('error: ' + err);
+				return res.json({ error: 'Cannot Create User' });
 			}
 			res.json({
 				message: 'user created!'

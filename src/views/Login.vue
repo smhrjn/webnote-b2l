@@ -2,14 +2,18 @@
 	<div class="login-component">
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-user-form">
-				Name:<br>
+				<label for="name">Name</label><br>
 				<input type="text" name="name" v-model="userName"><br>
 				<p v-if="errorsLogin.userName !== undefined" class="card-content__error">{{ errorsLogin.userName }}</p>
-				Password:<br>
+				<label for="password">Password</label><br>
 				<input type="password" name="password" v-model="password"><br>
 				<p v-if="errorsLogin.password !== undefined" class="card-content__error">{{ errorsLogin.password }}</p>
 				<input type="submit" value="To My Notes">
 			</form>
+		</card>
+		<card class="card-content" v-if="errorLogin">
+			<div>Wrong Username or Password</div>
+			<div>Please Try Again</div>
 		</card>
 	</div>
 </template>
@@ -27,7 +31,9 @@
 				errorsLogin: {
 					userName: undefined,
 					password: undefined
-				}
+				},
+				serverError: undefined,
+				errorLogin: false
 			};
 		},
 		methods: {
@@ -55,18 +61,26 @@
 						email: this.email,
 					})
 						.then(response => {
-							alert(response);
+							if (response.data.success) {
+								this.$router.push('/');
+							} else {
+								this.errorLogin = true;
+								this.sererError = response.data.message;
+							}
 						})
 						.catch(e => {
-							alert('Error: ' + e.message);
+							this.errorLogin = true;
+							this.serverError = e;
 						});
 				}
 			},
 			resetError() {
 				this.errorsLogin = {
 					userName: undefined,
-					password: undefined
+					password: undefined,
 				};
+				this.errorLogin = false;
+				this.serverError = undefined;
 			}
 		}
 	};
