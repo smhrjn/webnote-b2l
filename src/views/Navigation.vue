@@ -16,7 +16,7 @@
 			<router-link to="/newnote" tag="li" class="nav-component__li" v-if="!isAuthenticated">
 				<a class="nav-component__a">New Note</a>
 			</router-link>
-			<button class="nav-component__button" v-if="isAuthenticated" @click="clearUser">
+			<button class="nav-component__button" v-if="!isAuthenticated" @click="clearUser">
 				<a class="nav-component__a">Log Out</a>
 			</button>
 		</ul>

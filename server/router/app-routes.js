@@ -120,7 +120,7 @@ module.exports = (app) => {
 	});
 
 	// update note details
-	app.put('/user/:id/:noteid', tokenCheck, (req, res) => {
+	app.put('/user/:id/:noteid', (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send(err);
 			note.title = req.body.title;
@@ -135,9 +135,10 @@ module.exports = (app) => {
 	});
 
 	// remove note details
-	app.delete('/user/:id/:noteid', tokenCheck, (req, res) => {
+	app.delete('/user/:id/:noteid', (req, res) => {
 		Note.findByIdAndRemove(req.params.noteid, (err) => {
 			if (err) return res.send(err);
+			console.log('Note Deleted');
 			res.json({
 				message: 'note deleted'
 			});

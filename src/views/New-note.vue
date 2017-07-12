@@ -3,12 +3,13 @@
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-note-form">
 				<label for="title">Title</label><br>
-				<input type="text" name="title" v-model="title"><br>
+				<input type="text" name="title" v-model="title" class="new-note-component__title"><br>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
 				<hr>
-				<textarea type="text" name="body" v-model="body"></textarea><br>
+				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text"></textarea><br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit">Save</button>
+				<button @click="onCancel">Cancel</button>
 			</form>
 		</card>
 	</div>
@@ -24,6 +25,7 @@
 			return {
 				title: '',
 				body: '',
+				userId: '5966157ce746a7197c792364',
 				errorsNewNote: {
 					title: undefined,
 					body: undefined
@@ -43,22 +45,24 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					Axios.post(`/user/new`, {
+					Axios.post(`/user/${this.userId}/note`, {
 						title: this.title,
 						body: this.body
 					})
 						.then(response => {
 							if (response.data.error) {
 								this.serverError = response.data.error;
-								this.show = 'retry';
 							} else {
-								this.show = 'toLogin';
+								this.$router.push('/');
 							}
 						})
 						.catch(e => {
 							alert('Error: ' + e.message);
 						});
 				}
+			},
+			onCancel() {
+				this.$router.push('/');
 			},
 			resetError() {
 				this.errorsNewNote = {
@@ -73,9 +77,18 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	.new-user-component {
+	.new-note-component {
 		background-color: $accent-color;
 		text-align: center;
+		flex-grow: 1;
+
+		&__title {
+			width: 80%;
+		}
+
+		&__text {
+			width: 90%;
+		}
 	}
 
 	.card-content__error {
