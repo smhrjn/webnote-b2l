@@ -77,7 +77,7 @@ module.exports = (app) => {
 	});
 
 	// return id and title of notes created by user
-	app.get('/user/:id/notes', tokenCheck, (req, res) => {
+	app.get('/user/:id/notes', (req, res) => {
 		User.findById(req.params.id)
 			.populate('notelist', { _id: 1, title: 1 })
 			.exec((err, usrnotes) => {
@@ -87,7 +87,7 @@ module.exports = (app) => {
 	});
 
 	// create new note
-	app.post('/user/:id/note', tokenCheck, (req, res) => {
+	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
@@ -112,7 +112,7 @@ module.exports = (app) => {
 	});
 
 	// get note detais
-	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
+	app.get('/user/:id/:noteid', (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send('Error' + err);
 			res.json(note);

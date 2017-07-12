@@ -68,6 +68,9 @@
 				if (this.passwordRepeat === '') {
 					this.errorsSignUp.passwordRepeat = 'Please Confirm Password';
 					errorCount++;
+				} else if (this.password !== this.passwordRepeat) {
+					this.errorsSignUp.passwordRepeat = 'Passwords Do Not Match';
+					errorCount++;
 				}
 				if (errorCount === 0) {
 					Axios.post(`/user/new`, {

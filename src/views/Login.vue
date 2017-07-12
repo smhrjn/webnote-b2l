@@ -19,7 +19,7 @@
 </template>
 
 <script>
-	import Axios from 'axios';
+	import Auth from '../auth/authentiate';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'about',
@@ -43,35 +43,15 @@
 					this.errorsLogin.userName = 'Please Provide User Name';
 					errorCount++;
 				}
-				if (this.email === '') {
-					this.errorsLogin.email = 'Please Provide Email Address';
-					errorCount++;
-				}
 				if (this.password === '') {
 					this.errorsLogin.password = 'Please Provide Password';
 					errorCount++;
 				}
-				if (this.passwordRepeat === '') {
-					this.errorsLogin.passwordRepeat = 'Please Confirm Password';
-					errorCount++;
-				}
 				if (errorCount === 0) {
-					Axios.post(`/login`, {
+					Auth.login(this, {
 						name: this.userName,
 						email: this.email,
-					})
-						.then(response => {
-							if (response.data.success) {
-								this.$router.push('/');
-							} else {
-								this.errorLogin = true;
-								this.sererError = response.data.message;
-							}
-						})
-						.catch(e => {
-							this.errorLogin = true;
-							this.serverError = e;
-						});
+					});
 				}
 			},
 			resetError() {

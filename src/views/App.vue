@@ -1,30 +1,17 @@
 <template>
   <div id="app" class="app-component">
-    <div v-if="users && users.length" class="row center-xs center-s center-md center-lg">
-			<div v-for="user of users" :key="user.name" class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
+    <div v-if="notes && notes.length" class="row center-xs center-s center-md center-lg">
+			<div v-for="note of notes" :key="note.title" class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
 				<card class="card-content">
-					<h2>Title</h2>
-					<h3>Date</h3>
-					{{user.name}} | {{user.email}}
-					<div>dafaasd fsa fsd fsaf afdfas
-						fdasfsdafdasfds
-						fsdfasfsa
-						fdsfdas
-						fdsf
-						saf
-						dasf
-						sdfs
-						fsaf
-						asf
-						fafs
-						dfdsf
-						saf
-						sf
-						sdfsd
-						f
-					</div>
+					<h2>{{ note.title }}</h2>
+					<h3>{{ note.date }}</h3>
+					<div>{{ note.body }}</div>
 				</card>
 			</div>
+		</div>
+
+		<div v-else class="row">
+			<card>Please Log in or Sign Up to view your Notes</card>
 		</div>
 
 		<div v-if="errorsApp && errorsApp.length" class="row">
@@ -43,18 +30,29 @@
 		components: { Card },
 		data() {
 			return {
-				users: [],
+				userId: '5966157ce746a7197c792364',
+				noteList: [],
+				notes: [],
 				errorsApp: []
 			};
 		},
 		created() {
-			Axios.get(`/users`)
-				.then(response => {
-					this.users = response.data;
-				})
-				.catch(e => {
-					this.errorsApp.push(e);
-				});
+			if (this.userId) {
+				Axios.get(`/user/${this.userId}/notes`)
+					.then(response => {
+						this.noteList = response.data;
+						if (this.noteList.length){
+							this.noteList.forEach((noteId) => {
+								Axios.get(`/user/${this.userId}/${noteId._id}`)
+									.then(response => this.notes.push(response.data))
+									.catch(e => console.log(e));
+							});
+						}
+					})
+					.catch(e => {
+						this.errorsApp.push(e);
+					});
+			}
 		}
 	};
 </script>
