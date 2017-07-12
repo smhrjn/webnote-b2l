@@ -33,11 +33,13 @@ module.exports = (app) => {
 				});
 			} else if (user) {
 				
-				user.validate(req.body.password, (isMatch) => {
+				user.comparePw(req.body.password, (err, isMatch) => {
+					if (err) return res.send('Error' + err);
+					
 					if (!isMatch) res.json({ success: false, message: 'Wrong password.' });
 					
 					else {
-						const token = jwt.sign(user, pass.secret, { issuer: (user.id).toString(), expiresIn: '1h'});
+						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h'});
 						res.json({
 							success: true,
 							message: 'token created',
@@ -60,10 +62,11 @@ module.exports = (app) => {
 
 	// create user 
 	app.post('/user/new', (req, res) => {
-		let newuser = new User();
-		newuser.name = req.body.name;
-		newuser.email = req.body.email;
-		newuser.password = req.body.password;
+		let newuser = new User({
+			name: req.body.name,
+			email: req.body.email,
+		    password: req.body.password,
+		});
 		console.log('creating user' + newuser);
 		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {

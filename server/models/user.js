@@ -31,11 +31,14 @@ userSchema.pre('save', function(next) {
 	
 });
 	
-userSchema.methods.validate = function(pw, next) {
+userSchema.methods.comparePw = function(pw, next) {
 
-  bcrypt.compare(pw, this.password, function(err, isMatch) {
-   if (err) return next(err);
-   next(isMatch);
+  bcrypt.compare(pw, this.password, (err, isMatch) => {
+    if (err) {
+      return next(err, false);
+    }
+    return next(null, isMatch);
+    
   });
  
 }
