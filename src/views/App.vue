@@ -5,7 +5,6 @@
 				<card class="card-content">
 					<div class="card-content__title">{{ note.title }}<button @click.stop="onDelete(note)" class="button-general close-general">X</button></div>
 					<div class="card-content__date">{{ note.date | formatDate('LL') }}</div>
-					<hr>
 					<div class="card-content__body">{{ note.body }}</div>
 				</card>
 			</div>
@@ -24,7 +23,7 @@
 		<modal v-show="showModal">
 			<form class="edit-note-form">
 				<label for="title">Title</label><br>
-				<input type="text" name="title" v-model="modalNote.title" class="edit-note-form__title"><br>
+				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title"><br>
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>
 			</form>
@@ -129,7 +128,9 @@
 		&__date {
 			font-size: 0.6rem;
 			text-align: left;
-			margin: 2px;
+			margin: 0px;
+			padding: 3px;
+			border-bottom: 2px solid $accent-color;
 		}
 
 		&__body {
@@ -139,6 +140,7 @@
 			padding: 3px;
 			white-space: pre;
 			text-align: left;
+			background-color: #BAA378;
 			// height: 4rem;
 		}
 	}
