@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import Axios from 'axios';
+	import axios from 'axios';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'NewNote',
@@ -25,7 +25,8 @@
 			return {
 				title: '',
 				body: '',
-				userId: '5966157ce746a7197c792364',
+				userId: window.localStorage.getItem('userId'),
+				token: window.localStorage.getItem('token'),
 				errorsNewNote: {
 					title: undefined,
 					body: undefined
@@ -44,11 +45,12 @@
 					this.errorsNewNote.body = 'No Content Added';
 					errorCount++;
 				}
+				console.log('userID: ' + this.userId);
 				if (errorCount === 0) {
-					Axios.post(`/user/${this.userId}/note`, {
+					axios.post(`/user/${this.userId}/note`, {
 						title: this.title,
 						body: this.body
-					})
+					}, { headers: { 'x-access-token': this.token } })
 						.then(response => {
 							if (response.data.error) {
 								this.serverError = response.data.error;

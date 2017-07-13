@@ -29,17 +29,17 @@
 
 <script>
 	export default {
-		data () {
+		data() {
 			return {
 				iconOpen: true
-			}
+			};
 		},
 		methods: {
 			onClick() {
 				this.iconOpen = !this.iconOpen;
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss">

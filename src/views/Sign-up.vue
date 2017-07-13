@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import Axios from 'axios';
+	import axios from 'axios';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'signup',
@@ -73,7 +73,7 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					Axios.post(`/user/new`, {
+					axios.post(`/user/new`, {
 						name: this.userName,
 						email: this.email,
 						password: this.password

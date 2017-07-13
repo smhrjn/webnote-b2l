@@ -10,9 +10,21 @@
 			</div>
 		</div>
 
-		<div v-else class="row">
-			<card>Please Log in or Sign Up to view your Notes</card>
-		</div>
+		<card v-else-if="token" class="col-xs-12 col-sm-8 app-error">
+			You haven't created any notes yet.
+			<br>
+			<button class="button-general" @click="$router.push('/newnote')">Create your first note.</button>
+		</card>
+
+		<card v-else class="col-xs-12 col-sm-8 app-error">
+			Please Log in to view your Notes.
+			<br>
+			<button class="button-general" @click="$router.push('/login')">Log In</button>
+			<hr>
+			If you do not have accout yet.
+			<br>
+			<button class="button-general" @click="$router.push('/signup')">Sign Up</button>
+		</card>
 
 		<div v-if="errorsApp && errorsApp.length" class="row">
 			<card v-for="error of errorsApp" :key="error" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
@@ -20,7 +32,7 @@
 			</card>
 		</div>
 
-		<modal v-show="showModal">
+		<modal v-if="showModal">
 			<form class="edit-note-form">
 				<label for="title">Title</label><br>
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title"><br>
@@ -34,7 +46,7 @@
 </template>
 
 <script>
-	import Axios from 'axios';
+	import axios from 'axios';
 	import card from '../components/Card.vue';
 	import modal from '../components/Modal.vue';
 	export default {
@@ -42,8 +54,8 @@
 		components: { card, modal },
 		data() {
 			return {
-                userId: localStorage.getItem(userId),
-                token: localStorage.getItem(token),
+				userId: window.localStorage.getItem('userId'),
+				token: window.localStorage.getItem('token'),
 				noteList: [],
 				notes: [],
 				errorsApp: [],
@@ -54,7 +66,7 @@
 		},
 		methods: {
 			onDelete(noteToDelete) {
-				Axios.delete(`/user/${this.userId}/${noteToDelete._id}`, {headers: {'x-access-token': token}})
+				axios.delete(`/user/${ this.userId }/${ noteToDelete._id }`, { headers: { 'x-access-token': this.token } })
 					.then(response => {
 						this.notes = this.notes.filter((note) => {
 							return note._id !== noteToDelete._id;
@@ -75,10 +87,10 @@
 			},
 			updateNote() {
 				this.showModal = false;
-				Axios.put(`/user/${this.userId}/${this.modalNote._id}`, {
+				axios.put(`/user/${this.userId}/${this.modalNote._id}`, {
 					title: this.modalNote.title,
 					body: this.modalNote.body
-				}, {headers: {'x-access-token': token}})
+				}, { headers: { 'x-access-token': this.token } })
 					.then(response => {
 						this.noteToUpdate.title = this.modalNote.title;
 						this.noteToUpdate.body = this.modalNote.body;
@@ -92,12 +104,12 @@
 		},
 		created() {
 			if (this.userId) {
-				Axios.get(`/user/${this.userId}/notes`, {headers: {'x-access-token': token}})
+				axios.get(`/user/${ this.userId }/notes`, { headers: { 'x-access-token': this.token } })
 					.then(response => {
 						this.noteList = response.data;
 						if (this.noteList.length) {
 							this.noteList.forEach((noteId) => {
-								Axios.get(`/user/${this.userId}/${noteId._id}`)
+								axios.get(`/user/${this.userId}/${noteId._id}`, { headers: { 'x-access-token': this.token } })
 									.then(response => this.notes.push(response.data))
 									.catch(e => console.log(e));
 							});
@@ -121,7 +133,7 @@
 
 	.card-content {
 		cursor: pointer;
-		// height: 10rem;
+
 		&__title {
 			font-size: 1.2rem;
 			color: greenyellow;
@@ -136,7 +148,8 @@
 		}
 
 		&__body {
-			overflow: hidden;
+			height: 10rem;
+			overflow: auto;
 			text-overflow: ellipsis;
 			margin: 0px;
 			padding: 3px;
@@ -159,5 +172,11 @@
 		&__text {
 			width: 100%;
 		}
+	}
+
+	.app-error {
+		box-sizing: border-box;
+		margin: auto;
+		text-align: center;
 	}
 </style>

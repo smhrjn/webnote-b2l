@@ -19,10 +19,10 @@
 </template>
 
 <script>
-	import Auth from '../auth/authentiate';
+	import auth from '../auth/authentiate';
 	import Card from '../components/Card.vue';
 	export default {
-		name: 'about',
+		name: 'login',
 		components: { Card },
 		data() {
 			return {
@@ -48,7 +48,7 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					Auth.login(this, {
+					auth.login(this, {
 						name: this.userName,
 						password: this.password,
 					});

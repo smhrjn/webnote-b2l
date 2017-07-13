@@ -1,6 +1,6 @@
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+// const User = require('../models/user');
 
 module.exports = (req, res, next) => {
 	// check header or url parameters or post parameters for token

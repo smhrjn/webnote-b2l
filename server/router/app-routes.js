@@ -30,7 +30,6 @@ module.exports = (app) => {
 					message: 'User not found'
 				});
 			} else if (user) {
-
 				user.comparePw(req.body.password, (err, isMatch) => {
 					if (err) return res.send('Error' + err);
 
@@ -63,7 +62,7 @@ module.exports = (app) => {
 		let newuser = new User({
 			name: req.body.name,
 			email: req.body.email,
-		    password: req.body.password,
+			password: req.body.password,
 		});
 		console.log('creating user' + newuser);
 		// create a todo, information comes from AJAX request from VUE
@@ -80,15 +79,15 @@ module.exports = (app) => {
 		});
 	});
 
-	// return id and title of notes created by user 
+	// return id and title of notes created by user
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		User.findById(req.params.id).
 			populate('notelist', { _id: 1, title: 1 }).
 			exec((err, usrnotes) => {
 				if (err) return res.send('Error' + err);
-    		res.json(usrnotes.notelist);
+				res.json(usrnotes.notelist);
 			});
-  	});
+	});
 
 	// create new note
 	app.post('/user/:id/note', tokenCheck, (req, res) => {
@@ -115,7 +114,7 @@ module.exports = (app) => {
 		console.log('success');
 	});
 
-	// get note detais
+	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send('Error' + err);
@@ -128,7 +127,7 @@ module.exports = (app) => {
 		Note.findById(req.params.noteid,
 			(err, note) => {
 				if (err) return res.send(err);
-            	note.title = req.body.title;
+				note.title = req.body.title;
 				note.body = req.body.body;
 				note.save((err) => {
 					if (err) return res.send(err);
@@ -136,7 +135,6 @@ module.exports = (app) => {
 				res.json({
 					message: 'note updated'
 				});
-
 			});
 	});
 
@@ -145,10 +143,9 @@ module.exports = (app) => {
 		Note.findByIdAndRemove(req.params.noteid,
 			(err) => {
 				if (err) return res.send(err);
-            	res.json({
+				res.json({
 					message: 'note deleted'
 				});
 			});
 	});
-
 };

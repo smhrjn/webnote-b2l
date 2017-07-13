@@ -22,10 +22,14 @@ new Vue({
 
 	data() {
 		return {
-
+			showNav: false
 		};
 	},
-
+	methods: {
+		toggleNav() {
+			this.showNav = !this.showNav;
+		}
+	},
 	mounted() {
 
 	}

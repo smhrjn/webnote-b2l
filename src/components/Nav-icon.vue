@@ -9,23 +9,25 @@
 
 <script>
 	export default {
-		data () {
+		data() {
 			return {
 				iconOpen: false
-			}
+			};
 		},
 		methods: {
 			onClick() {
 				this.iconOpen = !this.iconOpen;
+				this.$emit('navtoggle');
 			}
 		}
-	}
+	};
 </script>
 
 <style lang="scss" scoped>
 	.nav-icon {
-		width: 60px;
-		height: 45px;
+		width: 90%;
+		height: 90%;
+		margin: auto;
 		-webkit-transform: rotate(0deg);
 		-moz-transform: rotate(0deg);
 		-o-transform: rotate(0deg);
@@ -40,10 +42,10 @@
 	.nav-icon span {
 		display: block;
 		position: absolute;
-		height: 3px;
+		height: 10%;
 		width: 100%;
-		background: #d3531a;
-		border-radius: 9px;
+		background: greenyellow;
+		border-radius: 10%;
 		opacity: 1;
 		left: 0;
 		-webkit-transform: rotate(0deg);
@@ -57,19 +59,19 @@
 	}
 
 	.nav-icon span:nth-child(1) {
-		top: 0px;
+		top: 15%;
 	}
 
 	.nav-icon span:nth-child(2),.nav-icon span:nth-child(3) {
-		top: 18px;
+		top: 50%;
 	}
 
 	.nav-icon span:nth-child(4) {
-		top: 36px;
+		top: 85%;
 	}
 
 	.nav-icon.open span:nth-child(1) {
-		top: 18px;
+		top: 50%;
 		width: 0%;
 		left: 50%;
 	}
@@ -89,7 +91,7 @@
 	}
 
 	.nav-icon.open span:nth-child(4) {
-		top: 18px;
+		top: 50%;
 		width: 0%;
 		left: 50%;
 	}

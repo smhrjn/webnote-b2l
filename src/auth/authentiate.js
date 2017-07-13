@@ -1,5 +1,5 @@
 
-import Axios from 'axios';
+import axios from 'axios';
 import router from '../router/index-routes';
 
 export default {
@@ -8,14 +8,16 @@ export default {
 	},
 
 	login(context, creds) {
-		Axios.post(`/login`, creds)
+		axios.post(`/login`, creds)
 			.then(response => {
 				console.log(response.data);
 				if (response.data.success) {
 					this.user.authenticated = true;
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
-					router.push('/');
+					console.log('values set in local storage');
+					// router.push('/');
+					window.location.href = '/';
 				} else {
 					context.errorLogin =true;
 					context.serverError = response.data.message;
@@ -33,11 +35,13 @@ export default {
 	},
 
 	checkAuth() {
-		const jwt = localStorage.getItem('token');
+		const jwt = window.localStorage.getItem('token');
 		if (jwt) {
 			this.user.authenticated = true;
+			return true;
 		} else {
 			this.user.authenticated = false;
+			return false;
 		}
 	},
 };

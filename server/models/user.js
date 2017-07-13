@@ -38,7 +38,6 @@ userSchema.methods.comparePw = function(pw, next) {
 			return next(err, false);
 		}
 		return next(null, isMatch);
-
 	});
 };
 

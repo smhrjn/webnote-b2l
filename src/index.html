@@ -18,10 +18,13 @@
 		<section class="app" id="app">
 
 			<headerview class="header row">Header is Loaded Here.</headerview>
-			<navicon class="main-nav-icon"></navicon>
+			<div class="nav-icon-container"><navicon class="main-nav-icon" v-on:navtoggle="toggleNav"></navicon></div>
 
 			<section class="main-container row">
-				<router-view name="nav" class="router-view col-sm-3 col-xs-12 navigation"></router-view>
+				<transition name="slide-fade">
+					<router-view name="nav" v-if="showNav" class="router-view col-sm-3 col-xs-12 navigation hide-md hide-lg"></router-view>
+				</transition>
+				<router-view name="nav" class="router-view col-sm-3 col-xs-12 navigation hide-xs"></router-view>
 				<router-view class="router-view col-sm-9 col-xs-12 main-content"></router-view>
 			</section>
 
