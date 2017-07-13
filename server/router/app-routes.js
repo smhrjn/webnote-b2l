@@ -4,14 +4,13 @@ const tokenCheck = require('../middleware/token-check.js');
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
 
-
 module.exports = (app) => {
 	/*
 	// api ---------------------------------------------------------------------
 	users/*. Collection of Users (internal)
 	API:
-	POST /login + pw - > USER Exists? if !err return WEB UI + List of saved notes
-	POST USERS/New -> cria novo usuario (json web tokens) ====> ok
+	POST /login + pw - > USER Exists? if !err return Json Web Token , WEB UI + List of saved notes
+	POST USERS/New -> create new user (bcrypt hash password) ====> ok
 
 	notes: users/:id/notes.
 	API:
@@ -25,7 +24,6 @@ module.exports = (app) => {
 	app.post('/login', (req, res) => {
 		User.findOne({ name: req.body.name }, (err, user) => {
 			if (err) return res.send('Error' + err);
-
 			if (!user) {
 				res.json({
 					sucess: false,
@@ -72,8 +70,8 @@ module.exports = (app) => {
 		newuser.save((err) => {
 			console.log('inside save');
 			if (err) {
-				console.log('error:' + err);
-				return res.send(err);
+				console.log('error: ' + err);
+				return res.json({ error: 'Cannot Create User' });
 			}
 			res.json({
 				message: 'user created!'
@@ -95,8 +93,9 @@ module.exports = (app) => {
 	// create new note
 	app.post('/user/:id/note', tokenCheck, (req, res) => {
 
+	// create new note
+	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
-
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
 		// create a note, information comes from AJAX request

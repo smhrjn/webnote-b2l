@@ -7,16 +7,38 @@
 			<router-link to="/about" tag="li" class="nav-component__li">
 				<a class="nav-component__a">About</a>
 			</router-link>
-			<router-link to="/newuser" tag="li" class="nav-component__li">
-				<a class="nav-component__a">Add User</a>
+			<router-link to="/newuser" tag="li" class="nav-component__li" v-if="!isAuthenticated">
+				<a class="nav-component__a">Sign Up</a>
 			</router-link>
+			<router-link to="/login" tag="li" class="nav-component__li" v-if="!isAuthenticated">
+				<a class="nav-component__a">Log in</a>
+			</router-link>
+			<router-link to="/newnote" tag="li" class="nav-component__li" v-if="!isAuthenticated">
+				<a class="nav-component__a">New Note</a>
+			</router-link>
+			<button class="nav-component__button" v-if="!isAuthenticated" @click="clearUser">
+				<a class="nav-component__a">Log Out</a>
+			</button>
 		</ul>
 	</div>
 </template>
 
 <script>
+	import Auth from '../auth/authentiate';
 	export default {
-
+		name: 'navigation',
+		data() {
+			return {
+				message: 'some message',
+				isAuthenticated: Auth.user.authenticated
+			};
+		},
+		methods: {
+			clearUser() {
+				console.log('clearing user');
+				localStorage.removeItem('token');
+			}
+		}
 	};
 </script>
 
