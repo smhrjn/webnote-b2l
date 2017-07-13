@@ -44,9 +44,9 @@ body {
 	background: $extra-color-minor;
 }
 
-.main-content {
+.main-container {
 	min-height: calc(100vh - 8em);
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 .router-view {
@@ -84,6 +84,10 @@ body {
 	margin: 0.2rem;
 }
 
+.main-nav-icon {
+	display: none;
+}
+
 // media query large
 @media screen and (min-width: 64em) {
 	html {
@@ -92,3 +96,22 @@ body {
 	}
 }
 
+@media screen and (max-width: 48em) {
+	.main-container {
+		flex-direction: column;
+	}
+
+	.navigation {
+		height: 100%;
+	}
+
+	.main-nav-icon {
+		display: block;
+		position: fixed;
+		top: 3rem;
+		right: 1rem;
+		background: $secondary-color;
+		z-index: 9;
+		box-shadow: 2px 2px 2px 2px rgba(255,255,255,0.5);
+	}
+}

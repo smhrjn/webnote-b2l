@@ -35,11 +35,11 @@
 
 <script>
 	import Axios from 'axios';
-	import Card from '../components/Card.vue';
-	import Modal from '../components/Modal.vue';
+	import card from '../components/Card.vue';
+	import modal from '../components/Modal.vue';
 	export default {
 		name: 'app',
-		components: { Card, Modal },
+		components: { card, modal },
 		data() {
 			return {
 				userId: '5966157ce746a7197c792364',
@@ -119,6 +119,7 @@
 	}
 
 	.card-content {
+		cursor: pointer;
 		// height: 10rem;
 		&__title {
 			font-size: 1.2rem;

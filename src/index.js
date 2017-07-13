@@ -11,13 +11,14 @@ Vue.filter('formatDate', formatDate);
 
 import headerview from './views/Header.vue';
 import footerview from './views/Footer.vue';
+import navicon from './components/Nav-icon.vue';
 
 new Vue({
 	el: '#app',
 
 	router,
 
-	components: { headerview, footerview },
+	components: { headerview, footerview, navicon },
 
 	data() {
 		return {
