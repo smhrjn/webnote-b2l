@@ -134,9 +134,11 @@
 
 		&__body {
 			overflow: hidden;
-			text-overflow: clip;
+			text-overflow: ellipsis;
 			margin: 0px;
-			padding: 0px;
+			padding: 3px;
+			white-space: pre;
+			text-align: left;
 			// height: 4rem;
 		}
 	}
