@@ -55,7 +55,7 @@ body {
 	flex-basis: auto;
 }
 
-.new-user-form {
+.sign-up-form {
 	margin: auto;
 }
 
@@ -66,6 +66,22 @@ body {
 		color: $accent-color;
 		box-shadow: 2.5px 2.5px 1.5px 0px rgba(14,15,14,0.5);
 	}
+}
+
+.button-general {
+	background: $accent-color;
+	color: green;
+	font-size: 0.8rem;
+	border: none;
+
+	&:hover {
+		box-shadow: 2px 2px 1px 0px rgba(14,15,14,0.5);
+	}
+}
+
+.close-general {
+	float: right;
+	margin: 0.2rem;
 }
 
 // media query large

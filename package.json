@@ -34,11 +34,12 @@
     "express": "^4.15.3",
     "flexboxgrid": "^6.3.1",
     "jsonwebtoken": "^7.4.1",
+    "moment": "^2.18.1",
     "mongoose": "^4.10.6",
     "normalize.css": "^7.0.0",
+    "rimraf": "^2.6.1",
     "vee-validate": "^2.0.0-rc.6",
     "vue": "^2.3.4",
-    "rimraf": "^2.6.1",
     "vue-router": "^2.6.0"
   },
   "devDependencies": {

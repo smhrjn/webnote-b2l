@@ -3,8 +3,9 @@
     <div v-if="notes && notes.length" class="row center-xs center-s center-md center-lg">
 			<div v-for="note of notes" :key="note.title" class="col-xs-12 col-sm-8 col-md-6 col-lg-4" @click="editNote(note)">
 				<card class="card-content">
-					<h2>{{ note.title }}<button @click.stop="onDelete(note)">x</button></h2>
-					<h3>{{ note.date }}</h3>
+					<div class="card-content__title">{{ note.title }}<button @click.stop="onDelete(note)" class="button-general close-general">X</button></div>
+					<div class="card-content__date">{{ note.date | formatDate('LL') }}</div>
+					<hr>
 					<div class="card-content__body">{{ note.body }}</div>
 				</card>
 			</div>
@@ -27,8 +28,8 @@
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>
 			</form>
-			<button @click="updateNote">Save</button>
-			<button @click="cancelChange">Cancel</button>
+			<button @click="updateNote" class="button-general">Save</button>
+			<button @click="cancelChange" class="button-general">Cancel</button>
 		</modal>
   </div>
 </template>
@@ -120,6 +121,16 @@
 
 	.card-content {
 		// height: 10rem;
+		&__title {
+			font-size: 1.2rem;
+			color: greenyellow;
+		}
+
+		&__date {
+			font-size: 0.6rem;
+			text-align: left;
+			margin: 2px;
+		}
 
 		&__body {
 			overflow: hidden;

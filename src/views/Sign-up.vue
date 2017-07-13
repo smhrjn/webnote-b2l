@@ -1,7 +1,7 @@
 <template>
-	<div class="new-user-component">
+	<div class="sign-up-component">
 		<card class="card-content" v-if="show === 'form'">
-			<form @submit.prevent="onSubmit" @input="resetError" class="new-user-form">
+			<form @submit.prevent="onSubmit" @input="resetError" class="sign-up-form">
 				<label for="name">Name</label><br>
 				<input type="text" name="name" v-model="userName"><br>
 				<p v-if="errorsSignUp.userName !== undefined" class="card-content__error">{{ errorsSignUp.userName }}</p>
@@ -14,16 +14,16 @@
 				<label for="passwordRepeat">Confirm Passwort</label><br>
 				<input type="password" name="passwordRepeat" v-model="passwordRepeat"><br>
 				<p v-if="errorsSignUp.passwordRepeat !== undefined" class="card-content__error">{{ errorsSignUp.passwordRepeat }}</p>
-				<input type="submit" value="Submit">
+				<button type="submit" class="button-general">Submit</button>
 			</form>
 		</card>
 		<card class="card-content" v-if="show === 'retry'">
 			<div>User could not be created: {{ serverError }}</div>
-			<button @click="show = 'form'">Try Again</button>
+			<button @click="show = 'form'" class="button-general">Try Again</button>
 		</card>
 		<card class="card-content" v-if="show === 'toLogin'">
 			<div>User created successfully.</div>
-			<button @click="toLogin">Log in</button>
+			<button @click="toLogin" class="button-general">Log in</button>
 		</card>
 	</div>
 </template>
@@ -32,7 +32,7 @@
 	import Axios from 'axios';
 	import Card from '../components/Card.vue';
 	export default {
-		name: 'about',
+		name: 'signup',
 		components: { Card },
 		data() {
 			return {
@@ -109,7 +109,7 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	.new-user-component {
+	.sign-up-component {
 		background-color: $accent-color;
 		text-align: center;
 	}

@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import App from '../views/App.vue';
 import Navigation from '../views/Navigation.vue';
-import NewUser from '../views/New-user.vue';
+import SignUp from '../views/Sign-up.vue';
 import NewNote from '../views/New-note.vue';
 import Login from '../views/Login.vue';
 import About from '../views/About.vue';
@@ -15,9 +15,9 @@ const routes = [
 		}
 	},
 	{
-		path: '/newuser',
+		path: '/signup',
 		components: {
-			default: NewUser,
+			default: SignUp,
 			nav: Navigation
 		}
 	},

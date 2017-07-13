@@ -8,8 +8,8 @@
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text"></textarea><br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
-				<button type="submit">Save</button>
-				<button @click="onCancel">Cancel</button>
+				<button type="submit" class="button-general">Save</button>
+				<button @click="onCancel" class="button-general">Cancel</button>
 			</form>
 		</card>
 	</div>
