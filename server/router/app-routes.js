@@ -92,9 +92,6 @@ module.exports = (app) => {
 
 	// create new note
 	app.post('/user/:id/note', tokenCheck, (req, res) => {
-
-	// create new note
-	app.post('/user/:id/note', (req, res) => {
 		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;

@@ -50,7 +50,7 @@
 				if (errorCount === 0) {
 					Auth.login(this, {
 						name: this.userName,
-						email: this.email,
+						password: this.password,
 					});
 				}
 			},

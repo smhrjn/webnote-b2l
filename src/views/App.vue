@@ -42,7 +42,8 @@
 		components: { Card, Modal },
 		data() {
 			return {
-				userId: '5966157ce746a7197c792364',
+                userId: localStorage.getItem(userId),
+                token: localStorage.getItem(token),
 				noteList: [],
 				notes: [],
 				errorsApp: [],
@@ -53,7 +54,7 @@
 		},
 		methods: {
 			onDelete(noteToDelete) {
-				Axios.delete(`/user/${this.userId}/${noteToDelete._id}`)
+				Axios.delete(`/user/${this.userId}/${noteToDelete._id}`, {headers: {'x-access-token': token}})
 					.then(response => {
 						this.notes = this.notes.filter((note) => {
 							return note._id !== noteToDelete._id;
@@ -77,7 +78,7 @@
 				Axios.put(`/user/${this.userId}/${this.modalNote._id}`, {
 					title: this.modalNote.title,
 					body: this.modalNote.body
-				})
+				}, {headers: {'x-access-token': token}})
 					.then(response => {
 						this.noteToUpdate.title = this.modalNote.title;
 						this.noteToUpdate.body = this.modalNote.body;
@@ -91,7 +92,7 @@
 		},
 		created() {
 			if (this.userId) {
-				Axios.get(`/user/${this.userId}/notes`)
+				Axios.get(`/user/${this.userId}/notes`, {headers: {'x-access-token': token}})
 					.then(response => {
 						this.noteList = response.data;
 						if (this.noteList.length) {
