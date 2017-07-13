@@ -25,27 +25,27 @@ module.exports = (app) => {
 	app.post('/login', (req, res) => {
 		User.findOne({ name: req.body.name }, (err, user) => {
 			if (err) return res.send('Error' + err);
-			
+
 			if (!user) {
 				res.json({
 					sucess: false,
 					message: 'User not found'
 				});
 			} else if (user) {
-				
+
 				user.comparePw(req.body.password, (err, isMatch) => {
 					if (err) return res.send('Error' + err);
-					
+
 					if (!isMatch) res.json({ success: false, message: 'Wrong password.' });
-					
+
 					else {
-						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h'});
+						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h' });
 						res.json({
 							success: true,
 							message: 'token created',
 							userId: user._id,
 							token: token
-						})
+						});
 					}
 				});
 			}
@@ -85,14 +85,14 @@ module.exports = (app) => {
 	// return id and title of notes created by user 
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		User.findById(req.params.id).
-		populate('notelist', { _id: 1, title: 1}).
-		exec((err, usrnotes) => {
-			if (err) return res.send('Error' + err);
+			populate('notelist', { _id: 1, title: 1 }).
+			exec((err, usrnotes) => {
+				if (err) return res.send('Error' + err);
     		res.json(usrnotes.notelist);
-		});
+			});
   	});
-	
-    //create new note
+
+	// create new note
 	app.post('/user/:id/note', tokenCheck, (req, res) => {
 
 		let newnote = new Note();
@@ -119,7 +119,7 @@ module.exports = (app) => {
 		console.log('success');
 	});
 
-	//get note detais
+	// get note detais
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
 			if (err) return res.send('Error' + err);
@@ -127,9 +127,9 @@ module.exports = (app) => {
 		});
 	});
 
-	//update note details
+	// update note details
 	app.put('/user/:id/:noteid', tokenCheck, (req, res) => {
-		Note.findById(req.params.noteid, 
+		Note.findById(req.params.noteid,
 			(err, note) => {
 				if (err) return res.send(err);
             	note.title = req.body.title;
@@ -138,21 +138,21 @@ module.exports = (app) => {
 					if (err) return res.send(err);
 				});
 				res.json({
-				message: 'note updated'
+					message: 'note updated'
 				});
-				
+
 			});
-	});	
-	
-	//remove note details
+	});
+
+	// remove note details
 	app.delete('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findByIdAndRemove(req.params.noteid,
 			(err) => {
 				if (err) return res.send(err);
             	res.json({
-				message: 'note deleted'
+					message: 'note deleted'
 				});
 			});
-	});		
+	});
 
 };
