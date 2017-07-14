@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import axios from 'axios';
+	import notesApi from '../api/notes-api';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'NewNote',
@@ -47,19 +47,18 @@
 				}
 				console.log('userID: ' + this.userId);
 				if (errorCount === 0) {
-					this.$http.post(`/user/${this.userId}/note`, {
+					notesApi.createNote(this, {
 						title: this.title,
 						body: this.body
-					}, { headers: { 'x-access-token': this.token } })
+					})
 						.then(response => {
-							if (response.data.error) {
-								this.serverError = response.data.error;
-							} else {
-								this.$router.push('/');
-							}
-						})
-						.catch(e => {
-							alert('Error: ' + e.message);
+							this.$store.dispatch('addNote', {
+								_id: response._id,
+								date: response.date,
+								title: this.title,
+								body: this.body
+							});
+							this.$router.push('/');
 						});
 				}
 			},

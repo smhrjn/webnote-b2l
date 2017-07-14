@@ -15,6 +15,7 @@
 				showModal: true
 			};
 		},
+		props: ['note'],
 		methods: {
 			// onOpen() {
 			// 	this.showModal = true;

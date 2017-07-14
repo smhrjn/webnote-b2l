@@ -17,6 +17,7 @@
 		methods: {
 			onClick() {
 				this.iconOpen = !this.iconOpen;
+				window.scroll(0, 0);
 				this.$emit('navtoggle');
 			}
 		}

@@ -55,6 +55,7 @@ export default new Vuex.Store({
 		}
 	},
 	getters: {
-		isAuth: state => state.userId && state.token
+		isAuth: state => state.userId && state.token,
+		notesCount: state => state.notes.length
 	}
 });

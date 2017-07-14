@@ -11,9 +11,9 @@ import formatDate from './js/format-date';
 
 Vue.use(VueRouter);
 Vue.filter('formatDate', formatDate);
-Vue.prototype.$http = axios.create({
-	timeout: 5000
-});
+// Vue.prototype.$http = axios.create({
+// 	timeout: 5000
+// });
 
 import headerview from './views/Header.vue';
 import footerview from './views/Footer.vue';

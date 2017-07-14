@@ -7,7 +7,7 @@
 			<h3>Important</h3>
 			<div>You must use fake username, email and password. This app is not secure at all.</div>
 			<hr>
-			<div>If terrible code does not bother you: 
+			<div>If terrible code does not bother you:
 				<a target="_blank" href="https://github.com/leovcunha/webnote-b2l">
 					<svg class="github-icon">
 						<use xlink:href="./assets/github-icon.svg"></use>

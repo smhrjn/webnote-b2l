@@ -4,14 +4,11 @@
 			<router-link to="/" exact tag="li" class="nav-component__li">
 				<a class="nav-component__a">Home</a>
 			</router-link>
-			<router-link to="/about" tag="li" class="nav-component__li">
-				<a class="nav-component__a">About</a>
+			<router-link to="/login" tag="li" class="nav-component__li" v-show="!token">
+				<a class="nav-component__a">Log in</a>
 			</router-link>
 			<router-link to="/signup" tag="li" class="nav-component__li" v-show="!token">
 				<a class="nav-component__a">Sign Up</a>
-			</router-link>
-			<router-link to="/login" tag="li" class="nav-component__li" v-show="!token">
-				<a class="nav-component__a">Log in</a>
 			</router-link>
 			<router-link to="/newnote" tag="li" class="nav-component__li" v-show="token">
 				<a class="nav-component__a">New Note</a>
@@ -19,6 +16,9 @@
 			<li class="nav-component__li" v-show="token" @click="logOut">
 				<a class="nav-component__a">Log Out</a>
 			</li>
+			<router-link to="/about" tag="li" class="nav-component__li">
+				<a class="nav-component__a">About</a>
+			</router-link>
 		</ul>
 	</div>
 </template>

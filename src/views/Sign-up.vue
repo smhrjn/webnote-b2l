@@ -87,7 +87,7 @@
 							}
 						})
 						.catch(e => {
-							alert('Error: ' + e.message);
+							console.log('Error: ' + e.message);
 						});
 				}
 			},

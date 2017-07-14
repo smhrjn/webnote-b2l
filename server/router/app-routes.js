@@ -82,7 +82,7 @@ module.exports = (app) => {
 	// return id and title of notes created by user
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		User.findById(req.params.id).
-			populate('notelist', { _id: 1, title: 1 }).
+			populate('notelist', { _id: 1, title: 1, date: 1, body: 1 }).
 			exec((err, usrnotes) => {
 				if (err) return res.send('Error' + err);
 				res.json(usrnotes.notelist);
@@ -108,7 +108,9 @@ module.exports = (app) => {
 		(err) => {
 			if (err) return res.send(err);
 			res.json({
-				message: 'note created'
+				message: 'note created',
+				_id: newnote._id,
+				date: newnote.date
 			});
 		});
 		console.log('success');

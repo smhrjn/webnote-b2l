@@ -20,6 +20,7 @@
 
 <script>
 	import Card from '../components/Card.vue';
+	import notesApi from '../api/notes-api';
 	export default {
 		name: 'login',
 		components: { Card },
@@ -47,30 +48,10 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					this.$http.post(`/login`, {
+					notesApi.login(this, {
 						name: this.userName,
-						password: this.password,
-					})
-						.then(response => {
-							console.log(response.data);
-							if (response.data.success) {
-								localStorage.setItem('token', response.data.token);
-								localStorage.setItem('userId', response.data.userId);
-								console.log('values set in local storage');
-								this.$store.dispatch('setUserId', response.data.userId);
-								this.$store.dispatch('setToken', response.data.token);
-								this.$router.push('/');
-								// window.location.href = '/';
-							} else {
-								this.errorLogin =true;
-								this.serverError = response.data.message;
-							}
-						})
-						.catch(e => {
-							console.log(e);
-							this.errorLogin =true;
-							this.serverError = 'Problem in Catch Section';
-						});
+						password: this.password
+					});
 				}
 			},
 			resetError() {

@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router';
-import App from '../views/App.vue';
+import Main from '../views/Main.vue';
 import Navigation from '../views/Navigation.vue';
 import SignUp from '../views/Sign-up.vue';
 import NewNote from '../views/New-note.vue';
@@ -10,7 +10,7 @@ const routes = [
 	{
 		path: '/',
 		components: {
-			default: App,
+			default: Main,
 			nav: Navigation
 		}
 	},
