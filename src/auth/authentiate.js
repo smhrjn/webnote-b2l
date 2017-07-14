@@ -16,16 +16,21 @@ export default {
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
 					console.log('values set in local storage');
-					// router.push('/');
-					window.location.href = '/';
+					context.$store.dispatch('setUserId', response.data.userId);
+					context.$store.dispatch('setToken', response.data.token);
+					console.log(this.$store.state.userId);
+					console.log(this.$store.state.token);
+					router.push('/');
+					// window.location.href = '/';
 				} else {
 					context.errorLogin =true;
-					context.serverError = response.data.message;
+					context.serverError = 'Error inside if';
 				}
 			})
 			.catch(e => {
+				console.log(e);
 				context.errorLogin =true;
-				context.serverError = e;
+				context.serverError = 'Problem outside.. maybe dispatch';
 			});
 	},
 

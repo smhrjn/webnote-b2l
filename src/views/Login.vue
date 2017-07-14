@@ -12,14 +12,13 @@
 			</form>
 		</card>
 		<card class="card-content" v-if="errorLogin">
-			<div>Wrong Username or Password</div>
+			<div>{{ serverError }}</div>
 			<div>Please Try Again</div>
 		</card>
 	</div>
 </template>
 
 <script>
-	import auth from '../auth/authentiate';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'login',
@@ -48,10 +47,30 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					auth.login(this, {
+					this.$http.post(`/login`, {
 						name: this.userName,
 						password: this.password,
-					});
+					})
+						.then(response => {
+							console.log(response.data);
+							if (response.data.success) {
+								localStorage.setItem('token', response.data.token);
+								localStorage.setItem('userId', response.data.userId);
+								console.log('values set in local storage');
+								this.$store.dispatch('setUserId', response.data.userId);
+								this.$store.dispatch('setToken', response.data.token);
+								this.$router.push('/');
+								// window.location.href = '/';
+							} else {
+								this.errorLogin =true;
+								this.serverError = response.data.message;
+							}
+						})
+						.catch(e => {
+							console.log(e);
+							this.errorLogin =true;
+							this.serverError = 'Problem in Catch Section';
+						});
 				}
 			},
 			resetError() {

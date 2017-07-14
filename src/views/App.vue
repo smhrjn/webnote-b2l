@@ -1,6 +1,16 @@
 <template>
   <div id="app" class="app-component">
-    <div v-if="notes && notes.length" class="row center-xs center-s center-md center-lg">
+		<card v-if="!token" class="col-xs-12 col-sm-8 app-error">
+			Please Log in to view your Notes.
+			<br>
+			<button class="button-general" @click="$router.push('/login')">Log In</button>
+			<hr>
+			If you do not have accout yet.
+			<br>
+			<button class="button-general" @click="$router.push('/signup')">Sign Up</button>
+		</card>
+
+    <div v-else-if="notes && notes.length" class="row center-xs center-s center-md center-lg">
 			<div v-for="note of notes" :key="note.title" class="col-xs-12 col-sm-8 col-md-6 col-lg-4" @click="editNote(note)">
 				<card class="card-content">
 					<div class="card-content__title">{{ note.title }}<button @click.stop="onDelete(note)" class="button-general close-general">X</button></div>
@@ -10,21 +20,15 @@
 			</div>
 		</div>
 
-		<card v-else-if="token" class="col-xs-12 col-sm-8 app-error">
-			You haven't created any notes yet.
-			<br>
-			<button class="button-general" @click="$router.push('/newnote')">Create your first note.</button>
-		</card>
+		<div v-else>
+			<card v-if="!loadingData" class="col-xs-12 col-sm-8 app-error">
+				You haven't created any notes yet.
+				<br>
+				<button class="button-general" @click="$router.push('/newnote')">Create your first note.</button>
+			</card>
 
-		<card v-else class="col-xs-12 col-sm-8 app-error">
-			Please Log in to view your Notes.
-			<br>
-			<button class="button-general" @click="$router.push('/login')">Log In</button>
-			<hr>
-			If you do not have accout yet.
-			<br>
-			<button class="button-general" @click="$router.push('/signup')">Sign Up</button>
-		</card>
+			<square-loader v-else :loading="loadingData" :color="spinnerColor" class="spinner"></square-loader>
+		</div>
 
 		<div v-if="errorsApp && errorsApp.length" class="row">
 			<card v-for="error of errorsApp" :key="error" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
@@ -47,30 +51,39 @@
 
 <script>
 	import axios from 'axios';
+	import SquareLoader from 'vue-spinner/src/SquareLoader.vue';
 	import card from '../components/Card.vue';
 	import modal from '../components/Modal.vue';
 	export default {
 		name: 'app',
-		components: { card, modal },
+		components: { card, modal, SquareLoader },
 		data() {
 			return {
-				userId: window.localStorage.getItem('userId'),
-				token: window.localStorage.getItem('token'),
 				noteList: [],
-				notes: [],
 				errorsApp: [],
 				showModal: false,
 				modalNote: { },
-				noteToUpdate: undefined
+				noteToUpdate: undefined,
+				loadingData: true,
+				spinnerColor: 'green'
 			};
+		},
+		computed: {
+			userId() {
+				return this.$store.state.userId;
+			},
+			token() {
+				return this.$store.state.token;
+			},
+			notes() {
+				return this.$store.state.notes;
+			}
 		},
 		methods: {
 			onDelete(noteToDelete) {
 				axios.delete(`/user/${ this.userId }/${ noteToDelete._id }`, { headers: { 'x-access-token': this.token } })
 					.then(response => {
-						this.notes = this.notes.filter((note) => {
-							return note._id !== noteToDelete._id;
-						});
+						this.$store.dispatch('removeNote', noteToDelete._id);
 						console.log('note deleted');
 					})
 					.catch(e => this.errorsApp.push(e));
@@ -103,17 +116,20 @@
 			}
 		},
 		created() {
+			this.loadingData = true;
+			this.$store.dispatch('clearNotes');
 			if (this.userId) {
-				axios.get(`/user/${ this.userId }/notes`, { headers: { 'x-access-token': this.token } })
+				this.$http.get(`/user/${ this.userId }/notes`, { headers: { 'x-access-token': this.token } })
 					.then(response => {
 						this.noteList = response.data;
 						if (this.noteList.length) {
 							this.noteList.forEach((noteId) => {
 								axios.get(`/user/${this.userId}/${noteId._id}`, { headers: { 'x-access-token': this.token } })
-									.then(response => this.notes.push(response.data))
+									.then(response => this.$store.dispatch('addNote', response.data))
 									.catch(e => console.log(e));
 							});
 						}
+						this.loadingData = false;
 					})
 					.catch(e => {
 						this.errorsApp.push(e);
@@ -178,5 +194,10 @@
 		box-sizing: border-box;
 		margin: auto;
 		text-align: center;
+	}
+
+	.spinner {
+		top: 20%;
+		padding: 20%;
 	}
 </style>

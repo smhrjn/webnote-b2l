@@ -27,6 +27,11 @@
     display: none !important;
   }
 }
+@media only screen and (max-width: 15em) {
+  .hide-xxs {
+    display: none !important;
+  }
+}
 @media only screen and (max-width: 75em) {
   .hide-md-down {
     display: none !important;

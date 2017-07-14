@@ -47,7 +47,7 @@
 				}
 				console.log('userID: ' + this.userId);
 				if (errorCount === 0) {
-					axios.post(`/user/${this.userId}/note`, {
+					this.$http.post(`/user/${this.userId}/note`, {
 						title: this.title,
 						body: this.body
 					}, { headers: { 'x-access-token': this.token } })

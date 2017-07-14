@@ -26,19 +26,19 @@
 <script>
 	export default {
 		name: 'navigation',
-		data() {
-			return {
-				message: 'some message',
-				token: window.localStorage.token
-			};
+		computed: {
+			token() {
+				return this.$store.state.token;
+			}
 		},
 		methods: {
 			logOut() {
 				console.log('clearing user');
 				localStorage.removeItem('token');
 				localStorage.removeItem('userId');
-				// this.$router.push('/');
-				window.location.reload();
+				this.$store.dispatch('clearUserData');
+				this.$router.push('/');
+				// window.location.reload();
 			}
 		}
 	};

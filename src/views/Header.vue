@@ -1,6 +1,6 @@
 <template>
 	<div class="header-component">
-		Notes
+		<span class="hide-xxs">Notes</span>
 	</div>
 </template>
 
