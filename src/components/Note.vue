@@ -1,10 +1,10 @@
 <template>
-	<card class="card-content">
+	<card class="note-content">
 		<div @click.stop="toggleBody">
-			<div class="card-content__title">{{ note.title }}<button @click.stop="onDelete" class="button-general close-general">X</button></div>
-			<div class="card-content__date">{{ note.date | formatDate('LL') }}</div>
+			<div class="note-content__title">{{ note.title }}<button @click.stop="onDelete" class="button-general close-general">X</button></div>
+			<div class="note-content__date">{{ note.date | formatDate('LL') }}</div>
 		</div>
-		<div class="card-content__body" v-show="showBody">{{ note.body }}</div>
+		<div class="note-content__body" v-show="showBody">{{ note.body }}</div>
 	</card>
 </template>
 
@@ -37,7 +37,7 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	.card-content {
+	.note-content {
 		cursor: pointer;
 
 		&__title {

@@ -14,7 +14,7 @@
 				<a class="nav-component__a">New Note</a>
 			</router-link>
 			<li class="nav-component__li" v-show="token" @click="logOut">
-				<a class="nav-component__a">Log Out</a>
+				<a href="#" class="nav-component__a">Log Out</a>
 			</li>
 			<router-link to="/about" tag="li" class="nav-component__li">
 				<a class="nav-component__a">About</a>
@@ -82,6 +82,11 @@
 			display: inline-block;
 			color: black;
 			width: 100%;
+
+			&:hover {
+				text-decoration: none;
+				color: greenyellow;
+			}
   	}
 	}
 </style>

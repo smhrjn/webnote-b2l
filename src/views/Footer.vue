@@ -21,5 +21,7 @@
 		align-items: center;
 		min-height: 3rem;
 		color: $accent-color;
+		margin: 0px;
+		padding: 0px;
 	}
 </style>

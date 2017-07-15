@@ -20,5 +20,7 @@
 		justify-content: center;
 		align-items: center;
 		min-height: 5rem;
+		margin: 0px;
+		padding: 0px;
 	}
 </style>

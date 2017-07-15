@@ -75,7 +75,6 @@
 	}
 
 	.card-content__error {
-		margin: 0px;
 		padding: 0px;
 		color: red;
 	}

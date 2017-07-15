@@ -23,7 +23,7 @@
 				<button class="button-general" @click="$router.push('/newnote')">Create your first note.</button>
 			</card>
 
-			<square-loader v-else :loading="loadingData" :color="spinnerColor" class="spinner"></square-loader>
+			<moon-loader v-else :loading="loadingData" :color="spinnerColor" class="spinner"></moon-loader>
 		</div>
 
 		<div v-if="errorsMain && errorsMain.length" class="row">
@@ -35,25 +35,25 @@
 		<modal v-if="showModal">
 			<form class="edit-note-form">
 				<label for="title">Title</label><br>
-				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title"><br>
+				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>
+				<button @click="updateNote" class="button-general">Save</button>
+				<button @click="cancelChange" class="button-general">Cancel</button>
 			</form>
-			<button @click="updateNote" class="button-general">Save</button>
-			<button @click="cancelChange" class="button-general">Cancel</button>
 		</modal>
   </div>
 </template>
 
 <script>
 	import notesApi from '../api/notes-api';
-	import SquareLoader from 'vue-spinner/src/SquareLoader.vue';
+	import MoonLoader from 'vue-spinner/src/Moonloader.vue';
 	import card from '../components/Card.vue';
 	import modal from '../components/Modal.vue';
 	import note from '../components/Note.vue';
 	export default {
 		name: 'main',
-		components: { card, modal, note, SquareLoader },
+		components: { card, modal, note, MoonLoader },
 		data() {
 			return {
 				noteList: [],
@@ -105,6 +105,7 @@
 		created() {
 			if (this.$store.getters.notesCount <= 0) {
 				this.loadingData = true;
+				// setTimeout(() => {
 				if (this.$store.state.userId) {
 					notesApi.getNotes(this)
 						.then(response => {
@@ -113,6 +114,7 @@
 						})
 						.catch(e => console.log('error occured'));
 				}
+				// }, 50000);
 			}
 		}
 	};
@@ -152,10 +154,11 @@
 
 	.main-error {
 		text-align: center;
+		margin: 5% auto;
 	}
 
 	.spinner {
-		top: 20%;
-		padding: 20%;
+		margin: 20% auto;
+		width: 5rem;
 	}
 </style>

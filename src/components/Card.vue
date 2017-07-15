@@ -16,8 +16,8 @@
 	.card-component {
 		background-color: $secondary-color;
 		box-shadow: 0px 0px 1px 1px rgba(14,15,14,0.5);
-		margin: 1rem auto 0px auto;
 		padding: 0rem;
+		margin-top: 1rem;
 	}
 
 	// .card-component:hover {

@@ -1,17 +1,21 @@
 <template>
 	<div class="about-component">
 		<card class="card-content">
-			<div>This is simple web application built with VueJs.</div>
-			<div>Create Simple Notes. Update and Delete Functionality available.</div>
-			<div>Encryption Feature will be added soon.</div>
-			<h3>Important</h3>
-			<div>You must use fake username, email and password. This app is not secure at all.</div>
+			<div class="about-title">Web Application for Simple Notes</div>
+			<span class="text--special">(built with Node, Vue and Bootstrap)</span>
 			<hr>
-			<div>If terrible code does not bother you:
+			<div class="about-description"><span class="text--special">What you can do</span>
+				<ul class="about-list">
+					<li> Create Notes </li>
+					<li> Update Notes </li>
+					<li> Delete Notes </li>
+				</ul>
+			</div>
+			<hr>
+			<div>
+				<span class="text--special">Source code on</span>
 				<a target="_blank" href="https://github.com/leovcunha/webnote-b2l">
-					<svg class="github-icon">
-						<use xlink:href="./assets/github-icon.svg"></use>
-					</svg>
+					<img class="github-image" :src="'../assets/github-icon.png'" alt="Github">
 				</a>
 			</div>
 		</card>
@@ -25,7 +29,7 @@
 		components: { Card },
 		data() {
 			return {
-				message: 'message for about page'
+
 			};
 		}
 	};
@@ -41,7 +45,31 @@
 		flex-grow: 1;
 	}
 
-	.github-icon {
-		color: black;
+	.about-title {
+		font-size: 2rem;
+		color: greenyellow;
+	}
+
+	.text--special {
+		color: #71EEB8;
+		font-size: 1rem;
+		font-style: italic;
+	}
+
+	.about-description {
+		margin: 1rem;
+		text-align: left;
+		color: $accent-color;
+	}
+
+	.about-list {
+		color: $accent-color;
+		list-style-type: square;
+	}
+
+	.github-image {
+		display: inline-block;
+		height: 2rem;
+		margin: -0.5rem;
 	}
 </style>

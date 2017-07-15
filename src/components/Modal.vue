@@ -1,9 +1,7 @@
 <template>
-	<div>
-		<div class="modal-dialog" v-show="showModal">
-			<div class="modal-content">
-				<slot>Modal Box</slot>
-			</div>
+	<div class="modal-component" v-show="showModal">
+		<div class="modal-content">
+			<slot>Modal Box</slot>
 		</div>
 	</div>
 </template>
@@ -17,12 +15,7 @@
 		},
 		props: ['note'],
 		methods: {
-			// onOpen() {
-			// 	this.showModal = true;
-			// },
-			// onClose() {
-			// 	this.showModal = false;
-			// }
+
 		}
 	};
 </script>
@@ -30,7 +23,7 @@
 <style lang="scss">
 	@import "~styles/variables.scss";
 
-	.modal-dialog {
+	.modal-component {
 		position: fixed;
 		top: 0;
 		right: 0;
@@ -48,8 +41,7 @@
 	.modal-content {
 		width: 80%;
 		position: relative;
-		margin: 10% auto;
-		padding: 5px 20px 13px 20px;
+		margin: 20% auto;
 		border-radius: 0px;
 		background: $extra-color;
 		text-align: center;

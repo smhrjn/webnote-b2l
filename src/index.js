@@ -3,7 +3,6 @@ import './css/main.scss';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import axios from 'axios';
 
 import store from './vuex/store';
 import router from './router/index-routes';
@@ -11,6 +10,8 @@ import formatDate from './js/format-date';
 
 Vue.use(VueRouter);
 Vue.filter('formatDate', formatDate);
+
+// import axios from 'axios';
 // Vue.prototype.$http = axios.create({
 // 	timeout: 5000
 // });
