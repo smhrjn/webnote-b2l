@@ -15,7 +15,6 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.set('security', 'fyS4ZUu&dUKAzVE9G');
 
 require('./server/router/app-routes.js')(app);
 
