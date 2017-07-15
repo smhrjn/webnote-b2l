@@ -50,12 +50,6 @@
 		color: greenyellow;
 	}
 
-	.text--special {
-		color: #71EEB8;
-		font-size: 1rem;
-		font-style: italic;
-	}
-
 	.about-description {
 		margin: 1rem;
 		text-align: left;

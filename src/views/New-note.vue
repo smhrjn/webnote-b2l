@@ -2,7 +2,7 @@
 	<div class="new-note-component">
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-note-form">
-				<label for="title">Title</label><br>
+				<label for="title" class="text--special">Title</label><br>
 				<input type="text" maxlength="20" name="title" v-model="title" class="new-note-component__title"><br>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
 				<hr>

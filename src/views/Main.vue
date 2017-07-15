@@ -34,7 +34,7 @@
 
 		<modal v-if="showModal">
 			<form class="edit-note-form">
-				<label for="title">Title</label><br>
+				<label for="title" class="text--special">Title</label><br>
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>

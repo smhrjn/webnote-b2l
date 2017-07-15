@@ -43,6 +43,7 @@
 		&__title {
 			font-size: 1.2rem;
 			color: greenyellow;
+			text-align: center;
 		}
 
 		&__date {
