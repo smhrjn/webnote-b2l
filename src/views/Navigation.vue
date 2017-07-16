@@ -4,11 +4,20 @@
 			<router-link to="/" exact tag="li" class="nav-component__li">
 				<a class="nav-component__a">Home</a>
 			</router-link>
+			<router-link to="/login" tag="li" class="nav-component__li" v-show="!token">
+				<a class="nav-component__a">Log in</a>
+			</router-link>
+			<!--router-link to="/signup" tag="li" class="nav-component__li" v-show="!token">
+				<a class="nav-component__a">Sign Up</a>
+			</router-link!-->
+			<router-link to="/newnote" tag="li" class="nav-component__li" v-show="token">
+				<a class="nav-component__a">New Note</a>
+			</router-link>
+			<li class="nav-component__li" v-show="token" @click="logOut">
+				<a href="#" class="nav-component__a">Log Out</a>
+			</li>
 			<router-link to="/about" tag="li" class="nav-component__li">
 				<a class="nav-component__a">About</a>
-			</router-link>
-			<router-link to="/newuser" tag="li" class="nav-component__li">
-				<a class="nav-component__a">Add User</a>
 			</router-link>
 		</ul>
 	</div>
@@ -16,7 +25,22 @@
 
 <script>
 	export default {
-
+		name: 'navigation',
+		computed: {
+			token() {
+				return this.$store.state.token;
+			}
+		},
+		methods: {
+			logOut() {
+				console.log('clearing user');
+				localStorage.removeItem('token');
+				localStorage.removeItem('userId');
+				this.$store.dispatch('clearUserData');
+				this.$router.push('/');
+				// window.location.reload();
+			}
+		}
 	};
 </script>
 
@@ -40,6 +64,7 @@
 
 		@at-root #{&}__li {
 			background: $secondary-color;
+			color: black;
 			display: block;
 			margin: 0.5rem;
 			padding: 0;
@@ -55,7 +80,13 @@
   	@at-root #{&}__a {
 			text-decoration: none;
 			display: inline-block;
+			color: black;
 			width: 100%;
+
+			&:hover {
+				text-decoration: none;
+				color: greenyellow;
+			}
   	}
 	}
 </style>

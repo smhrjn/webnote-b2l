@@ -1,6 +1,6 @@
 <template>
 	<div class="header-component">
-		Notes
+		<span class="hide-xxs">Notes</span>
 	</div>
 </template>
 
@@ -20,5 +20,7 @@
 		justify-content: center;
 		align-items: center;
 		min-height: 5rem;
+		margin: 0px;
+		padding: 0px;
 	}
 </style>

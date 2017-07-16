@@ -2,7 +2,10 @@
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Axios from 'axios';
+import axios from 'axios';
+import moment from 'moment';
 
 import 'normalize.css/normalize.css';
-import 'flexboxgrid/dist/flexboxgrid.css';
+// import 'flexboxgrid/dist/flexboxgrid.css';
+
+import './bootstrap.scss'
