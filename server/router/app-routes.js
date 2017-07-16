@@ -6,24 +6,23 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (app) => {
 	/*
-	// api ---------------------------------------------------------------------
-	users/*. Collection of Users (internal)
-	API:
-	POST /login + pw - > USER Exists? if !err return Json Web Token , WEB UI + List of saved notes
-    POST USERS/New -> create new user (bcrypt hash password) ====> ok
-    PUT /login + old PW + new PW => Update Password 
-    DELETE /user/:id  + PW = > Delete account
+		// api ---------------------------------------------------------------------
+		users/*. Collection of Users (internal)
+		API:
+		POST /login + pw - > USER Exists? if !err return Json Web Token , WEB UI + List of saved notes
+			POST USERS/New -> create new user (bcrypt hash password) ====> ok
+			PUT /login + old PW + new PW => Update Password
+			DELETE /user/:id  + PW = > Delete account
 
-	notes: users/:id/notes.
-	API:
-	GET user/:id/notes/-> list of user's saved notes id and title ==> ok
-	POST user/:id/note- > create/save new note ==> ok
-	GET user/:id/:noteid -> read saved note details
-	PUT user/:id/:noteid -> updates saved note
-	DELETE user/:id/:noteid -> deteles saved note
-	A resource representing user settings: user/:id/settings.
-    */
-
+		notes: users/:id/notes.
+		API:
+		GET user/:id/notes/-> list of user's saved notes id and title ==> ok
+		POST user/:id/note- > create/save new note ==> ok
+		GET user/:id/:noteid -> read saved note details
+		PUT user/:id/:noteid -> updates saved note
+		DELETE user/:id/:noteid -> deteles saved note
+		A resource representing user settings: user/:id/settings.
+	*/
 
 	// user login
 	app.post('/login', (req, res) => {
@@ -89,7 +88,7 @@ module.exports = (app) => {
 		});
 	});
 
-
+	// delete user
 	app.delete('/user/:id', tokenCheck, (req, res) => {
 		User.findByIdAndRemove(req.params.id,
 			(err) => {
@@ -131,7 +130,7 @@ module.exports = (app) => {
 		});
 	});
 
-	// return id and title of notes created by user
+	// return id and notes created by user
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		User.findById(req.params.id).
 			populate('notelist', { _id: 1, title: 1, date: 1, body: 1 }).
