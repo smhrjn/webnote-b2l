@@ -18,7 +18,7 @@
 			</form>
 		</card>
 		<card class="card-content" v-if="show === 'retry'">
-			<div>User could not be created: {{ serverError }}</div>
+			<div>User could not be created: {{ errorApi }}</div>
 			<button @click="show = 'form'" class="button-general">Try Again</button>
 		</card>
 		<card class="card-content" v-if="show === 'toLogin'">
@@ -47,7 +47,7 @@
 					password: undefined,
 					passwordRepeat: undefined,
 				},
-				serverError: ''
+				erorrApi: ''
 			};
 		},
 		methods: {
@@ -80,7 +80,7 @@
 					})
 						.then(response => {
 							if (response.data.error) {
-								this.serverError = response.data.error;
+								this.errorApi = response.data.error;
 								this.show = 'retry';
 							} else {
 								this.show = 'toLogin';

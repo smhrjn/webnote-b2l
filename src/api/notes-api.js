@@ -8,29 +8,25 @@ export default {
 				store.dispatch('removeNote', noteId);
 				console.log('note deleted');
 			})
-			.catch(e => context.errorsMain.push(e));
+			.catch(e => context.errorApi.push(e));
 	},
 	login(context, creds) {
 		axios.post(`/login`, creds)
 			.then(response => {
-				console.log(response.data);
 				if (response.data.success) {
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
-					console.log('values set in local storage');
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
 					context.$router.push('/');
 					// window.location.href = '/';
 				} else {
-					context.errorLogin =true;
-					context.serverError = response.data.message;
+					context.errorApi = response.data.message;
 				}
 			})
 			.catch(e => {
 				console.log(e);
-				context.errorLogin =true;
-				context.serverError = 'Problem in Catch Section';
+				context.errorApi = 'Problem in Catch Section';
 			});
 	},
 	createNote(context, note) {
@@ -38,14 +34,14 @@ export default {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
 					if (response.data.error) {
-						context.serverError = response.data.error;
+						context.errorApi = response.data.error;
 						reject('cannot create note');
 					} else {
 						resolve(response.data);
 					}
 				})
 				.catch(e => {
-					console.errorLogin('Error: ' + e.message);
+					console.log('Error: ' + e.message);
 					reject('cannot create note');
 				});
 		});
@@ -54,7 +50,6 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/user/${ store.state.userId }/${ noteId }`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log('note update: ' + response.data.success);
 					if (response.data.message) {
 						resolve('updated');
 					} else {
@@ -62,7 +57,7 @@ export default {
 					}
 				})
 				.catch(e => {
-					context.errorsMain.push(e);
+					context.errorApi.push(e);
 					reject('cannot update');
 				});
 		});
@@ -71,12 +66,11 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/notes`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log(response.data);
 					resolve(response.data);
 				})
 				.catch(e => {
 					reject('could not get notelist');
-					context.errorsMain.push(e);
+					context.errorApi.push(e);
 				});
 		});
 	}

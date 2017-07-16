@@ -71,7 +71,6 @@ module.exports = (app) => {
 					else {
 						user.password = req.body.newpassword;
 						user.save((err) => {
-							console.log('inside save');
 							if (err) {
 								console.log('error: ' + err);
 								return res.json({ error: 'Cannot update password' });
@@ -115,10 +114,8 @@ module.exports = (app) => {
 			email: req.body.email,
 			password: req.body.password,
 		});
-		console.log('creating user' + newuser);
 		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {
-			console.log('inside save');
 			if (err) {
 				console.log('error: ' + err);
 				return res.json({ error: 'Cannot Create User' });

@@ -21,7 +21,6 @@ export default new Vuex.Store({
 		},
 		REMOVE_NOTE(state, noteId) {
 			state.notes = state.notes.filter((note) => {
-				console.log('removing note with id: ' + noteId);
 				return note._id !== noteId;
 			});
 		},

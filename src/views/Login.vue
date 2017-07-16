@@ -11,8 +11,8 @@
 				<button type="submit" class="button-general">To My Notes</button>
 			</form>
 		</card>
-		<card class="card-content" v-if="errorLogin">
-			<div>{{ serverError }}</div>
+		<card class="card-content" v-if="errorApi">
+			<div>{{ errorApi }}</div>
 			<div>Please Try Again</div>
 		</card>
 	</div>
@@ -32,8 +32,7 @@
 					userName: undefined,
 					password: undefined
 				},
-				serverError: undefined,
-				errorLogin: false
+				errorApi: undefined
 			};
 		},
 		methods: {
@@ -59,8 +58,7 @@
 					userName: undefined,
 					password: undefined,
 				};
-				this.errorLogin = false;
-				this.serverError = undefined;
+				this.errorApi = undefined;
 			}
 		}
 	};
