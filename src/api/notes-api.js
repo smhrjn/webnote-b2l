@@ -69,8 +69,8 @@ export default {
 					resolve(response.data);
 				})
 				.catch(e => {
-					reject('could not get notelist');
 					context.errorApi.push(e);
+					reject('could not get notelist');
 				});
 		});
 	}
