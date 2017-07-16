@@ -10,7 +10,9 @@ module.exports = (app) => {
 	users/*. Collection of Users (internal)
 	API:
 	POST /login + pw - > USER Exists? if !err return Json Web Token , WEB UI + List of saved notes
-	POST USERS/New -> create new user (bcrypt hash password) ====> ok
+    POST USERS/New -> create new user (bcrypt hash password) ====> ok
+    PUT /login + old PW + new PW => Update Password 
+    DELETE /user/:id  + PW = > Delete account
 
 	notes: users/:id/notes.
 	API:
@@ -20,7 +22,10 @@ module.exports = (app) => {
 	PUT user/:id/:noteid -> updates saved note
 	DELETE user/:id/:noteid -> deteles saved note
 	A resource representing user settings: user/:id/settings.
-	*/
+    */
+
+
+	// user login
 	app.post('/login', (req, res) => {
 		User.findOne({ name: req.body.name }, (err, user) => {
 			if (err) return res.send('Error' + err);
@@ -49,7 +54,54 @@ module.exports = (app) => {
 		});
 	});
 
-	app.get('/users', (req, res) => {
+	// password update API
+	app.put('/login', tokenCheck, (req, res) => {
+		User.findOne({ name: req.body.name }, (err, user) => {
+			if (err) return res.send('Error' + err);
+			if (!user) {
+				res.json({
+					sucess: false,
+					message: 'User not found'
+				});
+			} else if (user) {
+				user.comparePw(req.body.oldpassword, (err, isMatch) => {
+					if (err) return res.status(400).send('Error: missing data');
+
+					if (!isMatch) res.json({ success: false, message: 'Wrong password.' });
+
+					else {
+						user.password = req.body.newpassword;
+						user.save((err) => {
+							console.log('inside save');
+							if (err) {
+								console.log('error: ' + err);
+								return res.json({ error: 'Cannot update password' });
+							}
+							res.json({
+								success: true,
+								message: 'password updated!'
+							});
+							console.log('success');
+						});
+					}
+				});
+			}
+		});
+	});
+
+
+	app.delete('/user/:id', tokenCheck, (req, res) => {
+		User.findByIdAndRemove(req.params.id,
+			(err) => {
+				if (err) return res.send(err);
+				res.json({
+					message: 'user deleted'
+				});
+			});
+	});
+
+	// get list of users
+	app.get('/users', tokenCheck, (req, res) => {
 		console.log('Sending users');
 		User.find(req.params.id, (err, usrdata) => {
 			if (err) return res.send('Error' + err);
@@ -94,7 +146,6 @@ module.exports = (app) => {
 		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
-		// create a note, information comes from AJAX request
 		newnote.save((err) => {
 			if (err) return res.send(err);
 		});

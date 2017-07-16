@@ -5,7 +5,7 @@
 			<br>
 			<button class="button-general" @click="$router.push('/login')">Log In</button>
 			<hr>
-			If you do not have accout yet.
+			If you do not have account yet.
 			<br>
 			<button class="button-general" @click="$router.push('/signup')">Sign Up</button>
 		</card>
