@@ -52,7 +52,7 @@ ___
 
 * axios
 		>promise baset HTTP client for browser and node
-* body-paarser
+* body-parser
 		>parse incoming request bodies in a middleware before your handlers, available under the req.body property
 * express
 		>fast, unopinionated, minimalist web framework for node
@@ -62,6 +62,10 @@ ___
 		>a progressive, incrementally-adoptable JavaScript framework for building UI on the web
 * vue-router
 		>official router for Vue.js
+* bcrypt 
+		>hash and salt for storing user password in db
+* json web token
+    >session handling
 
 ### Development Dependencies
 
@@ -137,6 +141,6 @@ ___
 * [x] integrate webpack
 * [x] test vue integration
 * [x] ~~include mongodb local server~~
-* [ ] improve mongoose schema
+* [x] improve mongoose schema
 
 ___
