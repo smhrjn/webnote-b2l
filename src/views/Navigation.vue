@@ -7,9 +7,9 @@
 			<router-link to="/login" tag="li" class="nav-component__li" v-show="!token">
 				<a class="nav-component__a">Log in</a>
 			</router-link>
-			<!--router-link to="/signup" tag="li" class="nav-component__li" v-show="!token">
+			<router-link to="/signup" tag="li" class="nav-component__li" v-show="!token">
 				<a class="nav-component__a">Sign Up</a>
-			</router-link!-->
+			</router-link>
 			<router-link to="/newnote" tag="li" class="nav-component__li" v-show="token">
 				<a class="nav-component__a">New Note</a>
 			</router-link>

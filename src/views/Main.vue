@@ -16,7 +16,7 @@
 			</div>
 		</div>
 
-		<div v-else>
+		<div v-else-if="this.notesFilter === ''">
 			<card v-if="!loadingData" class="col-xs-12 col-sm-8 main-error">
 				You haven't created any notes yet.
 				<br>
@@ -26,7 +26,13 @@
 			<moon-loader v-else :loading="loadingData" :color="spinnerColor" class="spinner"></moon-loader>
 		</div>
 
-		<div v-if="errorApi" class="col-xs-12 col-sm-8 main-error">
+		<div v-else-if="this.notesFilter !== ''">
+			<card class="col-xs-12 col-sm-8 main-error">
+				There are no cards with selected Label.
+			</card>
+		</div>
+
+		<div v-else-if="errorApi" class="col-xs-12 col-sm-8 main-error">
 				{{ errorApi }}
 		</div>
   </div>
@@ -46,7 +52,7 @@
 				noteList: [],
 				errorApi: undefined,
 				showModal: false,
-				loadingData: true,
+				loadingData: false,
 				spinnerColor: 'green'
 			};
 		},
@@ -57,8 +63,12 @@
 			token() {
 				return this.$store.state.token;
 			},
+			notesFilter() {
+				return this.$store.state.notesFilter;
+			},
 			notes() {
-				return this.$store.state.notes;
+				if (this.$store.state.notesFilter === '') return this.$store.state.notes;
+				return this.$store.state.notes.filter(note => note.label.name === this.$store.state.notesFilter);
 			}
 		},
 		methods: {

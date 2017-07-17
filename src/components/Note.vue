@@ -1,22 +1,27 @@
 <template>
 	<card class="note-content">
-		<div class="note-content-head">
+		<div class="note-content-head" v-bind:style="{ background: note.label.color }">
 			<div class="note-content__header" @click.stop="toggleBody">
 				<div class="note-content__title">
 					{{ note.title }}
 				</div>
-				<div class="note-content__date">
+				<span class="note-content__date">
 					{{ note.date | formatDate('LL') }}
-				</div>
-				<span class="tooltip">{{ tooltipMessage }}</span>
+				</span>
+				<span class="note-content__label-container">
+					<span class="note-content__label">
+						{{ note.label.name }}
+					</span>
+				</span>
+				<span class="note-tooltip">{{ tooltipMessage }}</span>
 			</div>
 			<button @click.stop="onDelete" class="button-general close-general">
 				X
-	  		<span class="tooltip">Delete Note</span>
+	  		<span class="note-tooltip">Delete Note</span>
 			</button>
 		</div>
 		<div class="note-content__body" v-show="showBody"  @click="editNote()">{{ note.body }}
-	  	<span class="tooltip">Click to edit note</span>
+	  	<span class="note-tooltip">Click to edit note</span>
 		</div>
 		<modal v-if="showDeleteModal">
 			<div class="confirm-box">
@@ -30,6 +35,11 @@
 			<form class="edit-note-form">
 				<label for="title" class="text--special">Title</label><br>
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
+				<select v-model="modalNote.label">
+					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label">
+						{{ label.name }}
+					</option>
+				</select>
 				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>
 				<button @click.prevent="updateNote" class="button-general">Save</button>
@@ -62,11 +72,14 @@
 				showDeleteModal: false,
 				showEditModal: false,
 				confirmDelete: false,
-				showCancelModal: false
+				showCancelModal: false,
+				modalNote: {}
 			};
 		},
 		computed: {
-
+			labels() {
+				return this.$store.state.labels;
+			}
 		},
 		methods: {
 			editNote() {
@@ -74,7 +87,8 @@
 				this.modalNote = {
 					_id: this.note._id,
 					title: this.note.title,
-					body: this.note.body
+					body: this.note.body,
+					label: this.labels.filter((label) => label.name === this.note.label.name)[0]
 				};
 				this.showEditModal = true;
 			},
@@ -82,10 +96,12 @@
 				this.showEditModal = false;
 				notesApi.updateNote(this, this.note._id, {
 					title: this.modalNote.title,
-					body: this.modalNote.body
+					body: this.modalNote.body,
+					label: this.modalNote.label
 				}).then(() => {
 					this.note.title = this.modalNote.title;
 					this.note.body = this.modalNote.body;
+					this.note.label = this.modalNote.label;
 				});
 			},
 			cancelChange() {
@@ -139,10 +155,28 @@
 		}
 
 		&__date {
-			font-size: 0.6rem;
+			color: $accent-color;
+			font-size: 0.8rem;
 			text-align: left;
 			margin: 0px;
 			padding: 3px;
+			display: inline-block;
+			width: 50%;
+		}
+
+		&__label-container {
+			text-align: right;
+			margin: 0px;
+			padding: 3px;
+			display: inline-block;
+			width: 40%;
+		}
+
+		&__label {
+			color: $accent-color;
+			font-size: 0.8rem;
+			border: 1px solid $accent-color;
+			border-radius: 1px;
 		}
 
 		&__body {
@@ -164,8 +198,8 @@
 	.close-general {
 		// float: right;
 		position: absolute;
-		right: 0.3rem;
-		top: 0.5rem;
+		right: 0.4rem;
+		top: 0.6rem;
 	}
 
 	.edit-note-form {
@@ -193,7 +227,7 @@
 	}
 
 	/* Tooltip text */
-	.tooltip {
+	.note-tooltip {
 		display: none;
 		background-color: rgba(12, 12, 12, 0.3);
 		color: $secondary-color;
@@ -209,15 +243,15 @@
 		left: 50%;
 	}
 	/* Show the tooltip text when you mouse over the tooltip container */
-	.note-content__header:hover .tooltip {
+	.note-content__header:hover .note-tooltip {
 		display: block;
 		top: -1rem;
 	}
-	.note-content__body:hover .tooltip {
+	.note-content__body:hover .note-tooltip {
 		display: block;
 		bottom: -1rem;
 	}
-	.close-general:hover .tooltip {
+	.close-general:hover .note-tooltip {
 		display: block;
 		bottom: 1rem;
 		left: -2rem;

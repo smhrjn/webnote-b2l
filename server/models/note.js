@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const labelSchema = require('./schema/label');
+
 const noteSchema = new Schema({
 	title: String,
 	body: String,
@@ -9,7 +11,8 @@ const noteSchema = new Schema({
 		default: Date.now
 	},
 	label: {
-		type: String
+		type: labelSchema,
+		required: true
 	}
 });
 
