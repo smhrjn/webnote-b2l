@@ -8,24 +8,29 @@ export default {
 				store.dispatch('removeNote', noteId);
 				console.log('note deleted');
 			})
-			.catch(e => context.errorApi.push(e));
+			.catch(err => {
+				context.errorApi = err;
+			});
 	},
 	login(context, creds) {
 		axios.post(`/login`, creds)
 			.then(response => {
-				if (response.data.success) {
+				if (!response.data.error) {
+					console.log('Storing data in localstorage and vuex.');
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
+					console.log('Data set in localstorage and vuex.');
 					context.$router.push('/');
 					// window.location.href = '/';
 				} else {
-					context.errorApi = response.data.message;
+					console.log(response.data.error);
+					context.errorApi = response.data.error;
 				}
 			})
-			.catch(e => {
-				console.log(e);
+			.catch(err => {
+				console.log(err);
 				context.errorApi = 'Problem in Catch Section';
 			});
 	},
@@ -40,8 +45,8 @@ export default {
 						resolve(response.data);
 					}
 				})
-				.catch(e => {
-					console.log('Error: ' + e.message);
+				.catch(err => {
+					console.log('Error: ' + err.error);
 					reject('cannot create note');
 				});
 		});
@@ -56,8 +61,8 @@ export default {
 						reject('cannot update');
 					}
 				})
-				.catch(e => {
-					context.errorApi.push(e);
+				.catch(err => {
+					context.errorApi = err;
 					reject('cannot update');
 				});
 		});
@@ -66,12 +71,40 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/notes`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					// console.log('received response: ' + response.data);
 					resolve(response.data);
 				})
-				.catch(e => {
-					context.errorApi.push(e);
+				.catch(err => {
+					context.errorApi = err;
 					reject('could not get notelist');
 				});
 		});
-	}
+	},
+	getLabels(context) {
+		return new Promise((resolve, reject) => {
+			axios.get(`/user/${ store.state.userId }/labels`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					resolve(response.data);
+				})
+				.catch(err => {
+					context.errorApi.push(err);
+					reject('could not get labels');
+				});
+		});
+	},
+	updateLabels(context, labels) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/user/${ store.state.userId }/labels`, labels, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						console.log(response.data.message);
+						resolve(response.data.message);
+					}
+				})
+				.catch(err => {
+					context.errorApi = err;
+					reject('cannot update labels');
+				});
+		});
+	},
 };

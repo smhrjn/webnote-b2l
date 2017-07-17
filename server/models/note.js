@@ -7,6 +7,9 @@ const noteSchema = new Schema({
 	date: {
 		type: Date,
 		default: Date.now
+	},
+	label: {
+		type: String
 	}
 });
 

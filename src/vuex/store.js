@@ -7,6 +7,7 @@ export default new Vuex.Store({
 	state: {
 		userId: window.localStorage.userId,
 		token: window.localStorage.token,
+		labels: [],
 		notes: []
 	},
 	mutations: {
@@ -24,10 +25,22 @@ export default new Vuex.Store({
 				return note._id !== noteId;
 			});
 		},
+		ADD_LABEL(state, label) {
+			state.labels.push(label);
+		},
+		REMOVE_LABEL(state, remLabel) {
+			state.labels = state.labels.filter((label) => {
+				return label !== remLabel;
+			});
+		},
+		SET_LABELS(state, labels) {
+			state.labels = labels;
+		},
 		CLEAR_USER_DATA(state) {
 			state.userID = undefined;
 			state.token = undefined;
 			state.notes = [];
+			state.labels = [];
 		},
 		CLEAR_NOTES(state) {
 			state.notes = [];
@@ -45,6 +58,15 @@ export default new Vuex.Store({
 		},
 		removeNote({ commit	}, noteId) {
 			commit('REMOVE_NOTE', noteId);
+		},
+		addLabel({ commit	}, label) {
+			commit('ADD_LABEL', label);
+		},
+		removeLabel({ commit	}, remLabel) {
+			commit('REMOVE_LABEL', remLabel);
+		},
+		setLabels({ commit	}, labels) {
+			commit('SET_LABELS', labels);
 		},
 		clearUserData({ commit	}) {
 			commit('CLEAR_USER_DATA');

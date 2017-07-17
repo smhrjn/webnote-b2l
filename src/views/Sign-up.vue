@@ -47,7 +47,7 @@
 					password: undefined,
 					passwordRepeat: undefined,
 				},
-				erorrApi: ''
+				erorrApi: []
 			};
 		},
 		methods: {
@@ -86,8 +86,8 @@
 								this.show = 'toLogin';
 							}
 						})
-						.catch(e => {
-							console.log('Error: ' + e.message);
+						.catch(err => {
+							console.log('Error: ' + err.message);
 						});
 				}
 			},

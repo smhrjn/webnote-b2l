@@ -26,10 +26,8 @@
 			<moon-loader v-else :loading="loadingData" :color="spinnerColor" class="spinner"></moon-loader>
 		</div>
 
-		<div v-if="errorApi && errorApi.length" class="row">
-			<card v-for="error of errorApi" :key="error" class="col-xs-12 col-sm-8 col-md-6 col-lg-4 center">
-				{{ error.message }}
-			</card>
+		<div v-if="errorApi" class="col-xs-12 col-sm-8 main-error">
+				{{ errorApi }}
 		</div>
   </div>
 </template>
@@ -46,7 +44,7 @@
 		data() {
 			return {
 				noteList: [],
-				errorApi: [],
+				errorApi: undefined,
 				showModal: false,
 				loadingData: true,
 				spinnerColor: 'green'
@@ -70,13 +68,18 @@
 			if (this.$store.getters.notesCount <= 0) {
 				this.loadingData = true;
 				// setTimeout(() => {
-				if (this.$store.state.userId) {
+				if (this.$store.state.token) {
 					notesApi.getNotes(this)
 						.then(response => {
+							// console.log('response: ' + response);
 							response.forEach(note => this.$store.dispatch('addNote', note));
 							this.loadingData = false;
 						})
-						.catch(e => console.log('error occured'));
+						.catch(err => {
+							console.log(err);
+							this.errorApi = err;
+							this.loadingData = false;
+						});
 				}
 				// }, 50000);
 			}
@@ -97,7 +100,11 @@
 		justify-content: flex-start;
 		align-items: baseline;
 
-		@media only screen and (max-width: 64em) {
+		&:last-child {
+			margin-bottom: 1rem;
+		}
+
+		@media only screen and (max-width: 991px) {
 			justify-content: center;
 		}
 	}
