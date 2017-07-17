@@ -38,16 +38,6 @@ hr {
 	margin: auto;
 }
 
-.is-active {
-	font-size: 1.25rem;
-
-	a {
-		color: $accent-color;
-		text-decoration: none;
-		box-shadow: 2.5px 2.5px 1.5px 0px rgba(14,15,14,0.5);
-	}
-}
-
 .button-general {
 	background: $accent-color;
 	color: green;
@@ -58,11 +48,6 @@ hr {
 	&:hover {
 		box-shadow: 2px 2px 1px 0px rgba(14,15,14,0.5);
 	}
-}
-
-.close-general {
-	float: right;
-	margin: 0.2rem;
 }
 
 .text--special {

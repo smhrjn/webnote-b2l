@@ -9,18 +9,27 @@
 				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text"></textarea><br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
-				<button @click="onCancel" class="button-general">Cancel</button>
+				<button @click.prevent="onCancel" class="button-general">Cancel</button>
 			</form>
 		</card>
+		<modal v-if="showModal">
+			<div class="confirm-box">
+				<span class="confirm-box__text">Exit Without Saving?</span>
+				<hr>
+				<button @click.stop="onConfirm" class="button-general">Yes</button>
+				<button @click.stop="onDeny" class="button-general">No</button>
+			</div>
+		</modal>
 	</div>
 </template>
 
 <script>
 	import notesApi from '../api/notes-api';
-	import Card from '../components/Card.vue';
+	import card from '../components/Card.vue';
+	import modal from '../components/Modal.vue';
 	export default {
 		name: 'NewNote',
-		components: { Card },
+		components: { card, modal },
 		data() {
 			return {
 				title: '',
@@ -31,7 +40,8 @@
 					title: undefined,
 					body: undefined
 				},
-				serverError: ''
+				erorrApi: '',
+				showModal: false
 			};
 		},
 		methods: {
@@ -45,7 +55,6 @@
 					this.errorsNewNote.body = 'No Content Added';
 					errorCount++;
 				}
-				console.log('userID: ' + this.userId);
 				if (errorCount === 0) {
 					notesApi.createNote(this, {
 						title: this.title,
@@ -63,7 +72,14 @@
 				}
 			},
 			onCancel() {
+				this.showModal = true;
+			},
+			onConfirm() {
+				this.showModal = false;
 				this.$router.push('/');
+			},
+			onDeny() {
+				this.showModal = false;
 			},
 			resetError() {
 				this.errorsNewNote = {

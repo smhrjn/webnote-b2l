@@ -41,7 +41,7 @@
 	.modal-content {
 		width: 80%;
 		position: relative;
-		margin: 20% auto;
+		margin: 10vh auto auto auto;
 		border-radius: 0px;
 		background: $extra-color;
 		text-align: center;

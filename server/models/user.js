@@ -20,7 +20,8 @@ const userSchema = new Schema({
 	notelist: [{
 		type: Schema.ObjectId,
 		ref: 'note'
-	}]
+	}],
+	labels: []
 });
 
 userSchema.pre('save', function(next) {

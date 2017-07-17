@@ -8,31 +8,32 @@ export default {
 				store.dispatch('removeNote', noteId);
 				console.log('note deleted');
 			})
-			.catch(e => context.errorsMain.push(e));
+			.catch(err => {
+				context.errorApi = err;
+			});
 	},
 	login(context, creds) {
 		axios.post(`/login`, creds)
 			.then(response => {
-				console.log(response.data);
-				if (response.data.success) {
+				if (!response.data.error) {
+					console.log('Storing data in localstorage and vuex.');
 					localStorage.setItem('userName', creds.name);
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
-					console.log('values set in local storage');
 					store.dispatch('setUserName', creds.name);
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
+					console.log('Data set in localstorage and vuex.');
 					context.$router.push('/');
 					// window.location.href = '/';
 				} else {
-					context.errorLogin =true;
-					context.serverError = response.data.message;
+					console.log(response.data.error);
+					context.errorApi = response.data.error;
 				}
 			})
-			.catch(e => {
-				console.log(e);
-				context.errorLogin =true;
-				context.serverError = 'Problem in Catch Section';
+			.catch(err => {
+				console.log(err);
+				context.errorApi = 'Problem in Catch Section';
 			});
 	},
 	createNote(context, note) {
@@ -40,14 +41,14 @@ export default {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
 					if (response.data.error) {
-						context.serverError = response.data.error;
+						context.errorApi = response.data.error;
 						reject('cannot create note');
 					} else {
 						resolve(response.data);
 					}
 				})
-				.catch(e => {
-					console.errorLogin('Error: ' + e.message);
+				.catch(err => {
+					console.log('Error: ' + err.error);
 					reject('cannot create note');
 				});
 		});
@@ -56,15 +57,14 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/user/${ store.state.userId }/${ noteId }`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log('note update: ' + response.data.success);
 					if (response.data.message) {
 						resolve('updated');
 					} else {
 						reject('cannot update');
 					}
 				})
-				.catch(e => {
-					context.errorsMain.push(e);
+				.catch(err => {
+					context.errorApi = err;
 					reject('cannot update');
 				});
 		});
@@ -73,13 +73,40 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/notes`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log(response.data);
+					// console.log('received response: ' + response.data);
 					resolve(response.data);
 				})
-				.catch(e => {
+				.catch(err => {
+					context.errorApi = err;
 					reject('could not get notelist');
-					context.errorsMain.push(e);
 				});
 		});
-	}
+	},
+	getLabels(context) {
+		return new Promise((resolve, reject) => {
+			axios.get(`/user/${ store.state.userId }/labels`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					resolve(response.data);
+				})
+				.catch(err => {
+					context.errorApi.push(err);
+					reject('could not get labels');
+				});
+		});
+	},
+	updateLabels(context, labels) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/user/${ store.state.userId }/labels`, labels, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						console.log(response.data.message);
+						resolve(response.data.message);
+					}
+				})
+				.catch(err => {
+					context.errorApi = err;
+					reject('cannot update labels');
+				});
+		});
+	},
 };
