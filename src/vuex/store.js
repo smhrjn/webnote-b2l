@@ -5,11 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
+		userName: window.localStorage.userName,
 		userId: window.localStorage.userId,
 		token: window.localStorage.token,
 		notes: []
 	},
 	mutations: {
+		SET_NAME(state, userName) {
+			state.userName = userName;
+		},
 		SET_ID(state, id) {
 			state.userId = id;
 		},
@@ -26,6 +30,7 @@ export default new Vuex.Store({
 			});
 		},
 		CLEAR_USER_DATA(state) {
+			state.userName = undefined;
 			state.userID = undefined;
 			state.token = undefined;
 			state.notes = [];
@@ -35,6 +40,9 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
+		setUserName({ commit }, userName) {
+			commit('SET_NAME', userName);
+		},
 		setUserId({ commit }, userId) {
 			commit('SET_ID', userId);
 		},

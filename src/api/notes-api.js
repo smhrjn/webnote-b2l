@@ -15,9 +15,11 @@ export default {
 			.then(response => {
 				console.log(response.data);
 				if (response.data.success) {
+					localStorage.setItem('userName', creds.name);
 					localStorage.setItem('token', response.data.token);
 					localStorage.setItem('userId', response.data.userId);
 					console.log('values set in local storage');
+					store.dispatch('setUserName', creds.name);
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
 					context.$router.push('/');
