@@ -1,25 +1,38 @@
 <template>
 	<div class="labels-component">
 		<div v-if="labels && labels.length" class="labels-content row">
-			<span v-for="label of labels" :key="label.name" v-bind:style="{ background: label.color }" class="label-content">
-				{{ label.name }}
-			</span>
+			<notelabel v-for="label of labels" :key="label.name" :label="label"></notelabel>
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
 			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
+			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }">
+				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
+					{{ color }}
+				</option>
+			</select>
 		</form>
 	</div>
 </template>
 
 <script>
 	import notesApi from '../api/notes-api';
+	import notelabel from './Note-label.vue';
 	export default {
+		components: { notelabel },
 		data() {
 			return {
 				newLabel: {
 					name: '',
-					color: 'rgba(0, 255, 0, 0.1)'
+					color: '#F0B67F'
 				},
+				colors: ['#F0B67F',
+					'#FE5F55',
+					'#D6D1B1',
+					'#C7EFCF',
+					'#EEF5DB',
+					'#84D2F6',
+					'#E9EB87',
+					'#7B5E7B'],
 				errorApi: undefined
 			};
 		},
@@ -74,21 +87,12 @@
 		margin: 2rem auto 1rem auto;
 		padding: 2px;
 		border-radius: 5px;
+		background: $extra-color;
 	}
 
 	.labels-content {
 		margin: 2px auto;
 		justify-content: center;
-	}
-
-	.label-content {
-		color: $accent-color;
-		border: 1px solid $secondary-color;
-		border-radius: 2px;
-		margin: 2px;
-		padding: 2px;
-		min-width: 5rem;
-		text-align: center;
 	}
 
 	.add-label-form {
@@ -104,12 +108,12 @@
 		text-align: center;
 		width: 80%;
 		margin: auto;
+		border-radius: 2px;
 
 		&:focus {
-			background: $accent-color;
+			background: $extra-color;
 			border: none;
 			box-shadow: 0px 0px 1px 1px rgba(116, 115, 114, 0.1);
-			background: $extra-color;
 		}
 	}
 </style>

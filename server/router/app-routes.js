@@ -44,7 +44,6 @@ module.exports = (app) => {
 						res.json({
 							message: 'Signed In Successfully',
 							userId: user._id,
-							labels: user.labels,
 							token: token
 						});
 					}
@@ -120,6 +119,10 @@ module.exports = (app) => {
 			name: req.body.name,
 			email: req.body.email,
 			password: req.body.password,
+			labels: [{
+				name: 'Default',
+				color: '#F0B67F'
+			}]
 		});
 		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {
@@ -127,8 +130,11 @@ module.exports = (app) => {
 				console.log('error: ' + err);
 				return res.json({ error: 'Cannot Create User' });
 			}
+			const token = jwt.sign(newuser, pass.secret, { issuer: newuser.id.toString(), expiresIn: '1h' });
 			res.json({
-				message: 'user created!'
+				message: 'user created!',
+				userId: newuser._id,
+				token: token
 			});
 			console.log('success');
 		});
@@ -167,6 +173,7 @@ module.exports = (app) => {
 		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
+		newnote.label = req.body.label;
 		newnote.save((err) => {
 			if (err) {
 				console.log(err);
@@ -244,6 +251,7 @@ module.exports = (app) => {
 				};
 				note.title = req.body.title;
 				note.body = req.body.body;
+				note.label = req.body.label;
 				note.save((err) => {
 					if (err) {
 						console.log(err);
@@ -256,7 +264,7 @@ module.exports = (app) => {
 			});
 	});
 
-	// remove note details
+	// remove note
 	app.delete('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findByIdAndRemove(req.params.noteid,
 			(err) => {

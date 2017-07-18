@@ -9,7 +9,8 @@ export default new Vuex.Store({
 		userId: window.localStorage.userId,
 		token: window.localStorage.token,
 		labels: [],
-		notes: []
+		notes: [],
+		notesFilter: ''
 	},
 	mutations: {
 		SET_NAME(state, userName) {
@@ -49,6 +50,9 @@ export default new Vuex.Store({
 		},
 		CLEAR_NOTES(state) {
 			state.notes = [];
+		},
+		SET_FILTER(state, label) {
+			state.notesFilter = label;
 		}
 	},
 	actions: {
@@ -81,6 +85,9 @@ export default new Vuex.Store({
 		},
 		clearNotes({ commit	}) {
 			commit('CLEAR_NOTES');
+		},
+		setFilter({ commit	}, filter) {
+			commit('SET_FILTER', filter);
 		}
 	},
 	getters: {

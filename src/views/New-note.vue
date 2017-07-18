@@ -2,11 +2,15 @@
 	<div class="new-note-component">
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-note-form">
-				<label for="title" class="text--special">Title</label><br>
-				<input type="text" maxlength="20" name="title" v-model="title" class="new-note-component__title"><br>
+				<input type="text" maxlength="20" name="title" v-model="title" class="new-note-component__title" placeholder="title"><br>
+				 <select v-model="selectedLabel">
+					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label">
+						{{ label.name }}
+					</option>
+				</select>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
 				<hr>
-				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text"></textarea><br>
+				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea><br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
 				<button @click.prevent="onCancel" class="button-general">Cancel</button>
@@ -41,8 +45,14 @@
 					body: undefined
 				},
 				erorrApi: '',
-				showModal: false
+				showModal: false,
+				selectedLabel: this.$store.state.labels[0]
 			};
+		},
+		computed: {
+			labels() {
+				return this.$store.state.labels;
+			}
 		},
 		methods: {
 			onSubmit() {
@@ -56,17 +66,21 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
+					console.log('selected label: ' + this.selectedLabel);
 					notesApi.createNote(this, {
 						title: this.title,
-						body: this.body
+						body: this.body,
+						label: this.selectedLabel
 					})
 						.then(response => {
 							this.$store.dispatch('addNote', {
 								_id: response._id,
 								date: response.date,
 								title: this.title,
-								body: this.body
+								body: this.body,
+								label: this.selectedLabel
 							});
+							this.$store.dispatch('setFilter', '');
 							this.$router.push('/');
 						});
 				}
@@ -84,7 +98,8 @@
 			resetError() {
 				this.errorsNewNote = {
 					title: undefined,
-					body: undefined
+					body: undefined,
+					selectedLabel: this.labels[0]
 				};
 			}
 		}
@@ -100,7 +115,14 @@
 		flex-grow: 1;
 
 		&__title {
-			width: 80%;
+			display: inline-block;
+			width: 50%;
+			border-radius: 2px;
+			border: none;
+			top: 1rem;
+			left: 1rem;
+			background: $secondary-color;
+			color: greenyellow;
 		}
 
 		&__text {
