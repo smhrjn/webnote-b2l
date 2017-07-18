@@ -1,5 +1,6 @@
-import store from '../vuex/store';
 import axios from 'axios';
+import store from '../vuex/store';
+import router from '../router/index-routes';
 
 export default {
 	login(context, creds) {
@@ -23,11 +24,11 @@ export default {
 			})
 			.catch(err => {
 				console.log(err);
-				context.errorApi = 'Problem in Catch Section';
+				context.errorApi = err;
 			});
 	},
 	changePassword(context, creds) {
-		axios.put(`/login`, creds, { headers: { 'x-access-token': store.state.token }})
+		axios.put(`/login`, creds, { headers: { 'x-access-token': store.state.token } })
 			.then(response => {
 				if (!response.data.error) {
 					context.msgApi = response.data.message;
@@ -55,6 +56,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					if (response.data.error) {
 						context.errorApi = response.data.error;
 						reject('cannot create note');
@@ -72,6 +76,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/user/${ store.state.userId }/${ noteId }`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					if (response.data.message) {
 						resolve('updated note');
 					} else {
@@ -87,6 +94,9 @@ export default {
 	deleteNote(context, noteId) {
 		axios.delete(`/user/${ store.state.userId }/${ noteId }`, { headers: { 'x-access-token': store.state.token } })
 			.then(response => {
+				if (response.data.name === 'TokenExpiredError') {
+					router.push('/login');
+				}
 				store.dispatch('removeNote', noteId);
 				console.log('note deleted');
 			})
@@ -100,6 +110,9 @@ export default {
 				.then(response => {
 					// console.log('received response: ' + response.data);
 					// console.log('received notes');
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					store.dispatch('clearNotes');
 					response.data.forEach(note => store.dispatch('addNote', note));
 					resolve(response.data);
@@ -114,6 +127,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/label`, newLabel, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					if (response.data.message) {
 						// console.log(response.data.message);
 						resolve(response.data);
@@ -130,6 +146,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.delete(`/label/${ store.state.userId }/${ labelId }/${ defaultId }`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					store.dispatch('removeLabel', labelId);
 					console.log('label deleted');
 					resolve('label deleted');
@@ -144,6 +163,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/label/${ store.state.userId }/${ labelId }`, newLabel, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					if (response.data.message) {
 						resolve('updated label');
 					} else {
@@ -160,6 +182,9 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/labels`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					resolve(response.data);
 				})
 				.catch(err => {

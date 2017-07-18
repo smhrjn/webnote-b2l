@@ -40,6 +40,7 @@ module.exports = (app) => {
 					if (!isMatch) res.json({ error: 'Wrong password.' });
 
 					else {
+						// const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '120' });
 						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h' });
 						// console.log('sending login response');
 						res.json({
@@ -135,11 +136,11 @@ module.exports = (app) => {
 				console.log('error: ' + err);
 				return res.json({ error: 'Cannot Create User' });
 			}
-			const token = jwt.sign(newuser, pass.secret, { issuer: newuser.id.toString(), expiresIn: '1h' });
+			// const token = jwt.sign(newuser, pass.secret, { issuer: newuser.id.toString(), expiresIn: '1h' });
 			res.json({
 				message: 'user created!',
-				userId: newuser._id,
-				token: token
+				userId: newuser._id
+				// token: token
 			});
 			console.log('user created.');
 		});
