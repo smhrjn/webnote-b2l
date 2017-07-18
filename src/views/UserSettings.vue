@@ -1,6 +1,8 @@
 <template>
 	<div class="pwchange-component">
 		<card class="card-content">
+			<div class="pwchange-component__title">Change Passoword</div>
+			<hr>
 			<form @submit.prevent="onSubmit" @input="resetError" class="pw-change-form">
 				<label for="oldpassword">Old Password</label><br>
 				<input type="text" name="oldpassword" v-model="oldPassword"><br>
@@ -17,7 +19,6 @@
 			<div>{{ msgApi }}</div>
 
 		</card>
-		<br>
 		<br>
 		<div class="deleteacc-component">
 			<card class="card-content">
@@ -74,7 +75,7 @@
 				}
 				if (this.newPassword1 !== this.newPassword2) {
 					this.errorsChange.password = 'Passwords don`t match';
-					errorCount++
+					errorCount++;
 				}
 				if (errorCount === 0) {
 					console.log(this.$store.state.userName );
@@ -116,6 +117,12 @@
 	.pwchange-component {
 		background-color: $accent-color;
 		text-align: center;
+
+		&__title {
+			font-size: 1.2rem;
+			margin: 20px auto 2px auto;
+			color: yellowgreen;
+		}
 	}
 
 	.card-content__error {
