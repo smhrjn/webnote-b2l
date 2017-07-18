@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Noty from 'noty';
 import store from '../vuex/store';
 import router from '../router/index-routes';
 
@@ -15,6 +16,9 @@ export default {
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
 					console.log('Data set in localstorage and vuex.');
+					new Noty({
+						text: 'Logged in successfully.',
+					}).show();
 					context.$router.push('/');
 					// window.location.href = '/';
 				} else {
