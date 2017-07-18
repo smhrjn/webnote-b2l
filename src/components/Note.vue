@@ -33,14 +33,12 @@
 		</modal>
 		<modal v-if="showEditModal">
 			<form class="edit-note-form">
-				<label for="title" class="text--special">Title</label><br>
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
-				<select v-model="modalNote.label">
-					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label">
+				<select v-model="modalNote.label" class="edit-note-form__label" v-bind:style="{ background: modalNote.label.color }">
+					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label" v-bind:style="{ background: label.color }">
 						{{ label.name }}
 					</option>
 				</select>
-				<hr>
 				<textarea rows="8" type="text" name="body" v-model="modalNote.body" class="edit-note-form__text"></textarea><br>
 				<button @click.prevent="updateNote" class="button-general">Save</button>
 				<button @click.prevent="cancelChange" class="button-general">Cancel</button>
@@ -190,7 +188,7 @@
 			padding: 1px;
 			white-space: pre;
 			text-align: left;
-			background-color: #BAA378;
+			background-color: $note-background;
 			// height: 4rem;
 		}
 	}
@@ -208,7 +206,17 @@
 		width: 80%;
 
 		&__title {
-			width: 80%;
+			font-size: 1.1rem;
+			width: 12rem;
+			margin: 5px auto 2px;
+			max-width: 90%;
+		}
+
+		&__label {
+			font-size: 1.0rem;
+			width: 6rem;
+			max-width: 90%;
+			margin: 2px;
 		}
 
 		&__text {

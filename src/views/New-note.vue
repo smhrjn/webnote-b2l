@@ -2,14 +2,13 @@
 	<div class="new-note-component">
 		<card class="card-content">
 			<form @submit.prevent="onSubmit" @input="resetError" class="new-note-form">
-				<input type="text" maxlength="20" name="title" v-model="title" class="new-note-component__title" placeholder="title"><br>
-				 <select v-model="selectedLabel">
-					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label">
+				<input type="text" maxlength="20" name="title" v-model="title" class="new-note-component__title" placeholder="title">
+				 <select v-model="selectedLabel"  class="new-note-component__label" v-bind:style="{ background: selectedLabel.color }">
+					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label" v-bind:style="{ background: label.color }">
 						{{ label.name }}
 					</option>
 				</select>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
-				<hr>
 				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea><br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
@@ -115,14 +114,17 @@
 		flex-grow: 1;
 
 		&__title {
-			display: inline-block;
-			width: 50%;
-			border-radius: 2px;
-			border: none;
-			top: 1rem;
-			left: 1rem;
-			background: $secondary-color;
-			color: greenyellow;
+			font-size: 1.1rem;
+			width: 12rem;
+			margin: 5px auto 2px;
+			max-width: 90%;
+		}
+
+		&__label {
+			font-size: 1.0rem;
+			width: 6rem;
+			max-width: 90%;
+			margin: 2px;
 		}
 
 		&__text {

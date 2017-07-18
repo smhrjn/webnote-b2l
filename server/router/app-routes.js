@@ -143,7 +143,15 @@ module.exports = (app) => {
 	// return notes created by user
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
 		console.log('Populating Notes');
-		User.findById(req.params.id).
+		User.findById(req.params.id, (err, userdata) => {
+			if (err) {
+				return res.json({ error: err });
+			}
+			if (!userdata) {
+				console.log('user: ' + userdata);
+				return res.json({ error: 'User not found.' });
+			}
+		}).
 			populate('notelist', { _id: 1, title: 1, date: 1, body: 1, label: 1 }).
 			exec((err, usrnotes) => {
 				if (err) {

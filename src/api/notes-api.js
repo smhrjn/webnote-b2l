@@ -94,9 +94,9 @@ export default {
 				});
 		});
 	},
-	updateLabels(context, labels) {
+	updateLabels(context) {
 		return new Promise((resolve, reject) => {
-			axios.put(`/user/${ store.state.userId }/labels`, labels, { headers: { 'x-access-token': store.state.token } })
+			axios.put(`/user/${ store.state.userId }/labels`, store.state.labels, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
 					if (response.data.message) {
 						console.log(response.data.message);
@@ -109,4 +109,10 @@ export default {
 				});
 		});
 	},
+	resetNoteLabels(context, labelName) {
+
+	},
+	editNoteLabels(context, labelOld, labelNew) {
+
+	}
 };

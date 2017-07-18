@@ -4,12 +4,12 @@
 			<notelabel v-for="label of labels" :key="label.name" :label="label"></notelabel>
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
-			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
-			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }">
+			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }" class="label-color">
 				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
 					{{ color }}
 				</option>
 			</select>
+			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
 		</form>
 	</div>
 </template>
@@ -25,14 +25,6 @@
 					name: '',
 					color: '#F0B67F'
 				},
-				colors: ['#F0B67F',
-					'#FE5F55',
-					'#D6D1B1',
-					'#C7EFCF',
-					'#EEF5DB',
-					'#84D2F6',
-					'#E9EB87',
-					'#7B5E7B'],
 				errorApi: undefined
 			};
 		},
@@ -42,6 +34,9 @@
 			},
 			labels() {
 				return this.$store.state.labels;
+			},
+			colors() {
+				return this.$store.state.labelColors;
 			}
 		},
 		methods: {
@@ -60,7 +55,7 @@
 				}
 				this.newLabel = {
 					name: '',
-					color: 'rgba(0, 255, 0, 0.1)'
+					color: this.colors[0]
 				};
 			}
 		},
@@ -100,13 +95,15 @@
 		margin: 2px auto;
 		padding: 2px;
 		text-align: center;
+		border-radius: 5px;
+		border: 1px solid $secondary-color;
 	}
 
 	.label-input {
 		background: $extra-color;
 		border: none;
 		text-align: center;
-		width: 80%;
+		width: 60%;
 		margin: auto;
 		border-radius: 2px;
 
@@ -115,5 +112,9 @@
 			border: none;
 			box-shadow: 0px 0px 1px 1px rgba(116, 115, 114, 0.1);
 		}
+	}
+
+	.label-color {
+		width: 30%;
 	}
 </style>

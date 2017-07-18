@@ -1,5 +1,5 @@
 <template>
-	<div class="modal-component" v-show="showModal">
+	<div class="modal-component">
 		<div class="modal-content">
 			<slot>Modal Box</slot>
 		</div>
@@ -10,10 +10,9 @@
 	export default {
 		data() {
 			return {
-				showModal: true
+
 			};
 		},
-		props: ['note'],
 		methods: {
 
 		}
