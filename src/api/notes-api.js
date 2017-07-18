@@ -74,11 +74,14 @@ export default {
 			axios.get(`/user/${ store.state.userId }/notes`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
 					// console.log('received response: ' + response.data);
+					console.log('received notes');
+					store.dispatch('clearNotes');
+					response.data.forEach(note => store.dispatch('addNote', note));
 					resolve(response.data);
 				})
 				.catch(err => {
 					context.errorApi = err;
-					reject('could not get notelist');
+					reject('could not get notelist: ' + err);
 				});
 		});
 	},
@@ -109,10 +112,19 @@ export default {
 				});
 		});
 	},
-	resetNoteLabels(context, labelName) {
-
-	},
-	editNoteLabels(context, labelOld, labelNew) {
-
+	updateNoteLabels(context, labelOld, labelNew) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/user/${ store.state.userId }/updatenotelabels`, { labelOld, labelNew }, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						console.log(response.data.message);
+						resolve(response.data.message);
+					}
+				})
+				.catch(err => {
+					context.errorApi = err;
+					reject('cannot update labels inside notes');
+				});
+		});
 	}
 };

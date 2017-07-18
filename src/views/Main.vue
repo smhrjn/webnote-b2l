@@ -49,7 +49,6 @@
 		components: { card, modal, note, MoonLoader },
 		data() {
 			return {
-				noteList: [],
 				errorApi: undefined,
 				showModal: false,
 				loadingData: false,
@@ -82,7 +81,7 @@
 					notesApi.getNotes(this)
 						.then(response => {
 							// console.log('response: ' + response);
-							response.forEach(note => this.$store.dispatch('addNote', note));
+							// response.forEach(note => this.$store.dispatch('addNote', note));
 							this.loadingData = false;
 						})
 						.catch(err => {

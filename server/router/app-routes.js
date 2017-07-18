@@ -238,6 +238,41 @@ module.exports = (app) => {
 		});
 	});
 
+	// update labels for Notes
+	app.put('/user/:id/updatenotelabels', tokenCheck, (req, res) => {
+		console.log('Updating Labels in Notes');
+		User.findById(req.params.id, (err, userdata) => {
+			if (err) {
+				return res.json({ error: err });
+			}
+			if (!userdata) {
+				console.log('user: ' + userdata);
+				return res.json({ error: 'User not found.' });
+			}
+		}).
+			populate('notelist', { _id: 1, title: 1, date: 1, body: 1, label: 1 }).
+			exec((err, usrnotes) => {
+				if (err) {
+					console.log(err);
+					return res.json({ error: err });
+				};
+				// console.log('notes: ' + usrnotes.notelist);
+				usrnotes.notelist.forEach((note) => {
+					if (note.label.name === req.body.labelOld.name) {
+						note.label.name = req.body.labelNew.name;
+						note.label.color = req.body.labelNew.color;
+						note.save((err) => {
+							if (err) {
+								console.log('error: ' + err);
+								return res.json({ error: err });
+							}
+						});
+					}
+				});
+				res.json({ message: 'label for notes updated' });
+			});
+	});
+
 	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {

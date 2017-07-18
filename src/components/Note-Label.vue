@@ -59,11 +59,14 @@
 			deleteLabel() {
 				this.$store.dispatch('removeLabel', this.label);
 				notesApi.updateLabels(this);
+				notesApi.updateNoteLabels(this, this.label, this.$store.state.labels[0]);
+				notesApi.getNotes(this);
 			},
 			editLabel() {
 				this.showEditModal = true;
 			},
 			updateLabel() {
+				notesApi.updateNoteLabels(this, this.label, this.modalLabel);
 				this.label.name = this.modalLabel.name;
 				this.label.color = this.modalLabel.color;
 				notesApi.updateLabels(this);
