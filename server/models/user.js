@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
-const labelSchema = require('./schema/label');
-
 const userSchema = new Schema({
 	name: {
 		type: String,
@@ -23,7 +21,10 @@ const userSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'note'
 	}],
-	labels: [labelSchema]
+	labels: [{
+		type: Schema.ObjectId,
+		ref: 'label'
+	}]
 });
 
 userSchema.pre('save', function(next) {

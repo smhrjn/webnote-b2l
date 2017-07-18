@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Note = require('../models/note');
+const Label = require('../models/label');
 const tokenCheck = require('../middleware/token-check.js');
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
@@ -118,11 +119,7 @@ module.exports = (app) => {
 		let newuser = new User({
 			name: req.body.name,
 			email: req.body.email,
-			password: req.body.password,
-			labels: [{
-				name: 'Default',
-				color: '#F0B67F'
-			}]
+			password: req.body.password
 		});
 		// create a todo, information comes from AJAX request from VUE
 		newuser.save((err) => {
@@ -151,9 +148,9 @@ module.exports = (app) => {
 				console.log('user: ' + userdata);
 				return res.json({ error: 'User not found.' });
 			}
-		}).
-			populate('notelist', { _id: 1, title: 1, date: 1, body: 1, label: 1 }).
-			exec((err, usrnotes) => {
+		})
+			.populate('notelist', { _id: 1, title: 1, date: 1, body: 1, label: 1 })
+			.exec((err, usrnotes) => {
 				if (err) {
 					console.log(err);
 					return res.json({ error: err });
@@ -165,15 +162,25 @@ module.exports = (app) => {
 
 	// return labels created by user
 	app.get('/user/:id/labels', tokenCheck, (req, res) => {
-		console.log('Getting Labels');
-		User.findById(req.params.id, { _id: 0, labels: 1 }, (err, labels) => {
+		console.log('Populating Labels');
+		User.findById(req.params.id, (err, userdata) => {
 			if (err) {
-				console.log(err);
 				return res.json({ error: err });
-			};
-			// console.log('labels: ' + labels);
-			res.json(labels);
-		});
+			}
+			if (!userdata) {
+				console.log('user: ' + userdata);
+				return res.json({ error: 'User not found.' });
+			}
+		})
+			.populate('labelList', { _id: 1, name: 1, color: 1 })
+			.exec((err, userlabels) => {
+				if (err) {
+					console.log(err);
+					return res.json({ error: err });
+				};
+				// console.log('notes: ' + usrnotes.notelist);
+				res.json(userlabels.labelList);
+			});
 	});
 
 	// create new note
@@ -181,7 +188,7 @@ module.exports = (app) => {
 		let newnote = new Note();
 		newnote.title = req.body.title;
 		newnote.body = req.body.body;
-		newnote.label = req.body.label;
+		newnote.label = req.body.labelId;
 		newnote.save((err) => {
 			if (err) {
 				console.log(err);
@@ -209,110 +216,6 @@ module.exports = (app) => {
 		console.log('New note created.');
 	});
 
-	// update labels
-	app.put('/user/:id/labels', tokenCheck, (req, res) => {
-		User.findOne({ _id: req.params.id }, (err, user) => {
-			// console.log('got user: ' + user._id);
-			if (err) {
-				console.log(err);
-				return res.json({ error: err });
-			};
-			if (!user) {
-				res.json({
-					error: 'User not found.'
-				});
-			};
-			user.labels = req.body;
-			// console.log('user labels: ' + user.labels);
-			// console.log(req.body);
-			user.save((err) => {
-				if (err) {
-					console.log('error: ' + err);
-					return res.json({ error: err });
-				}
-				res.json({
-					message: 'user labels updated!'
-				});
-				console.log('user labels Updated');
-			});
-		});
-	});
-
-	// update labels for Notes
-	app.put('/user/:id/updatenotelabels', tokenCheck, (req, res) => {
-		// console.log('Updating Labels in Notes');
-		// console.log('Request Body: ' + JSON.stringify(req.body));
-		User.findById(req.params.id, (err, userdata) => {
-			if (err) {
-				return res.json({ error: err });
-			}
-			if (!userdata) {
-				// console.log('user: ' + userdata);
-				return res.json({ error: 'User not found.' });
-			}
-		}).
-			populate('notelist', { _id: 1 }).
-			exec((err, usrnotes) => {
-				if (err) {
-					console.log(err);
-					return res.json({ error: err });
-				};
-				// console.log('notes: ' + usrnotes.notelist);
-				usrnotes.notelist.forEach((noteToChange) => {
-					// console.log('iterating over notes: ' + noteToChange._id);
-					Note.findById(noteToChange._id, (err, note) => {
-						if (err) {
-							console.log(err);
-							return res.json({ error: err });
-						};
-						if (note.label.name === req.body.labelOld.name) {
-							// console.log('changing label');
-							note.label.name = req.body.labelNew.name;
-							note.label.color = req.body.labelNew.color;
-							console.log('new label: ' + note.label.color);
-							note.save((err) => {
-								if (err) {
-									console.log(err);
-									return res.json({ error: err });
-								};
-								// console.log('note saved');
-							});
-						}
-					});
-				});
-				// console.log('notes updated');
-				res.json({ message: 'label for notes updated' });
-			});
-	});
-
-	// update labels for Notes
-	app.put('/user/:id/updatenotelistlabels', tokenCheck, (req, res) => {
-		// console.log('Updating Labels in Noteslist');
-		// console.log('Request Body: ' + JSON.stringify(req.body));
-		if (req.body.noteList.length) {
-			req.body.noteList.forEach((noteToChange) => {
-				// console.log('iterating over notes: ' + noteToChange._id);
-				Note.findById(noteToChange._id, (err, note) => {
-					if (err) {
-						console.log(err);
-						return res.json({ error: err });
-					};
-					// console.log('changing label');
-					note.label.name = req.body.labelNew.name;
-					note.label.color = req.body.labelNew.color;
-					// console.log('new label: ' + note.label.name);
-					note.save((err) => {
-						if (err) {
-							console.log(err);
-							return res.json({ error: err });
-						};
-						// console.log('note saved');
-					});
-				});
-			});
-		}
-	});
-
 	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
@@ -322,6 +225,28 @@ module.exports = (app) => {
 			};
 			res.json(note);
 		});
+	});
+
+	// update label details
+	app.put('/label/:id/:labelid', tokenCheck, (req, res) => {
+		Label.findById(req.params.labelid,
+			(err, label) => {
+				if (err) {
+					console.log(err);
+					return res.json({ error: err });
+				};
+				label.name = req.body.name;
+				label.color = req.body.color;
+				label.save((err) => {
+					if (err) {
+						console.log(err);
+						return res.json({ error: err });
+					};
+				});
+				res.json({
+					message: 'label updated'
+				});
+			});
 	});
 
 	// update note details
@@ -357,6 +282,20 @@ module.exports = (app) => {
 				};
 				res.json({
 					message: 'note deleted'
+				});
+			});
+	});
+
+	// remove label
+	app.delete('/label/:id/:labelid', tokenCheck, (req, res) => {
+		Label.findByIdAndRemove(req.params.labelid,
+			(err) => {
+				if (err) {
+					console.log(err);
+					return res.json({ error: err });
+				};
+				res.json({
+					message: 'label deleted'
 				});
 			});
 	});
