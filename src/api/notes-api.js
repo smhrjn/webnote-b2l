@@ -126,5 +126,20 @@ export default {
 					reject('cannot update labels inside notes');
 				});
 		});
+	},
+	updateNotelistLabels(context, noteList, labelNew) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/user/${ store.state.userId }/updatenotelistlabels`, { noteList, labelNew }, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						console.log(response.data.message);
+						resolve(response.data.message);
+					}
+				})
+				.catch(err => {
+					context.errorApi = err;
+					reject('cannot update labels inside notes');
+				});
+		});
 	}
 };

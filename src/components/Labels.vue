@@ -4,9 +4,8 @@
 			<notelabel v-for="label of labels" :key="label.name" :label="label"></notelabel>
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
-			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }" class="label-color">
-				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
-					{{ color }}
+			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color, color: newLabel.color }" class="label-color">
+				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color, color: color }">
 				</option>
 			</select>
 			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">

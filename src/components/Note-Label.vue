@@ -3,16 +3,15 @@
 		<span v-bind:style="{ background: label.color }" class="label-component__name" @click="onSelect">
 			{{ label.name }}
 		</span>
-		<span class="label-tooltip">
+		<span v-if="editEnabled" class="label-tooltip">
 			<button @click.stop="deleteLabel">Delete</button>
 			<button @click.stop="editLabel">Edit</button>
 		</span>
 		<modal v-if="showEditModal" class="edit-label-modal">
 			<form class="edit-label-form">
 				<input type="text" maxlength="20" name="name" v-model="modalLabel.name" class="edit-modal-form__name">
-				<select v-model="modalLabel.color" class="edit-modal-form__color" v-bind:style="{ background: modalLabel.color }">
-					<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
-						{{ color }}
+				<select v-model="modalLabel.color" class="edit-modal-form__color" v-bind:style="{ background: modalLabel.color, color: modalLabel.color }">
+					<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color, color: color }">
 					</option>
 				</select>
 				<button @click.stop.prevent="updateLabel" class="button-general">Save</button>
@@ -30,7 +29,9 @@
 		components: { modal },
 		data() {
 			return {
-				showEditModal: false
+				showEditModal: false,
+				modalLabel: {},
+				notesAffected: []
 			};
 		},
 		computed: {
@@ -41,11 +42,8 @@
 			colors() {
 				return this.$store.state.labelColors;
 			},
-			modalLabel() {
-				return {
-					name: this.label.name,
-					color: this.label.color
-				};
+			editEnabled() {
+				return this.label.name !== 'Default';
 			}
 		},
 		methods: {
@@ -60,13 +58,23 @@
 				this.$store.dispatch('removeLabel', this.label);
 				notesApi.updateLabels(this);
 				notesApi.updateNoteLabels(this, this.label, this.$store.state.labels[0]);
-				notesApi.getNotes(this);
+				this.$store.state.notes.forEach((note) => {
+					if (note.label.name === this.label.name) {
+						note.label.name = this.$store.state.labels[0].name;
+						note.label.color = this.$store.state.labels[0].color;
+					}
+				});
 			},
 			editLabel() {
+				this.modalLabel = JSON.parse(JSON.stringify(this.label));
+				this.notesAffected = this.$store.state.notes.filter((snote) => {
+					return snote.label.name === this.label.name;
+				});
+				console.log(this.notesAffected);
 				this.showEditModal = true;
 			},
 			updateLabel() {
-				notesApi.updateNoteLabels(this, this.label, this.modalLabel);
+				notesApi.updateNotelistLabels(this, this.notesAffected, this.modalLabel);
 				this.label.name = this.modalLabel.name;
 				this.label.color = this.modalLabel.color;
 				notesApi.updateLabels(this);
@@ -76,8 +84,7 @@
 				this.showEditModal = false;
 			}
 		},
-		mounted() {
-
+		created() {
 		}
 	};
 </script>
@@ -95,12 +102,13 @@
 		text-align: center;
 
 		&--selected {
-			border: 4px solid yellowgreen;
-			border-radius: 6px;
+			// border: 4px solid #fff;
+			box-shadow: 1px 1px 2px 2px #fff;
 		}
 
 		&__name {
 			display: inline-block;
+			border-radius: 2px;
 			width: 100%;
 			margin: 0px;
 			padding: 0px;
