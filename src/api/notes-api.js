@@ -26,6 +26,31 @@ export default {
 				context.errorApi = 'Problem in Catch Section';
 			});
 	},
+	changePassword(context, creds) {
+		axios.put(`/login`, creds, { headers: { 'x-access-token': store.state.token }})
+			.then(response => {
+				if (!response.data.error) {
+					context.msgApi = response.data.message;
+				} else {
+					console.log(response.data.error);
+					context.msgApi = response.data.error;
+				}
+			})
+			.catch(err => {
+				console.log(err);
+				context.msgApi = 'Problem in Catch Section';
+			});
+	},
+	deleteAccount(context) {
+		axios.delete(`/user/${ store.state.userId }`, { headers: { 'x-access-token': store.state.token } })
+			.then(response => {
+				console.log('account deleted');
+			})
+			.catch(err => {
+				context.msgApi = err;
+			});
+	},
+
 	createNote(context, note) {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
