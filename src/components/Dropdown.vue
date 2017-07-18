@@ -9,8 +9,8 @@
             <i class="arrow-down"></i>
         </button>
         <ul class="dropdown-menu">
-            <li @click="clicked" class="dropdown-item">User Settings</li>
-            <li @click="clicked" class="dropdown-item">Logout</li>
+            <li @click="userSettings" class="dropdown-item" >User Settings</li>
+            <li @click="logout" class="dropdown-item" >Logout</li>
         </ul>
     </div>
 </template>
@@ -35,14 +35,28 @@
         },
         methods: {
             toggle(e) {
+                if(!this.token) {
+                   this.$router.push('/login')
+                }
+                else {
                 this.show = !this.show
-
+                }
             },
-            clicked() {
+            logout() {
+                this.$store.dispatch('clearUserData')
                 this.show = false
-            }
+                this.$router.push('/')
+            },
+            userSettings() {
+                this.$router.push('/usersettings')
+                this.show = false
+            },
         },
-
+        computed: {
+			token() {
+				return this.$store.state.token;
+			},
+        }
     }
 </script>
 
@@ -58,7 +72,7 @@
     }
     .dropdown {
         position: relative;
-        display: inline-block;
+        display: block;
         margin: auto;
         &.open .dropdown-button {
             color: $primary-color;
@@ -82,6 +96,7 @@
     .dropdown-menu {
         position: absolute;
         top: 100%;
+        left: -90%;
         z-index: 1000;
         display: none;
         min-width: 160px;

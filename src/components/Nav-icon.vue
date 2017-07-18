@@ -25,6 +25,8 @@
 </script>
 
 <style lang="scss" scoped>
+ 	@import "~styles/variables.scss";
+
 	.nav-icon {
 		width: 90%;
 		height: 90%;
@@ -45,7 +47,7 @@
 		position: absolute;
 		height: 10%;
 		width: 100%;
-		background: greenyellow;
+		background: $accent-color;
 		border-radius: 10%;
 		opacity: 1;
 		left: 0;

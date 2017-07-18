@@ -16,7 +16,7 @@
 
 <script>
 	import notesApi from '../api/notes-api';
-	import notelabel from './Note-label.vue';
+	import notelabel from './Note-Label.vue';
 	export default {
 		components: { notelabel },
 		data() {

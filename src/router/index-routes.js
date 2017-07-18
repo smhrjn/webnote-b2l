@@ -5,6 +5,8 @@ import SignUp from '../views/Sign-up.vue';
 import NewNote from '../views/New-note.vue';
 import Login from '../views/Login.vue';
 import About from '../views/About.vue';
+import UserSettings from '../views/UserSettings.vue'
+
 
 const routes = [
 	{
@@ -41,7 +43,14 @@ const routes = [
 			default: About,
 			nav: Navigation
 		}
-	}
+	},
+	{
+		path: '/usersettings',
+		components: {
+			default: UserSettings,
+			nav: Navigation
+		}
+	},
 ];
 
 export default new VueRouter({

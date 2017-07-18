@@ -40,7 +40,7 @@
 
 <script>
 	import notesApi from '../api/notes-api';
-	import MoonLoader from 'vue-spinner/src/Moonloader.vue';
+	import MoonLoader from 'vue-spinner/src/MoonLoader.vue';
 	import card from '../components/Card.vue';
 	import modal from '../components/Modal.vue';
 	import note from '../components/Note.vue';

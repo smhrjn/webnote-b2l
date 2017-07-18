@@ -42,6 +42,10 @@ export default new Vuex.Store({
 			state.labels = labels;
 		},
 		CLEAR_USER_DATA(state) {
+			localStorage.removeItem('userName');
+			localStorage.removeItem('token');
+			localStorage.removeItem('userId');
+			localStorage.removeItem('labels');
 			state.userName = undefined;
 			state.userID = undefined;
 			state.token = undefined;
