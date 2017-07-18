@@ -1,11 +1,11 @@
 <template>
-    <div class dropdown :class="{open: show}">
+    <div class="dropdown" :class="{open: show}">
         <button
             class="dropdown-button"
             :aria-expanded="show"
             @click.stop="toggle($event)"
             :disabled="disabled">
-            <span v-html="text" v-model="text"></span>
+            <span v-html="text" v-show="text"></span>
             <i class="arrow-down"></i>
         </button>
         <ul class="dropdown-menu">
@@ -26,7 +26,7 @@
         props: {
             text: {
                 type: String,
-                default: ''
+                default: 'Login'
             },
             disabled: {
                 type: Boolean,
@@ -59,6 +59,7 @@
     .dropdown {
         position: relative;
         display: inline-block;
+        margin: auto;
         &.open .dropdown-button {
             color: $primary-color;
         }

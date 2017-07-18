@@ -37,13 +37,13 @@ new Vue({
 	},
 	computed: {
 		userName() {
-			return window.localStorage.getItem('userName');
+			return store.state.userName;
 		},
 		userId() {
-			return window.localStorage.getItem('userId');
+			return store.state.userId;
 		},
 		token() {
-			return window.localStorage.getItem('token');
+			return store.state.token;
 		}
 	},
 	methods: {

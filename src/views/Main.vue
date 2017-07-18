@@ -40,13 +40,13 @@
 
 <script>
 	import notesApi from '../api/notes-api';
-//	import MoonLoader from 'vue-spinner/src/Moonloader.vue';
+	import MoonLoader from 'vue-spinner/src/Moonloader.vue';
 	import card from '../components/Card.vue';
 	import modal from '../components/Modal.vue';
 	import note from '../components/Note.vue';
 	export default {
 		name: 'main',
-		components: { card, modal, note, /*MoonLoader*/ },
+		components: { card, modal, note, MoonLoader },
 		data() {
 			return {
 				noteList: [],
@@ -124,8 +124,8 @@
 		margin: 5% auto;
 	}
 
-//	.spinner {
-//		margin: 20% auto;
-/		width: 5rem;
+	.spinner {
+		margin: 20% auto;
+		width: 5rem;
 	}
 </style>
