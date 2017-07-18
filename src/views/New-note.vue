@@ -69,7 +69,7 @@
 					notesApi.createNote(this, {
 						title: this.title,
 						body: this.body,
-						label: this.selectedLabel
+						labelId: this.selectedLabel._id
 					})
 						.then(response => {
 							this.$store.dispatch('addNote', {
@@ -77,7 +77,7 @@
 								date: response.date,
 								title: this.title,
 								body: this.body,
-								label: this.selectedLabel
+								labelId: this.selectedLabel._id
 							});
 							this.$store.dispatch('setFilter', '');
 							this.$router.push('/');

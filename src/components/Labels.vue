@@ -4,8 +4,9 @@
 			<notelabel v-for="label of labels" :key="label.name" :label="label"></notelabel>
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
-			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color, color: newLabel.color }" class="label-color">
-				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color, color: color }">
+			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }" class="label-color">
+				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
+					{{ color }}
 				</option>
 			</select>
 			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
@@ -22,7 +23,7 @@
 			return {
 				newLabel: {
 					name: '',
-					color: '#F0B67F'
+					color: 'orange'
 				},
 				errorApi: undefined
 			};
@@ -41,33 +42,32 @@
 		methods: {
 			addLabel() {
 				if (this.newLabel.name !== '') {
+					this.newLabel.name = this.newLabel.name.toLowerCase();
 					let addLabel = true;
 					this.labels.forEach((label) => {
 						if (label.name === this.newLabel.name) addLabel = false;
 					});
 					if (addLabel) {
-						this.$store.dispatch('addLabel', this.newLabel);
-						notesApi.updateLabels(this, this.labels)
-							.then(response => console.log(response))
+						notesApi.createLabel(this, this.newLabel)
+							.then(response => {
+								// console.log(response);
+								this.$store.dispatch('addLabel', {
+									_id: response._id,
+									name: this.newLabel.name,
+									color: this.newLabel.color
+								});
+								this.newLabel = {
+									name: '',
+									color: this.colors[0]
+								};
+							})
 							.catch(error => console.log(error));
 					}
 				}
-				this.newLabel = {
-					name: '',
-					color: this.colors[0]
-				};
 			}
 		},
 		mounted() {
-			notesApi.getLabels(this)
-				.then((response) => {
-					if (!response.error) {
-						this.$store.dispatch('setLabels', response.labels);
-					}
-				})
-				.catch((response) => {
-					console.log(response.error);
-				});
+
 		}
 	};
 </script>

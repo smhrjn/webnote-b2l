@@ -8,7 +8,7 @@ const noteSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	label: {
+	labelId: {
 		type: Schema.ObjectId,
 		ref: 'label'
 	}

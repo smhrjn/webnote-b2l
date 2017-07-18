@@ -1,20 +1,24 @@
 <template>
 	<card class="note-content">
-		<div class="note-content-head" v-bind:style="{ background: note.label.color }">
+		<div class="note-content-head" v-bind:style="{ background: label.color }">
 			<div class="note-content__header" @click.stop="toggleBody">
 				<div class="note-content__title">
 					{{ note.title }}
 				</div>
-				<span class="note-content__date">
-					{{ note.date | formatDate('LL') }}
-				</span>
-				<span class="note-content__label-container">
-					<span class="note-content__label">
-						{{ note.label.name }}
-					</span>
-				</span>
 				<span class="note-tooltip">{{ tooltipMessage }}</span>
 			</div>
+			<span class="note-content__date">
+				{{ note.date | formatDate('LL') }}
+			</span>
+			<span class="note-content__label">
+				<select v-model="modalNote.label" class="note-content__select"
+				v-bind:style="{ background: modalNote.label.color }" @click.once="editNoteLabel"
+				@change="updateNote">
+					<option v-for="ilabel in labels" v-bind:key="ilabel.name" v-bind:value="ilabel" v-bind:style="{ background: ilabel.color }">
+						{{ ilabel.name }}
+					</option>
+				</select>
+			</span>
 			<button @click.stop="onDelete" class="button-general close-general">
 				X
 	  		<span class="note-tooltip">Delete Note</span>
@@ -77,6 +81,9 @@
 		computed: {
 			labels() {
 				return this.$store.state.labels;
+			},
+			label() {
+				return this.labels.filter((label) => label._id === this.note.labelId)[0];
 			}
 		},
 		methods: {
@@ -86,20 +93,30 @@
 					_id: this.note._id,
 					title: this.note.title,
 					body: this.note.body,
-					label: this.labels.filter((label) => label.name === this.note.label.name)[0]
+					label: this.label
 				};
 				this.showEditModal = true;
+			},
+			editNoteLabel() {
+				console.log('clicked label to change');
+				this.modalNote = {
+					_id: this.note._id,
+					title: this.note.title,
+					body: this.note.body,
+					label: this.label
+				};
+				console.log(this.modalNote);
 			},
 			updateNote() {
 				this.showEditModal = false;
 				notesApi.updateNote(this, this.note._id, {
 					title: this.modalNote.title,
 					body: this.modalNote.body,
-					label: this.modalNote.label
+					labelId: this.modalNote.label._id
 				}).then(() => {
 					this.note.title = this.modalNote.title;
 					this.note.body = this.modalNote.body;
-					this.note.label = this.modalNote.label;
+					this.note.labelId = this.modalNote.label._id;
 				});
 			},
 			cancelChange() {
@@ -126,6 +143,14 @@
 				this.showBody = !this.showBody;
 				this.tooltipMessage = this.showBody ? 'Click to hide note' : 'Click to show note';
 			}
+		},
+		created() {
+			this.modalNote = {
+				_id: this.note._id,
+				title: this.note.title,
+				body: this.note.body,
+				label: this.label
+			};
 		}
 	};
 </script>
@@ -162,16 +187,19 @@
 			width: 50%;
 		}
 
-		&__label-container {
+		&__label {
 			text-align: right;
 			margin: 0px;
-			padding: 3px;
 			display: inline-block;
 			width: 40%;
+			color: yellowgreen;
+			font-size: 0.8rem;
 		}
 
-		&__label {
-			color: $accent-color;
+		&__select {
+			margin: 1px;
+			padding: 1px;
+			display: inline-block;
 			font-size: 0.8rem;
 			border: 1px solid $accent-color;
 			border-radius: 1px;

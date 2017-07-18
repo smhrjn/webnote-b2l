@@ -10,8 +10,9 @@
 		<modal v-if="showEditModal" class="edit-label-modal">
 			<form class="edit-label-form">
 				<input type="text" maxlength="20" name="name" v-model="modalLabel.name" class="edit-modal-form__name">
-				<select v-model="modalLabel.color" class="edit-modal-form__color" v-bind:style="{ background: modalLabel.color, color: modalLabel.color }">
-					<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color, color: color }">
+				<select v-model="modalLabel.color" class="edit-modal-form__color" v-bind:style="{ background: modalLabel.color }">
+					<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
+						{{ color }}
 					</option>
 				</select>
 				<button @click.stop.prevent="updateLabel" class="button-general">Save</button>
@@ -30,20 +31,19 @@
 		data() {
 			return {
 				showEditModal: false,
-				modalLabel: {},
-				notesAffected: []
+				modalLabel: {}
 			};
 		},
 		computed: {
 			selected() {
-				console.log(this.label.name === this.$store.state.notesFilter);
-				return this.label.name === this.$store.state.notesFilter;
+				// console.log(this.label.name === this.$store.state.notesFilter);
+				return this.label._id === this.$store.state.notesFilter;
 			},
 			colors() {
 				return this.$store.state.labelColors;
 			},
 			editEnabled() {
-				return this.label.name !== 'Default';
+				return this.label.name !== 'default';
 			}
 		},
 		methods: {
@@ -51,33 +51,33 @@
 				if (this.selected) {
 					this.$store.dispatch('setFilter', '');
 				}	else {
-					this.$store.dispatch('setFilter', this.label.name);
+					this.$store.dispatch('setFilter', this.label._id);
 				}
 			},
 			deleteLabel() {
-				this.$store.dispatch('removeLabel', this.label);
-				notesApi.updateLabels(this);
-				notesApi.updateNoteLabels(this, this.label, this.$store.state.labels[0]);
-				this.$store.state.notes.forEach((note) => {
-					if (note.label.name === this.label.name) {
-						note.label.name = this.$store.state.labels[0].name;
-						note.label.color = this.$store.state.labels[0].color;
-					}
-				});
+				notesApi.deleteLabel(this, this.label._id)
+					.then(response => {
+						this.$store.state.notes.forEach((note) => {
+							if (note.labelId === this.label._id) {
+								note.labelId = this.$store.state.labels[0]._id;
+							}
+						});
+						this.$store.dispatch('removeLabel', this.label);
+					})
+					.catch(err => console.log(err));
 			},
 			editLabel() {
-				this.modalLabel = JSON.parse(JSON.stringify(this.label));
-				this.notesAffected = this.$store.state.notes.filter((snote) => {
-					return snote.label.name === this.label.name;
-				});
-				console.log(this.notesAffected);
+				this.modalLabel = {
+					name: this.label.name,
+					color: this.label.color
+				};
 				this.showEditModal = true;
 			},
 			updateLabel() {
-				notesApi.updateNotelistLabels(this, this.notesAffected, this.modalLabel);
+				notesApi.updateLabel(this, this.label._id, this.modalLabel);
 				this.label.name = this.modalLabel.name;
 				this.label.color = this.modalLabel.color;
-				notesApi.updateLabels(this);
+				// notesApi.updateLabels(this);
 				this.showEditModal = false;
 			},
 			cancelChange() {
@@ -157,6 +157,7 @@
 
 	.edit-modal-form__name{
 		display: block;
+		text-align: center;
 		width: 100%;
 		border-radius: 5px 5px 0px 0px;
 	}

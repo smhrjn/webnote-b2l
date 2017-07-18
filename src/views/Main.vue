@@ -67,7 +67,7 @@
 			},
 			notes() {
 				if (this.$store.state.notesFilter === '') return this.$store.state.notes;
-				return this.$store.state.notes.filter(note => note.label.name === this.$store.state.notesFilter);
+				return this.$store.state.notes.filter(note => note.labelId === this.$store.state.notesFilter);
 			}
 		},
 		methods: {
@@ -78,16 +78,27 @@
 				this.loadingData = true;
 				// setTimeout(() => {
 				if (this.$store.state.token) {
-					notesApi.getNotes(this)
-						.then(response => {
-							// console.log('response: ' + response);
-							// response.forEach(note => this.$store.dispatch('addNote', note));
-							this.loadingData = false;
+					notesApi.getLabels(this)
+						.then((response) => {
+							if (!response.error) {
+								// console.log('recieved labels: ' + response);
+								this.$store.dispatch('setLabels', response);
+
+								notesApi.getNotes(this)
+									.then(response => {
+										// console.log('response: ' + response);
+										// response.forEach(note => this.$store.dispatch('addNote', note));
+										this.loadingData = false;
+									})
+									.catch(err => {
+										console.log(err);
+										this.errorApi = err;
+										this.loadingData = false;
+									});
+							}
 						})
-						.catch(err => {
-							console.log(err);
-							this.errorApi = err;
-							this.loadingData = false;
+						.catch((response) => {
+							console.log(response.error);
 						});
 				}
 				// }, 50000);

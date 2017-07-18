@@ -36,8 +36,8 @@
 		},
 		methods: {
 			logOut() {
-                console.log('clearing user');
-                localStorage.removeItem('userName');
+				console.log('clearing user');
+				localStorage.removeItem('userName');
 				localStorage.removeItem('token');
 				localStorage.removeItem('userId');
 				localStorage.removeItem('labels');

@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const labelSchema = new Schema({
 	name: {
 		type: String,
-		default: 'Default'
+		default: 'default'
 	},
 	color: {
 		type: String,
-		default: '#F0B67F'
+		default: 'Orange'
 	}
 });
 

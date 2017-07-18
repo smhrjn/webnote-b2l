@@ -11,14 +11,14 @@ export default new Vuex.Store({
 		labels: [],
 		notes: [],
 		notesFilter: '',
-		labelColors: ['#F0B67F',
-			'#FE5F55',
-			'#D6D1B1',
-			'#C7EFCF',
-			'#EEF5DB',
-			'#84D2F6',
-			'#FFCCCC',
-			'#7B5E7B']
+		labelColors: ['Orange',
+			'Brown',
+			'Red',
+			'Blue',
+			'Lime',
+			'Magenta',
+			'Silver',
+			'Green']
 	},
 	mutations: {
 		SET_NAME(state, userName) {
