@@ -7,6 +7,7 @@ import moment from 'moment';
 import alertify from 'alertify.js';
 
 import 'normalize.css/normalize.css';
+// import 'animate.css/animate.css';
 // import 'flexboxgrid/dist/flexboxgrid.css';
 
 import './bootstrap.scss'

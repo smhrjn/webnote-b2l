@@ -1,5 +1,5 @@
 <template>
-	<card class="note-content">
+	<card class="note-content animated fadeInDown">
 		<div class="note-content-head" v-bind:style="{ background: label.color }">
 			<div class="note-content__header" @click.stop="toggleBody">
 				<div class="note-content__title">
