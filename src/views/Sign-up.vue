@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import axios from 'axios';
+	import axios from '../api/axios-instance';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'signup',

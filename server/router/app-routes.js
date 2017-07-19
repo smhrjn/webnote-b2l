@@ -40,7 +40,7 @@ module.exports = (app) => {
 					if (!isMatch) res.json({ error: 'Wrong password.' });
 
 					else {
-						// const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '120' });
+						// const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: 120 });
 						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h' });
 						// console.log('sending login response');
 						res.json({

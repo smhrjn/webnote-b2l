@@ -1,5 +1,4 @@
-import axios from 'axios';
-import Noty from 'noty';
+import axios from './axios-instance';
 import store from '../vuex/store';
 import router from '../router/index-routes';
 
@@ -16,9 +15,6 @@ export default {
 					store.dispatch('setUserId', response.data.userId);
 					store.dispatch('setToken', response.data.token);
 					console.log('Data set in localstorage and vuex.');
-					new Noty({
-						text: 'Logged in successfully.',
-					}).show();
 					context.$router.push('/');
 					// window.location.href = '/';
 				} else {
@@ -80,9 +76,6 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/user/${ store.state.userId }/${ noteId }`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					if (response.data.message) {
 						resolve('updated note');
 					} else {
@@ -98,9 +91,6 @@ export default {
 	deleteNote(context, noteId) {
 		axios.delete(`/user/${ store.state.userId }/${ noteId }`, { headers: { 'x-access-token': store.state.token } })
 			.then(response => {
-				if (response.data.name === 'TokenExpiredError') {
-					router.push('/login');
-				}
 				store.dispatch('removeNote', noteId);
 				console.log('note deleted');
 			})
@@ -114,9 +104,6 @@ export default {
 				.then(response => {
 					// console.log('received response: ' + response.data);
 					// console.log('received notes');
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					store.dispatch('clearNotes');
 					response.data.forEach(note => store.dispatch('addNote', note));
 					resolve(response.data);
@@ -131,9 +118,6 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/label`, newLabel, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					if (response.data.message) {
 						// console.log(response.data.message);
 						resolve(response.data);
@@ -150,9 +134,6 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.delete(`/label/${ store.state.userId }/${ labelId }/${ defaultId }`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					store.dispatch('removeLabel', labelId);
 					console.log('label deleted');
 					resolve('label deleted');
@@ -167,9 +148,6 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.put(`/label/${ store.state.userId }/${ labelId }`, newLabel, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					if (response.data.message) {
 						resolve('updated label');
 					} else {
@@ -186,13 +164,10 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/labels`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					if (response.data.name === 'TokenExpiredError') {
-						router.push('/login');
-					}
 					resolve(response.data);
 				})
 				.catch(err => {
-					context.errorApi.push(err);
+					context.errorApi = err;
 					reject('could not get labels');
 				});
 		});

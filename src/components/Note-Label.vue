@@ -62,6 +62,7 @@
 								note.labelId = this.$store.state.labels[0]._id;
 							}
 						});
+						this.alertify.success('Label Deleted');
 						this.$store.dispatch('removeLabel', this.label);
 					})
 					.catch(err => console.log(err));
@@ -79,6 +80,7 @@
 				this.label.color = this.modalLabel.color;
 				// notesApi.updateLabels(this);
 				this.showEditModal = false;
+				this.alertify.success('Label Updated');
 			},
 			cancelChange() {
 				this.showEditModal = false;

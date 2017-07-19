@@ -56,6 +56,7 @@
 									name: this.newLabel.name,
 									color: this.newLabel.color
 								});
+								this.alertify.success('Label Created');
 								this.newLabel = {
 									name: '',
 									color: this.colors[0]

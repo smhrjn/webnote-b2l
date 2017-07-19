@@ -51,6 +51,7 @@
 						name: this.userName,
 						password: this.password
 					});
+					this.alertify.success('log in successful');
 				}
 			},
 			resetError() {
