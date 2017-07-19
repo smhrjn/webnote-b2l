@@ -109,13 +109,13 @@
 					.then((response) => {
 						if (!response.error) {
 							this.$store.dispatch('setLabels', response);
+							this.selectedLabel = this.$store.state.labels[0];
 						}
 					})
 					.catch((response) => {
 						console.log(response.error);
 					});
 			}
-			selectedLabel: this.$store.state.labels[0]
 		}
 	};
 </script>
