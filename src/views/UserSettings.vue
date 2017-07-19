@@ -15,8 +15,8 @@
 				<button type="submit" class="button-general">Change Password</button>
 			</form>
 		</card>
-		<card class="card-content" v-if="msgApi">
-			<div>{{ msgApi }}</div>
+		<card class="card-content" v-if="errorApi">
+			<div>{{ errorApi }}</div>
 
 		</card>
 		<br>
@@ -58,7 +58,7 @@
 					oldPassword: undefined,
 					password: undefined
 				},
-				msgApi: undefined,
+				errorApi: undefined,
 				showDeleteModal: false
 			};
 		},
@@ -79,11 +79,18 @@
 				}
 				if (errorCount === 0) {
 					console.log(this.$store.state.userName );
-					notesApi.changePassword(this, {
+					notesApi.changePassword({
 						name: this.$store.state.userName,
 						oldpassword: this.oldPassword,
 						newpassword: this.newPassword1
-					});
+					})
+						.then(response => {
+							this.alertify.success('Password Changed.');
+						})
+						.catch(err => {
+							this.errorApi = err;
+							this.alertify.error(err);
+						});
 				}
 			},
 			resetError() {
@@ -91,22 +98,27 @@
 					oldPassword: undefined,
 					password: undefined,
 				};
-				this.msgApi = undefined;
+				this.errorApi = undefined;
 			},
 			deleteAcc() {
 				this.showDeleteModal = true;
 			},
 			onConfirm() {
 				this.showDeleteModal = false;
-				notesApi.deleteAccount(this);
-				this.$store.dispatch("clearUserData");
+				notesApi.deleteAccount()
+					.then(response => {
+						this.alertify.success('Account Deleted.');
+					})
+					.catch(err => {
+						this.errorApi = err;
+						this.alertify.error(err);
+					});
+				this.$store.dispatch('clearUserData');
 				this.$router.push('/');
 			},
 			onDeny() {
 				this.showDeleteModal = false;
 			}
-
-
 		}
 	};
 </script>

@@ -43,7 +43,7 @@
 					title: undefined,
 					body: undefined
 				},
-				erorrApi: '',
+				erorrApi: undefined,
 				showModal: false,
 				selectedLabel: { name: 'default', color: '#FF7F50' }
 			};
@@ -66,7 +66,7 @@
 				}
 				if (errorCount === 0) {
 					console.log('selected label: ' + this.selectedLabel);
-					notesApi.createNote(this, {
+					notesApi.createNote({
 						title: this.title,
 						body: this.body,
 						labelId: this.selectedLabel._id
@@ -82,6 +82,10 @@
 							});
 							this.$store.dispatch('setFilter', '');
 							this.$router.push('/');
+						})
+						.catch(err => {
+							this.errorApi = err;
+							this.alertify.error(err);
 						});
 				}
 			},
@@ -105,15 +109,18 @@
 		},
 		created() {
 			if (!this.$store.state.labels.length) {
-				notesApi.getLabels(this)
+				notesApi.getLabels()
 					.then((response) => {
 						if (!response.error) {
 							this.$store.dispatch('setLabels', response);
 							this.selectedLabel = this.$store.state.labels[0];
+							this.alertify.success('Labels Fetched.');
 						}
 					})
-					.catch((response) => {
-						console.log(response.error);
+					.catch((err) => {
+						console.log(err);
+						this.errorApi = err;
+						this.alertify.error(err);
 					});
 			} else {
 				this.selectedLabel = this.$store.state.labels[0];

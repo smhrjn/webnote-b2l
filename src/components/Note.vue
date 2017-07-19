@@ -76,7 +76,8 @@
 				confirmDelete: false,
 				showCancelModal: false,
 				noteModified: false,
-				modalNote: {}
+				modalNote: {},
+				errorApi: undefined
 			};
 		},
 		computed: {
@@ -114,7 +115,7 @@
 			},
 			updateNote() {
 				this.showEditModal = false;
-				notesApi.updateNote(this, this.note._id, {
+				notesApi.updateNote(this.note._id, {
 					title: this.modalNote.title,
 					body: this.modalNote.body,
 					labelId: this.modalNote.label._id
@@ -122,6 +123,10 @@
 					this.note.title = this.modalNote.title;
 					this.note.body = this.modalNote.body;
 					this.note.labelId = this.modalNote.label._id;
+					this.alertify.success('Note Updated.');
+				}).catch(err => {
+					this.errorApi = err;
+					this.alertify.error(err);
 				});
 			},
 			cancelChange() {
@@ -143,7 +148,12 @@
 			},
 			onConfirm() {
 				this.showDeleteModal = false;
-				notesApi.deleteNote(this, this.note._id);
+				notesApi.deleteNote(this.note._id).then(responsee => {
+					this.alertify.success('Note Deleted.');
+				}).catch(err => {
+					this.errorApi = err;
+					this.alertify.error(err);
+				});
 			},
 			onDeny() {
 				this.showDeleteModal = false;
@@ -284,7 +294,7 @@
 
 		/* Position the tooltip text - see examples below! */
 		position: absolute;
-		z-index: 2500;
+		z-index: 5;
 		width: 50%;
 		left: 50%;
 	}

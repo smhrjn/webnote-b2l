@@ -31,7 +31,8 @@
 		data() {
 			return {
 				showEditModal: false,
-				modalLabel: {}
+				modalLabel: {},
+				errorApi: undefined
 			};
 		},
 		computed: {
@@ -58,7 +59,7 @@
 				}
 			},
 			deleteLabel() {
-				notesApi.deleteLabel(this, this.label._id)
+				notesApi.deleteLabel(this.label._id)
 					.then(response => {
 						this.$store.state.notes.forEach((note) => {
 							if (note.labelId === this.label._id) {
@@ -68,7 +69,11 @@
 						this.alertify.success('Label Deleted');
 						this.$store.dispatch('removeLabel', this.label);
 					})
-					.catch(err => console.log(err));
+					.catch(err => {
+						console.log(err);
+						this.errorApi = err;
+						this.alertify.error(err);
+					});
 			},
 			editLabel() {
 				this.modalLabel = {
@@ -85,12 +90,17 @@
 					if (label.name === this.modalLabel.name && label._id !== this.modalLabel._id) updateLabel = false;
 				});
 				if (updateLabel) {
-					notesApi.updateLabel(this, this.label._id, this.modalLabel);
-					this.label.name = this.modalLabel.name;
-					this.label.color = this.modalLabel.color;
-					// notesApi.updateLabels(this);
-					this.showEditModal = false;
-					this.alertify.success('Label Updated');
+					notesApi.updateLabel(this.label._id, this.modalLabel)
+						.then(response => {
+							this.label.name = this.modalLabel.name;
+							this.label.color = this.modalLabel.color;
+							this.showEditModal = false;
+							this.alertify.success('Label Updated');
+						})
+						.catch(err => {
+							this.errorApi = err;
+							this.alertify.error(err);
+						});
 				} else {
 					this.alertify.error('Label exists already.');
 				}
@@ -143,7 +153,7 @@
 
 		/* Position the tooltip text - see examples below! */
 		position: absolute;
-		z-index: 1;
+		z-index: 2;
 		width: 6rem;
 		left: 0%;
 

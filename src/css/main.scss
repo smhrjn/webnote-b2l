@@ -40,7 +40,7 @@ input, textarea, select {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: -9999;
+	z-index: -9;
 	opacity: 0.1;
 	background-image: url("../assets/note.jpg");
 	background-repeat: no-repeat;
@@ -88,7 +88,7 @@ input, textarea, select {
 	top: 1rem;
 	left: 1rem;
 	background: $primary-color;
-	z-index: 9;
+	z-index: 1;
 	box-shadow: 0px 0px 2px 2px $extra-color-minor;
 }
 
@@ -101,7 +101,7 @@ input, textarea, select {
     width: 6rem;
     height: 2rem;
     padding: 0.5rem;
-    z-index: 9;
+    z-index: 1;
     border-radius: 3px;
 }
 
@@ -151,7 +151,7 @@ input, textarea, select {
 
 // for alertify.js
 .alertify, .alertify-logs {
-	z-index: 10000;
+	z-index: 9;
 }
 
 // from animate.css

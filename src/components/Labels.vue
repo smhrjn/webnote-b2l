@@ -51,7 +51,7 @@
 						if (label.name === this.newLabel.name) addLabel = false;
 					});
 					if (addLabel) {
-						notesApi.createLabel(this, this.newLabel)
+						notesApi.createLabel(this.newLabel)
 							.then(response => {
 								// console.log(response);
 								this.$store.dispatch('addLabel', {
@@ -65,7 +65,11 @@
 									color: this.colors[0]
 								};
 							})
-							.catch(error => console.log(error));
+							.catch(error => {
+								console.log(error);
+								this.errorApi = error;
+								this.alertify.error(error);
+							});
 					}
 				}
 			}
@@ -133,7 +137,7 @@
 
 		/* Position the tooltip text - see examples below! */
 		position: absolute;
-		z-index: 1;
+		z-index: 3;
 		width: 100%;
 		left: 0%;
 	}
