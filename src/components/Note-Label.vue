@@ -72,6 +72,7 @@
 			},
 			editLabel() {
 				this.modalLabel = {
+					_id: this.label._id,
 					name: this.label.name,
 					color: this.label.color
 				};
@@ -81,7 +82,7 @@
 				this.modalLabel.name = this.modalLabel.name.toLowerCase();
 				let updateLabel = true;
 				this.labels.forEach((label) => {
-					if (label.name === this.modalLabel.name) updateLabel = false;
+					if (label.name === this.modalLabel.name && label._id !== this.modalLabel._id) updateLabel = false;
 				});
 				if (updateLabel) {
 					notesApi.updateLabel(this, this.label._id, this.modalLabel);

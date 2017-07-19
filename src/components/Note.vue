@@ -36,7 +36,7 @@
 			</div>
 		</modal>
 		<modal v-if="showEditModal">
-			<form class="edit-note-form">
+			<form class="edit-note-form" @change="onModify">
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
 				<select v-model="modalNote.label" class="edit-note-form__label" v-bind:style="{ background: modalNote.label.color }">
 					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label" v-bind:style="{ background: label.color }">
@@ -75,6 +75,7 @@
 				showEditModal: false,
 				confirmDelete: false,
 				showCancelModal: false,
+				noteModified: false,
 				modalNote: {}
 			};
 		},
@@ -87,13 +88,17 @@
 			}
 		},
 		methods: {
+			onModify() {
+				this.modalNote.modified = true;
+			},
 			editNote() {
 				console.log('clicked to edit');
 				this.modalNote = {
 					_id: this.note._id,
 					title: this.note.title,
 					body: this.note.body,
-					label: this.label
+					label: this.label,
+					modified: false
 				};
 				this.showEditModal = true;
 			},
@@ -120,7 +125,11 @@
 				});
 			},
 			cancelChange() {
-				this.showCancelModal = true;
+				if (this.modalNote.modified) {
+					this.showCancelModal = true;
+				} else {
+					this.showEditModal = false;
+				};
 			},
 			onExitConfirm() {
 				this.showEditModal = false;
@@ -149,7 +158,8 @@
 				_id: this.note._id,
 				title: this.note.title,
 				body: this.note.body,
-				label: this.label
+				label: this.label,
+				modified: false
 			};
 		}
 	};
@@ -274,7 +284,7 @@
 
 		/* Position the tooltip text - see examples below! */
 		position: absolute;
-		z-index: 1;
+		z-index: 2500;
 		width: 50%;
 		left: 50%;
 	}

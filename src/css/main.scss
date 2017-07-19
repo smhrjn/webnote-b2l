@@ -119,7 +119,7 @@ input, textarea, select {
   transition: all .5s ease;
 }
 .slide-fade-leave-active {
-  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .5s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active for <2.1.8 */ {
@@ -153,13 +153,13 @@ input, textarea, select {
 
 // for alertify.js
 .alertify, .alertify-logs {
-	z-index: 9999999;
+	z-index: 10000;
 }
 
 // from animate.css
 .animated {
   animation-duration: 1s;
-  animation-fill-mode: both;
+  // animation-fill-mode: both;
 }
 
 @keyframes fadeInDown {

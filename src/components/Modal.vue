@@ -38,6 +38,7 @@
 	}
 
 	.modal-content {
+		z-index: 9999;
 		width: 80%;
 		position: relative;
 		margin: 10vh auto auto auto;
