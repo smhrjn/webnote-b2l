@@ -265,7 +265,7 @@ module.exports = (app) => {
 				return res.json({ error: err });
 			};
 			res.json({
-				message: 'note created',
+				success: true,
 				result: doc
 			});
 		})

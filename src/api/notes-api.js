@@ -55,7 +55,22 @@ export default {
 				context.msgApi = err;
 			});
 	},
+	readWeb(context, url) {
+		return new Promise((resolve, reject) => {
+			axios.get(`/web-reader?urlToRead=${url}`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
 
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
+					resolve(response.data);
+				})
+				.catch(err => {
+					context.errorApi = err;
+					reject('could not read page: ' + err);
+				});
+		});
+	},
 	createNote(context, note) {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })

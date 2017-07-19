@@ -13,6 +13,15 @@
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
 				<button @click.prevent="onCancel" class="button-general">Cancel</button>
+				<button @click.prevent="toggleWebClip" class="button-general">Clip Text from Web</button>
+				<div class="webclip" :class="{closed:!showUrlGet}">
+					<span class="confirm-box__text">Insert the URL:</span>
+					<form @submit.prevent="webRead" @input="resetError" class="url-form">
+						<input type="text" name="urlToRead" v-model="urlToRead">
+						<button type=submit class="button-general">Go!</button>
+						<p v-if="errorsNewNote.url !== undefined" class="card-content__error">{{ errorsNewNote.url }}</p>
+				    </form>
+				</div>
 			</form>
 		</card>
 		<modal v-if="showModal">
@@ -39,12 +48,15 @@
 				body: '',
 				userId: window.localStorage.getItem('userId'),
 				token: window.localStorage.getItem('token'),
+				urlToRead: '',
 				errorsNewNote: {
 					title: undefined,
-					body: undefined
+					body: undefined,
+					url: undefined
 				},
 				erorrApi: '',
 				showModal: false,
+				showUrlGet: false,
 				selectedLabel: this.$store.state.labels[0]
 			};
 		},
@@ -86,6 +98,7 @@
 			},
 			onCancel() {
 				this.showModal = true;
+
 			},
 			onConfirm() {
 				this.showModal = false;
@@ -94,10 +107,28 @@
 			onDeny() {
 				this.showModal = false;
 			},
+			toggleWebClip() {
+				this.showUrlGet = !this.showUrlGet;
+			},
+			webRead() {
+				let errorCount = 0;
+				if (this.urlToRead === '') {
+					this.errorsNewNote.url = 'URL cannot be empty.';
+					errorCount++;
+				}
+				if (errorCount === 0) {
+					notesApi.readWeb(this, this.urlToRead)
+						.then(response => {
+							this.title = response.result.title;
+							this.body = response.result.content.replace(/\\n/g, '\n');
+						});
+				}
+			},
 			resetError() {
 				this.errorsNewNote = {
 					title: undefined,
 					body: undefined,
+					url: undefined,
 					selectedLabel: this.labels[0]
 				};
 			}
@@ -136,5 +167,9 @@
 		margin: 0px;
 		padding: 0px;
 		color: red;
+	}
+
+	.closed {
+		display:none;
 	}
 </style>
