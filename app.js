@@ -31,12 +31,14 @@ if (env === 'development') {
 	const config = require('./webpack.config');
 	const webpack = require('webpack');
 	const webpackDevMiddleware = require('webpack-dev-middleware');
+	// const webpackHotMiddleware = require('webpack-hot-middleware');
 	const compiler = webpack(config);
 	app.use(logger('dev'));
 	app.use(webpackDevMiddleware(compiler, {
 		noInfo: true,
 		publicPath: config.output.publicPath
 	}));
+	// app.use(webpackHotMiddleware);
 	app.get('*', (req, res) => {
 		// load the single view file ( will handle the page changes on the front-end)
 		res.sendFile(path.join(__dirname, 'src/index.html'));
@@ -47,6 +49,6 @@ app.listen(port, (err) => {
 	if (err) {
 		console.log(err);
 	} else {
-		console.log(`Server running on port: ${port}`);
+		console.log(`Server running on port: ${ port }`);
 	}
 });

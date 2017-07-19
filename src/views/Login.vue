@@ -11,8 +11,8 @@
 				<button type="submit" class="button-general">To My Notes</button>
 			</form>
 		</card>
-		<card class="card-content" v-if="errorLogin">
-			<div>{{ serverError }}</div>
+		<card class="card-content" v-if="errorApi">
+			<div>{{ errorApi }}</div>
 			<div>Please Try Again</div>
 		</card>
 	</div>
@@ -32,8 +32,7 @@
 					userName: undefined,
 					password: undefined
 				},
-				serverError: undefined,
-				errorLogin: false
+				errorApi: undefined
 			};
 		},
 		methods: {
@@ -48,9 +47,14 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					notesApi.login(this, {
+					notesApi.login({
 						name: this.userName,
 						password: this.password
+					}).then(response => {
+						this.alertify.success('Logged In.');
+					}).catch(err => {
+						this.errorApi = err;
+						this.alertify.error(err);
 					});
 				}
 			},
@@ -59,8 +63,7 @@
 					userName: undefined,
 					password: undefined,
 				};
-				this.errorLogin = false;
-				this.serverError = undefined;
+				this.errorApi = undefined;
 			}
 		}
 	};
@@ -70,7 +73,7 @@
 	@import "~styles/variables.scss";
 
 	.login-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 	}
 

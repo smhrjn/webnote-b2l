@@ -36,8 +36,14 @@ module.exports = {
 				test: /\.s?css$/,
 				use: extractSass.extract({
 					use: [{
-						loader: 'css-loader'
+						loader: 'css-loader',
+						options: {
+							url: false
+						}
 					},
+					// {
+					// 	loader: 'postcss-loader'
+					// },
 					{
 						loader: 'sass-loader'
 					}],
@@ -61,6 +67,7 @@ module.exports = {
 					options: {
 						loaders: {},
 						postcss: [],
+						// postcss: [require('cssnano')(), require('autoprefixer')()],
 						extractCSS: true
 						// other vue-loader options go here
 					}
@@ -116,6 +123,13 @@ module.exports = {
 	},
 	devtool: 'inline-source-map'
 };
+
+if (process.env.NODE_ENV === 'development') {
+	module.exports.plugins = (module.exports.plugins || []).concat([
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoEmitOnErrorsPlugin()
+	]);
+}
 
 if (process.env.NODE_ENV === 'production') {
 	module.exports.devtool = 'source-map';

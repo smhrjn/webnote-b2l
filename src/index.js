@@ -4,6 +4,9 @@ import './css/main.scss';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import alertify from 'alertify.js';
+Vue.prototype.alertify = alertify;
+
 import store from './vuex/store';
 import router from './router/index-routes';
 import formatDate from './js/format-date';
@@ -11,14 +14,10 @@ import formatDate from './js/format-date';
 Vue.use(VueRouter);
 Vue.filter('formatDate', formatDate);
 
-// import axios from 'axios';
-// Vue.prototype.$http = axios.create({
-// 	timeout: 5000
-// });
-
 import headerview from './views/Header.vue';
 import footerview from './views/Footer.vue';
 import navicon from './components/Nav-icon.vue';
+import dropdown from './components/Dropdown.vue';
 
 new Vue({
 	el: '#app',
@@ -27,7 +26,7 @@ new Vue({
 
 	store,
 
-	components: { headerview, footerview, navicon },
+	components: { headerview, footerview, navicon, dropdown },
 
 	data() {
 		return {
@@ -35,11 +34,14 @@ new Vue({
 		};
 	},
 	computed: {
+		userName() {
+			return store.state.userName;
+		},
 		userId() {
-			return window.localStorage.getItem('userId');
+			return store.state.userId;
 		},
 		token() {
-			return window.localStorage.getItem('token');
+			return store.state.token;
 		}
 	},
 	methods: {

@@ -7,6 +7,10 @@ const noteSchema = new Schema({
 	date: {
 		type: Date,
 		default: Date.now
+	},
+	labelId: {
+		type: Schema.ObjectId,
+		ref: 'label'
 	}
 });
 

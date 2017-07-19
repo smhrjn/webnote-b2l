@@ -1,82 +1,190 @@
+import axios from './axios-instance';
 import store from '../vuex/store';
-import axios from 'axios';
+import router from '../router/index-routes';
 
 export default {
-	deleteNote(context, noteId) {
-		axios.delete(`/user/${ store.state.userId }/${ noteId }`, { headers: { 'x-access-token': store.state.token } })
-			.then(response => {
-				store.dispatch('removeNote', noteId);
-				console.log('note deleted');
-			})
-			.catch(e => context.errorsMain.push(e));
+	login(creds) {
+		return new Promise((resolve, reject) => {
+			axios.post(`/login`, creds)
+				.then(response => {
+					if (!response.data.error) {
+						console.log('Storing data in localstorage and vuex.');
+						localStorage.setItem('userName', creds.name);
+						localStorage.setItem('token', response.data.token);
+						localStorage.setItem('userId', response.data.userId);
+						store.dispatch('setUserName', creds.name);
+						store.dispatch('setUserId', response.data.userId);
+						store.dispatch('setToken', response.data.token);
+						console.log('Data set in localstorage and vuex.');
+						router.push('/');
+						// window.location.href = '/';
+						resolve('Logged In.');
+					} else {
+						console.log(response.data.error);
+						reject(response.data.error);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+					reject(err);
+				});
+		});
 	},
-	login(context, creds) {
-		axios.post(`/login`, creds)
-			.then(response => {
-				console.log(response.data);
-				if (response.data.success) {
-					localStorage.setItem('token', response.data.token);
-					localStorage.setItem('userId', response.data.userId);
-					console.log('values set in local storage');
-					store.dispatch('setUserId', response.data.userId);
-					store.dispatch('setToken', response.data.token);
-					context.$router.push('/');
-					// window.location.href = '/';
-				} else {
-					context.errorLogin =true;
-					context.serverError = response.data.message;
-				}
-			})
-			.catch(e => {
-				console.log(e);
-				context.errorLogin =true;
-				context.serverError = 'Problem in Catch Section';
-			});
+	changePassword(creds) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/login`, creds, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (!response.data.error) {
+						resolve(response.data.message);
+					} else {
+						console.log(response.data.error);
+						reject(response.data.error);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+					reject(err);
+				});
+		});
 	},
-	createNote(context, note) {
+	deleteAccount() {
+		return new Promise((resolve, reject) => {
+			axios.delete(`/user/${ store.state.userId }`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					console.log('account deleted');
+					resolve('Account Deleted.');
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	readWeb(url) {
+		return new Promise((resolve, reject) => {
+			axios.get(`/web-reader?urlToRead=${url}`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					console.log(response.data.result.content);
+					resolve(response.data);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	createNote(note) {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
+					if (response.data.name === 'TokenExpiredError') {
+						router.push('/login');
+					}
 					if (response.data.error) {
-						context.serverError = response.data.error;
-						reject('cannot create note');
+						reject(response.data.error);
 					} else {
 						resolve(response.data);
 					}
 				})
-				.catch(e => {
-					console.errorLogin('Error: ' + e.message);
-					reject('cannot create note');
+				.catch(err => {
+					console.log('Error: ' + err);
+					reject(err);
 				});
 		});
 	},
-	updateNote(context, noteId, note) {
+	updateNote(noteId, note) {
 		return new Promise((resolve, reject) => {
 			axios.put(`/user/${ store.state.userId }/${ noteId }`, note, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log('note update: ' + response.data.success);
 					if (response.data.message) {
-						resolve('updated');
+						resolve(response.data.message);
 					} else {
-						reject('cannot update');
+						reject(response.data.error);
 					}
 				})
-				.catch(e => {
-					context.errorsMain.push(e);
-					reject('cannot update');
+				.catch(err => {
+					console.log(err);
+					reject(JSON.stringify(err));
 				});
 		});
 	},
-	getNotes(context) {
+	deleteNote(noteId) {
+		return new Promise((resolve, reject) => {
+			axios.delete(`/user/${ store.state.userId }/${ noteId }`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					store.dispatch('removeNote', noteId);
+					console.log('note deleted');
+					resolve(response.data.error);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	getNotes() {
 		return new Promise((resolve, reject) => {
 			axios.get(`/user/${ store.state.userId }/notes`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log(response.data);
+					// console.log('received response: ' + response.data);
+					// console.log('received notes');
+					store.dispatch('clearNotes');
+					response.data.forEach(note => store.dispatch('addNote', note));
 					resolve(response.data);
 				})
-				.catch(e => {
-					reject('could not get notelist');
-					context.errorsMain.push(e);
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	createLabel(newLabel) {
+		return new Promise((resolve, reject) => {
+			axios.post(`/user/${ store.state.userId }/label`, newLabel, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						// console.log(response.data.message);
+						resolve(response.data);
+					}
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	deleteLabel(labelId) {
+		const defaultId = store.state.labels.filter((label) => label.name === 'default')[0]._id;
+		return new Promise((resolve, reject) => {
+			axios.delete(`/label/${ store.state.userId }/${ labelId }/${ defaultId }`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					store.dispatch('removeLabel', labelId);
+					console.log('label deleted');
+					resolve(response.data.message);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	updateLabel(labelId, newLabel) {
+		return new Promise((resolve, reject) => {
+			axios.put(`/label/${ store.state.userId }/${ labelId }`, newLabel, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					if (response.data.message) {
+						resolve(response.data.message);
+					} else {
+						reject(response.data.error);
+					}
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
+	getLabels() {
+		return new Promise((resolve, reject) => {
+			axios.get(`/user/${ store.state.userId }/labels`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					resolve(response.data);
+				})
+				.catch(err => {
+					reject(err);
 				});
 		});
 	}

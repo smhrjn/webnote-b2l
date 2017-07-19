@@ -20,6 +20,10 @@ const userSchema = new Schema({
 	notelist: [{
 		type: Schema.ObjectId,
 		ref: 'note'
+	}],
+	labels: [{
+		type: Schema.ObjectId,
+		ref: 'label'
 	}]
 });
 

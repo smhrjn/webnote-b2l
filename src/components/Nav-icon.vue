@@ -25,6 +25,8 @@
 </script>
 
 <style lang="scss" scoped>
+ 	@import "~styles/variables.scss";
+
 	.nav-icon {
 		width: 90%;
 		height: 90%;
@@ -33,10 +35,10 @@
 		-moz-transform: rotate(0deg);
 		-o-transform: rotate(0deg);
 		transform: rotate(0deg);
-		-webkit-transition: .5s ease-in-out;
-		-moz-transition: .5s ease-in-out;
-		-o-transition: .5s ease-in-out;
-		transition: .5s ease-in-out;
+		-webkit-transition: .1s ease-in-out;
+		-moz-transition: .1s ease-in-out;
+		-o-transition: .1s ease-in-out;
+		transition: .1s ease-in-out;
 		cursor: pointer;
 	}
 
@@ -45,7 +47,7 @@
 		position: absolute;
 		height: 10%;
 		width: 100%;
-		background: greenyellow;
+		background: $accent-color;
 		border-radius: 10%;
 		opacity: 1;
 		left: 0;
@@ -53,10 +55,10 @@
 		-moz-transform: rotate(0deg);
 		-o-transform: rotate(0deg);
 		transform: rotate(0deg);
-		-webkit-transition: .25s ease-in-out;
-		-moz-transition: .25s ease-in-out;
-		-o-transition: .25s ease-in-out;
-		transition: .25s ease-in-out;
+		-webkit-transition: 0.5s ease-in-out;
+		-moz-transition: 0.5s ease-in-out;
+		-o-transition: 0.5s ease-in-out;
+		transition: 0.5s ease-in-out;
 	}
 
 	.nav-icon span:nth-child(1) {

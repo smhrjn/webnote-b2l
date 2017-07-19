@@ -13,10 +13,7 @@ module.exports = (req, res, next) => {
 			issuer: req.params.id
 		}, (err, decoded) => {
 			if (err) {
-				return res.json({
-					success: false,
-					message: 'Failed to authenticate token.'
-				});
+				return res.json(err);
 			} else {
 				// if everything is good, save to request to use in next callback
 				req.decoded = decoded;
@@ -26,8 +23,7 @@ module.exports = (req, res, next) => {
 	} else {
 		// if there is no token return an error
 		return res.status(403).send({
-			success: false,
-			message: 'You are not logged in.'
+			error: 'You are not logged in.'
 		});
 	}
 };

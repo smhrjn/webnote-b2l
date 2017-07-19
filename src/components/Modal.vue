@@ -1,5 +1,5 @@
 <template>
-	<div class="modal-component" v-show="showModal">
+	<div class="modal-component">
 		<div class="modal-content">
 			<slot>Modal Box</slot>
 		</div>
@@ -10,10 +10,9 @@
 	export default {
 		data() {
 			return {
-				showModal: true
+
 			};
 		},
-		props: ['note'],
 		methods: {
 
 		}
@@ -30,7 +29,7 @@
 		bottom: 0;
 		left: 0;
 		background: rgba(0,0,0,0.8);
-		z-index: 9999;
+		z-index: 9;
 		opacity:1;
 		-webkit-transition: opacity 400ms ease-in;
 		-moz-transition: opacity 400ms ease-in;
@@ -39,9 +38,10 @@
 	}
 
 	.modal-content {
+		z-index: 9;
 		width: 80%;
 		position: relative;
-		margin: 20% auto;
+		margin: 10vh auto auto auto;
 		border-radius: 0px;
 		background: $extra-color;
 		text-align: center;

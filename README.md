@@ -42,7 +42,7 @@ ___
 	```javascript
 	node app.js // runs app in development mode
 	```
-* create distribution bundle `npm build`
+* create distribution bundle `npm run build`
 
 ___
 
@@ -62,7 +62,7 @@ ___
 		>a progressive, incrementally-adoptable JavaScript framework for building UI on the web
 * vue-router
 		>official router for Vue.js
-* bcrypt 
+* bcrypt
 		>hash and salt for storing user password in db
 * json web token
     >session handling
