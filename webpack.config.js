@@ -41,6 +41,9 @@ module.exports = {
 							url: false
 						}
 					},
+					// {
+					// 	loader: 'postcss-loader'
+					// },
 					{
 						loader: 'sass-loader'
 					}],
@@ -64,6 +67,7 @@ module.exports = {
 					options: {
 						loaders: {},
 						postcss: [],
+						// postcss: [require('cssnano')(), require('autoprefixer')()],
 						extractCSS: true
 						// other vue-loader options go here
 					}
