@@ -103,8 +103,8 @@
 				};
 			}
 		},
-		beforeCreate() {
-			if (this.$store.state.token && !this.$store.state.labels) {
+		created() {
+			if (!this.$store.state.labels.length) {
 				notesApi.getLabels(this)
 					.then((response) => {
 						if (!response.error) {
