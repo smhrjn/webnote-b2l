@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import colors from '../js/colors';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,14 +13,7 @@ export default new Vuex.Store({
 		labels: [],
 		notes: [],
 		notesFilter: '',
-		labelColors: ['Orange',
-			'Brown',
-			'Red',
-			'Blue',
-			'Lime',
-			'Magenta',
-			'Silver',
-			'Green']
+		labelColors: colors
 	},
 	mutations: {
 		SET_NAME(state, userName) {

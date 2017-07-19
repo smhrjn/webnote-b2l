@@ -120,6 +120,13 @@ module.exports = {
 	devtool: 'inline-source-map'
 };
 
+if (process.env.NODE_ENV === 'development') {
+	module.exports.plugins = (module.exports.plugins || []).concat([
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoEmitOnErrorsPlugin()
+	]);
+}
+
 if (process.env.NODE_ENV === 'production') {
 	module.exports.devtool = 'source-map';
 	module.exports.output.path = path.resolve(__dirname, 'dist');

@@ -5,11 +5,11 @@
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
 			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }" class="label-color">
-				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
-					{{ color }}
+				<option v-for="color in colors" v-bind:key="color.name" v-bind:value="color.hex" v-bind:style="{ background: color.hex }">
+					{{ color.name }}
 				</option>
 			</select>
-			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
+			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="10" class="label-input">
 		</form>
 	</div>
 </template>

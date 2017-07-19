@@ -72,7 +72,7 @@
 						labelId: this.selectedLabel._id
 					})
 						.then(response => {
-							this.alertify.log('note created');
+							this.alertify.success('note created');
 							this.$store.dispatch('addNote', {
 								_id: response._id,
 								date: response.date,
