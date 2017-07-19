@@ -150,3 +150,8 @@ input, textarea, select {
 		height: 100%;
 	}
 }
+
+// for alertify.js
+.alertify, .alertify-logs {
+	z-index: 9999999;
+}
