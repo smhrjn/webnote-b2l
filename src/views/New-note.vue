@@ -115,6 +115,7 @@
 						console.log(response.error);
 					});
 			}
+			selectedLabel: this.$store.state.labels[0]
 		}
 	};
 </script>
