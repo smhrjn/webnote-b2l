@@ -4,6 +4,7 @@ const Label = require('../models/label');
 const tokenCheck = require('../middleware/token-check.js');
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
+const webReader = require('../middleware/web-reader.js')
 
 module.exports = (app) => {
 	/*
@@ -256,6 +257,20 @@ module.exports = (app) => {
 		});
 		console.log('New note created.');
 	});
+	//scrape | read a page pointed by the user and send back its text.
+	app.get('/web-reader', tokenCheck, (req,res) => {
+		webReader(req.query.urlToRead, (err, doc) => {
+			if (err) {
+				console.log(err);
+				return res.json({ error: err });
+			};
+			res.json({
+				success: true,
+				result: doc
+			});
+		})
+
+	})
 
 	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {

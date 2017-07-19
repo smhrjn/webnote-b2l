@@ -59,6 +59,17 @@ export default {
 				});
 		});
 	},
+	readWeb(url) {
+		return new Promise((resolve, reject) => {
+			axios.get(`/web-reader?urlToRead=${url}`, { headers: { 'x-access-token': store.state.token } })
+				.then(response => {
+					resolve(response.data);
+				})
+				.catch(err => {
+					reject(err);
+				});
+		});
+	},
 	createNote(note) {
 		return new Promise((resolve, reject) => {
 			axios.post(`/user/${ store.state.userId }/note`, note, { headers: { 'x-access-token': store.state.token } })
