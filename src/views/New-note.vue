@@ -121,10 +121,16 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					notesApi.readWeb(this, this.urlToRead)
+					notesApi.readWeb(this.urlToRead)
 						.then(response => {
 							this.title = response.result.title;
 							this.body = response.result.content.replace(/\\n/g, '\n');
+							console.log(this.body);
+							this.alertify.success('Text Fetched.');
+						})
+						.catch(err => {
+							this.errorsNewNote.url = err;
+							this.alertify.error(err);
 						});
 				}
 			},
