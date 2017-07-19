@@ -97,8 +97,8 @@
 									});
 							}
 						})
-						.catch((response) => {
-							console.log(response.error);
+						.catch(err => {
+							console.log(err);
 						});
 				}
 				// }, 50000);
