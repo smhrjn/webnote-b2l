@@ -11,6 +11,9 @@
 			</select>
 			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="10" class="label-input">
 		</form>
+		<span class="labels-tooltip">
+			Click on Label : Toggle Filter
+		</span>
 	</div>
 </template>
 
@@ -77,6 +80,7 @@
 	@import "~styles/variables.scss";
 
 	.labels-component {
+		position: relative;
 		width: 80%;
 		border: 1px solid $secondary-color;
 		margin: 2rem auto 1rem auto;
@@ -116,5 +120,26 @@
 
 	.label-color {
 		width: 30%;
+	}
+
+	.labels-tooltip {
+		display: none;
+		background-color: rgba(12, 12, 12, 0.6);
+		color: #fff;
+		text-align: center;
+		padding: 0.1rem;
+		font-size: 0.7rem;
+		border-radius: 0.2rem;
+
+		/* Position the tooltip text - see examples below! */
+		position: absolute;
+		z-index: 1;
+		width: 100%;
+		left: 0%;
+	}
+
+	.labels-component:hover .labels-tooltip {
+		display: block;
+		top: -1.5rem;
 	}
 </style>
