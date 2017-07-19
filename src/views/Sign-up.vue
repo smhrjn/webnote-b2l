@@ -110,7 +110,7 @@
 	@import "~styles/variables.scss";
 
 	.sign-up-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 	}
 

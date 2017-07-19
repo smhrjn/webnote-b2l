@@ -36,7 +36,10 @@ module.exports = {
 				test: /\.s?css$/,
 				use: extractSass.extract({
 					use: [{
-						loader: 'css-loader'
+						loader: 'css-loader',
+						options: {
+							url: false
+						}
 					},
 					{
 						loader: 'sass-loader'

@@ -69,7 +69,7 @@
 	@import "~styles/variables.scss";
 
 	.login-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 	}
 

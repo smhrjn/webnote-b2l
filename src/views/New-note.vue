@@ -110,7 +110,7 @@
 	@import "~styles/variables.scss";
 
 	.new-note-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 		flex-grow: 1;
 

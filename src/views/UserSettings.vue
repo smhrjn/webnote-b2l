@@ -115,7 +115,7 @@
 	@import "~styles/variables.scss";
 
 	.pwchange-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 
 		&__title {

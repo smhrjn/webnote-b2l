@@ -111,7 +111,7 @@
 	@import "~styles/variables.scss";
 
 	.main-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		flex-grow: 1;
 		align-content: center;
 	}
