@@ -102,6 +102,19 @@
 					selectedLabel: this.labels[0]
 				};
 			}
+		},
+		beforeCreate() {
+			if (this.$store.state.token && !this.$store.state.labels) {
+				notesApi.getLabels(this)
+					.then((response) => {
+						if (!response.error) {
+							this.$store.dispatch('setLabels', response);
+						}
+					})
+					.catch((response) => {
+						console.log(response.error);
+					});
+			}
 		}
 	};
 </script>
