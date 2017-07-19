@@ -45,7 +45,7 @@
 				},
 				erorrApi: '',
 				showModal: false,
-				selectedLabel: this.$store.state.labels[0]
+				selectedLabel: { name: 'default', color: '#FF7F50' }
 			};
 		},
 		computed: {
@@ -115,6 +115,8 @@
 					.catch((response) => {
 						console.log(response.error);
 					});
+			} else {
+				this.selectedLabel = this.$store.state.labels[0];
 			}
 		}
 	};
