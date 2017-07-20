@@ -39,7 +39,7 @@
 	@import "~styles/variables.scss";
 
 	.about-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 		font-size: 1rem;
 		flex-grow: 1;

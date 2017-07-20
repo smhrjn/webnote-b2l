@@ -4,7 +4,8 @@ const Label = require('../models/label');
 const tokenCheck = require('../middleware/token-check.js');
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
-const webReader = require('../middleware/web-reader.js')
+const webReader = require('../middleware/web-reader.js');
+const chalk = require('chalk');
 
 module.exports = (app) => {
 	/*
@@ -41,7 +42,7 @@ module.exports = (app) => {
 					if (!isMatch) res.json({ error: 'Wrong password.' });
 
 					else {
-						// const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '120' });
+						// const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: 120 });
 						const token = jwt.sign(user, pass.secret, { issuer: user.id.toString(), expiresIn: '1h' });
 						// console.log('sending login response');
 						res.json({
@@ -124,7 +125,7 @@ module.exports = (app) => {
 
 	// get list of users
 	app.get('/users', tokenCheck, (req, res) => {
-		console.log('Sending users');
+		// console.log('Sending users');
 		User.find(req.params.id, (err, usrdata) => {
 			if (err) {
 				console.log(err);
@@ -167,13 +168,13 @@ module.exports = (app) => {
 
 	// return notes created by user
 	app.get('/user/:id/notes', tokenCheck, (req, res) => {
-		console.log('Populating Notes');
+		// console.log('Populating Notes');
 		User.findById(req.params.id, (err, userdata) => {
 			if (err) {
 				return res.json({ error: err });
 			}
 			if (!userdata) {
-				console.log('user: ' + userdata);
+				// console.log('user: ' + userdata);
 				return res.json({ error: 'User not found.' });
 			}
 		})
@@ -190,13 +191,13 @@ module.exports = (app) => {
 
 	// return labels created by user
 	app.get('/user/:id/labels', tokenCheck, (req, res) => {
-		console.log('Populating Labels');
+		// console.log('Populating Labels');
 		User.findById(req.params.id, (err, userdata) => {
 			if (err) {
 				return res.json({ error: err });
 			}
 			if (!userdata) {
-				console.log('user: ' + userdata);
+				// console.log('user: ' + userdata);
 				return res.json({ error: 'User not found.' });
 			}
 		})
@@ -275,20 +276,22 @@ module.exports = (app) => {
 		});
 		console.log('New note created.');
 	});
-	//scrape | read a page pointed by the user and send back its text.
-	app.get('/web-reader', tokenCheck, (req,res) => {
+
+	// scrape | read a page pointed by the user and send back its text.
+	app.get('/web-reader', tokenCheck, (req, res) => {
+		console.log(chalk.blue('### Reading Website ###'));
 		webReader(req.query.urlToRead, (err, doc) => {
 			if (err) {
 				console.log(err);
+				console.log('### Error Occured ###');
 				return res.json({ error: err });
 			};
+			console.log(chalk.blue('### Sending Document ###'));
 			res.json({
-				success: true,
 				result: doc
 			});
-		})
-
-	})
+		});
+	});
 
 	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
@@ -326,7 +329,7 @@ module.exports = (app) => {
 	// update note details
 	app.put('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
-			console.log('updating note');
+			// console.log('updating note');
 			if (err) {
 				console.log(err);
 				return res.json({ error: err });
@@ -334,7 +337,7 @@ module.exports = (app) => {
 			note.title = req.body.title;
 			note.body = req.body.body;
 			note.labelId = req.body.labelId;
-			console.log('labelIds: ' + note.labelId + ' and ' + req.body.labelId);
+			// console.log('labelIds: ' + note.labelId + ' and ' + req.body.labelId);
 			note.save((err) => {
 				if (err) {
 					console.log(err);

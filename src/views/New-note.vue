@@ -9,7 +9,8 @@
 					</option>
 				</select>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
-				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea><br>
+				<textarea v-bind:rows="textAreaHeight" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea>
+				<br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
 				<button @click.prevent="onCancel" class="button-general">Cancel</button>
@@ -54,10 +55,11 @@
 					body: undefined,
 					url: undefined
 				},
-				erorrApi: '',
+				erorrApi: undefined,
 				showModal: false,
+				selectedLabel: { name: 'default', color: '#FF7F50' },
 				showUrlGet: false,
-				selectedLabel: this.$store.state.labels[0]
+				textAreaHeight: 8
 			};
 		},
 		computed: {
@@ -78,12 +80,13 @@
 				}
 				if (errorCount === 0) {
 					console.log('selected label: ' + this.selectedLabel);
-					notesApi.createNote(this, {
+					notesApi.createNote({
 						title: this.title,
 						body: this.body,
 						labelId: this.selectedLabel._id
 					})
 						.then(response => {
+							this.alertify.success('note created');
 							this.$store.dispatch('addNote', {
 								_id: response._id,
 								date: response.date,
@@ -93,12 +96,15 @@
 							});
 							this.$store.dispatch('setFilter', '');
 							this.$router.push('/');
+						})
+						.catch(err => {
+							this.errorApi = err;
+							this.alertify.error(err);
 						});
 				}
 			},
 			onCancel() {
 				this.showModal = true;
-
 			},
 			onConfirm() {
 				this.showModal = false;
@@ -117,10 +123,22 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					notesApi.readWeb(this, this.urlToRead)
+					notesApi.readWeb(this.urlToRead)
 						.then(response => {
-							this.title = response.result.title;
-							this.body = response.result.content.replace(/\\n/g, '\n');
+							if (response.error) {
+								this.errorsNewNote.url = response.error;
+								this.alertify.error(response.error);
+							} else {
+								this.title = response.result.title;
+								this.body = response.result.content.replace(/\\n/g, '\n');
+								// console.log(this.body);
+								this.textAreaHeight = Math.min(this.body.split(/\r\n|\r|\n/).length, 40);
+								this.alertify.success('Text Fetched.');
+							}
+						})
+						.catch(err => {
+							this.errorsNewNote.url = err;
+							this.alertify.error(err);
 						});
 				}
 			},
@@ -132,6 +150,25 @@
 					selectedLabel: this.labels[0]
 				};
 			}
+		},
+		created() {
+			if (!this.$store.state.labels.length) {
+				notesApi.getLabels()
+					.then((response) => {
+						if (!response.error) {
+							this.$store.dispatch('setLabels', response);
+							this.selectedLabel = this.$store.state.labels[0];
+							this.alertify.success('Labels Fetched.');
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+						this.errorApi = err;
+						this.alertify.error(err);
+					});
+			} else {
+				this.selectedLabel = this.$store.state.labels[0];
+			}
 		}
 	};
 </script>
@@ -140,7 +177,8 @@
 	@import "~styles/variables.scss";
 
 	.new-note-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
+		// align-self: stretch;
 		text-align: center;
 		flex-grow: 1;
 
@@ -153,7 +191,7 @@
 
 		&__label {
 			font-size: 1.0rem;
-			width: 6rem;
+			// width: 6rem;
 			max-width: 90%;
 			margin: 2px;
 		}

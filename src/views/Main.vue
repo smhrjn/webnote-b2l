@@ -52,7 +52,8 @@
 				errorApi: undefined,
 				showModal: false,
 				loadingData: false,
-				spinnerColor: 'green'
+				spinnerColor: 'green',
+				errorApi: undefined
 			};
 		},
 		computed: {
@@ -78,27 +79,32 @@
 				this.loadingData = true;
 				// setTimeout(() => {
 				if (this.$store.state.token) {
-					notesApi.getLabels(this)
+					notesApi.getLabels()
 						.then((response) => {
 							if (!response.error) {
 								// console.log('recieved labels: ' + response);
 								this.$store.dispatch('setLabels', response);
+								this.alertify.success('Labels Fetched.');
 
-								notesApi.getNotes(this)
+								notesApi.getNotes()
 									.then(response => {
 										// console.log('response: ' + response);
 										// response.forEach(note => this.$store.dispatch('addNote', note));
 										this.loadingData = false;
+										this.alertify.success('Notes Fetched.');
 									})
 									.catch(err => {
+										this.loadingData = false;
 										console.log(err);
 										this.errorApi = err;
-										this.loadingData = false;
+										this.alertify.error(err);
 									});
 							}
 						})
-						.catch((response) => {
-							console.log(response.error);
+						.catch(err => {
+							console.log(err);
+							this.errorApi = err;
+							this.alertify.error(err);
 						});
 				}
 				// }, 50000);
@@ -111,7 +117,7 @@
 	@import "~styles/variables.scss";
 
 	.main-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		flex-grow: 1;
 		align-content: center;
 	}

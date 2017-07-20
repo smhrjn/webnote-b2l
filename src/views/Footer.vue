@@ -22,6 +22,6 @@
 		min-height: 3rem;
 		color: $accent-color;
 		margin: 0px;
-		padding: 0px;
+		padding: 0px 0px 3px 0px;
 	}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<card class="note-content">
+	<card class="note-content animated fadeInDown">
 		<div class="note-content-head" v-bind:style="{ background: label.color }">
 			<div class="note-content__header" @click.stop="toggleBody">
 				<div class="note-content__title">
@@ -36,7 +36,7 @@
 			</div>
 		</modal>
 		<modal v-if="showEditModal">
-			<form class="edit-note-form">
+			<form class="edit-note-form" @change="onModify">
 				<input type="text" maxlength="20" name="title" v-model="modalNote.title" class="edit-note-form__title">
 				<select v-model="modalNote.label" class="edit-note-form__label" v-bind:style="{ background: modalNote.label.color }">
 					<option v-for="label in labels" v-bind:key="label.name" v-bind:value="label" v-bind:style="{ background: label.color }">
@@ -75,7 +75,9 @@
 				showEditModal: false,
 				confirmDelete: false,
 				showCancelModal: false,
-				modalNote: {}
+				noteModified: false,
+				modalNote: {},
+				errorApi: undefined
 			};
 		},
 		computed: {
@@ -87,13 +89,17 @@
 			}
 		},
 		methods: {
+			onModify() {
+				this.modalNote.modified = true;
+			},
 			editNote() {
 				console.log('clicked to edit');
 				this.modalNote = {
 					_id: this.note._id,
 					title: this.note.title,
 					body: this.note.body,
-					label: this.label
+					label: this.label,
+					modified: false
 				};
 				this.showEditModal = true;
 			},
@@ -109,7 +115,7 @@
 			},
 			updateNote() {
 				this.showEditModal = false;
-				notesApi.updateNote(this, this.note._id, {
+				notesApi.updateNote(this.note._id, {
 					title: this.modalNote.title,
 					body: this.modalNote.body,
 					labelId: this.modalNote.label._id
@@ -117,10 +123,18 @@
 					this.note.title = this.modalNote.title;
 					this.note.body = this.modalNote.body;
 					this.note.labelId = this.modalNote.label._id;
+					this.alertify.success('Note Updated.');
+				}).catch(err => {
+					this.errorApi = err;
+					this.alertify.error(err);
 				});
 			},
 			cancelChange() {
-				this.showCancelModal = true;
+				if (this.modalNote.modified) {
+					this.showCancelModal = true;
+				} else {
+					this.showEditModal = false;
+				};
 			},
 			onExitConfirm() {
 				this.showEditModal = false;
@@ -134,7 +148,12 @@
 			},
 			onConfirm() {
 				this.showDeleteModal = false;
-				notesApi.deleteNote(this, this.note._id);
+				notesApi.deleteNote(this.note._id).then(responsee => {
+					this.alertify.success('Note Deleted.');
+				}).catch(err => {
+					this.errorApi = err;
+					this.alertify.error(err);
+				});
 			},
 			onDeny() {
 				this.showDeleteModal = false;
@@ -149,7 +168,8 @@
 				_id: this.note._id,
 				title: this.note.title,
 				body: this.note.body,
-				label: this.label
+				label: this.label,
+				modified: false
 			};
 		}
 	};
@@ -191,7 +211,7 @@
 			text-align: right;
 			margin: 0px;
 			display: inline-block;
-			width: 40%;
+			width: 30%;
 			color: yellowgreen;
 			font-size: 0.8rem;
 		}
@@ -242,7 +262,7 @@
 
 		&__label {
 			font-size: 1.0rem;
-			width: 6rem;
+			// width: 6rem;
 			max-width: 90%;
 			margin: 2px;
 		}
@@ -274,7 +294,7 @@
 
 		/* Position the tooltip text - see examples below! */
 		position: absolute;
-		z-index: 1;
+		z-index: 5;
 		width: 50%;
 		left: 50%;
 	}

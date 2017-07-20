@@ -5,8 +5,8 @@ import SignUp from '../views/Sign-up.vue';
 import NewNote from '../views/New-note.vue';
 import Login from '../views/Login.vue';
 import About from '../views/About.vue';
-import UserSettings from '../views/UserSettings.vue'
-
+import UserSettings from '../views/UserSettings.vue';
+import store from '../vuex/store';
 
 const routes = [
 	{
@@ -14,6 +14,12 @@ const routes = [
 		components: {
 			default: Main,
 			nav: Navigation
+		},
+		beforeEnter(to, from, next) {
+			if (!store.state.token) {
+				next('/login');
+			}
+			next();
 		}
 	},
 	{
@@ -28,6 +34,12 @@ const routes = [
 		components: {
 			default: NewNote,
 			nav: Navigation
+		},
+		beforeEnter(to, from, next) {
+			if (!store.state.token) {
+				next('/login');
+			}
+			next();
 		}
 	},
 	{
@@ -49,8 +61,21 @@ const routes = [
 		components: {
 			default: UserSettings,
 			nav: Navigation
+		},
+		beforeEnter(to, from, next) {
+			if (!store.state.token) {
+				next('/login');
+			}
+			next();
 		}
 	},
+	{
+		path: '*',
+		components: {
+			default: Main,
+			nav: Navigation
+		}
+	}
 ];
 
 export default new VueRouter({

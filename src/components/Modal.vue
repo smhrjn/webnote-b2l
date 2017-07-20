@@ -29,7 +29,7 @@
 		bottom: 0;
 		left: 0;
 		background: rgba(0,0,0,0.8);
-		z-index: 9999;
+		z-index: 9;
 		opacity:1;
 		-webkit-transition: opacity 400ms ease-in;
 		-moz-transition: opacity 400ms ease-in;
@@ -38,6 +38,7 @@
 	}
 
 	.modal-content {
+		z-index: 9;
 		width: 80%;
 		position: relative;
 		margin: 10vh auto auto auto;

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-	import axios from 'axios';
+	import axios from '../api/axios-instance';
 	import Card from '../components/Card.vue';
 	export default {
 		name: 'signup',
@@ -110,7 +110,7 @@
 	@import "~styles/variables.scss";
 
 	.sign-up-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 	}
 

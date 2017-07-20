@@ -3,7 +3,6 @@
 // general styles
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background: $extra-color-minor;
 }
 
 hr {
@@ -21,9 +20,21 @@ input, textarea, select {
 	border: none;
 }
 
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-progress-appearance: none;
+	// text-indent: 1px;
+	// text-overflow: '';
+}
+
+select::-ms-expand {
+    display: none;
+}
+
 .app {
 	flex-direction: column;
-	min-height: 100vh;
+	min-height: 101vh;
 }
 
 .main-container {
@@ -32,6 +43,25 @@ input, textarea, select {
 	flex-grow: 1;
 	margin: 0;
 	padding: 0;
+}
+
+.main-content:before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -9;
+	opacity: 0.1;
+	background-image: url("../assets/note.jpg");
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+	-ms-background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-size: cover;
 }
 
 .router-view {
@@ -70,7 +100,7 @@ input, textarea, select {
 	top: 1rem;
 	left: 1rem;
 	background: $primary-color;
-	z-index: 9;
+	z-index: 1;
 	box-shadow: 0px 0px 2px 2px $extra-color-minor;
 }
 
@@ -83,30 +113,26 @@ input, textarea, select {
     width: 6rem;
     height: 2rem;
     padding: 0.5rem;
-    z-index: 9;
+    z-index: 1;
     border-radius: 3px;
-	&:hover {
-            //color: darken($secondary-color, 20);
-        }
 }
 
-
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .2s
+  transition: opacity .5s
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0
 }
 
 .slide-fade-enter-active {
-  transition: all .1s ease;
+  transition: all .5s ease;
 }
 .slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all .5s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active for <2.1.8 */ {
-  transform: translateX(10px);
+  transform: translateX(0, -10%);
   opacity: 0.5;
 }
 
@@ -130,6 +156,81 @@ input, textarea, select {
 	}
 
 	.navigation {
-		height: 100%;
+		// height: 100%;
+		flex-grow: 0;
 	}
+}
+
+// for alertify.js
+.alertify, .alertify-logs {
+	z-index: 9;
+}
+
+// from animate.css
+.animated {
+  animation-duration: 1s;
+  // animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeInDownLess {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fadeInDown {
+  animation-name: fadeInDown;
+}
+
+.fadeInDownLess {
+  animation-name: fadeInDownLess;
+}
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+}
+
+.fadeOutUp {
+  animation-name: fadeOutUp;
+}
+
+
+@keyframes fadeOutUpLess {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0);
+  }
+}
+
+.fadeOutUpLess {
+  animation-name: fadeOutUpLess;
 }

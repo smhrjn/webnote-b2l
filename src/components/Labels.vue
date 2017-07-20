@@ -5,12 +5,15 @@
 		</div>
 		<form @submit.prevent="addLabel" class="add-label-form">
 			<select v-model="newLabel.color" v-bind:style="{ background: newLabel.color }" class="label-color">
-				<option v-for="color in colors" v-bind:key="color" v-bind:value="color" v-bind:style="{ background: color }">
-					{{ color }}
+				<option v-for="color in colors" v-bind:key="color.name" v-bind:value="color.hex" v-bind:style="{ background: color.hex }">
+					{{ color.name }}
 				</option>
 			</select>
-			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="15" class="label-input">
+			<input v-model="newLabel.name" placeholder="add label" type="text" name="label" maxlength="10" class="label-input">
 		</form>
+		<span class="labels-tooltip">
+			Click on Label : Toggle Filter
+		</span>
 	</div>
 </template>
 
@@ -48,7 +51,7 @@
 						if (label.name === this.newLabel.name) addLabel = false;
 					});
 					if (addLabel) {
-						notesApi.createLabel(this, this.newLabel)
+						notesApi.createLabel(this.newLabel)
 							.then(response => {
 								// console.log(response);
 								this.$store.dispatch('addLabel', {
@@ -56,12 +59,17 @@
 									name: this.newLabel.name,
 									color: this.newLabel.color
 								});
+								this.alertify.success('Label Created');
 								this.newLabel = {
 									name: '',
 									color: this.colors[0]
 								};
 							})
-							.catch(error => console.log(error));
+							.catch(error => {
+								console.log(error);
+								this.errorApi = error;
+								this.alertify.error(error);
+							});
 					}
 				}
 			}
@@ -76,6 +84,7 @@
 	@import "~styles/variables.scss";
 
 	.labels-component {
+		position: relative;
 		width: 80%;
 		border: 1px solid $secondary-color;
 		margin: 2rem auto 1rem auto;
@@ -115,5 +124,26 @@
 
 	.label-color {
 		width: 30%;
+	}
+
+	.labels-tooltip {
+		display: none;
+		background-color: rgba(12, 12, 12, 0.6);
+		color: #fff;
+		text-align: center;
+		padding: 0.1rem;
+		font-size: 0.7rem;
+		border-radius: 0.2rem;
+
+		/* Position the tooltip text - see examples below! */
+		position: absolute;
+		z-index: 3;
+		width: 100%;
+		left: 0%;
+	}
+
+	.labels-component:hover .labels-tooltip {
+		display: block;
+		top: -1.5rem;
 	}
 </style>

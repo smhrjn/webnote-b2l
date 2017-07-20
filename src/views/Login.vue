@@ -47,9 +47,14 @@
 					errorCount++;
 				}
 				if (errorCount === 0) {
-					notesApi.login(this, {
+					notesApi.login({
 						name: this.userName,
 						password: this.password
+					}).then(response => {
+						this.alertify.success('Logged In.');
+					}).catch(err => {
+						this.errorApi = err;
+						this.alertify.error(err);
 					});
 				}
 			},
@@ -68,7 +73,7 @@
 	@import "~styles/variables.scss";
 
 	.login-component {
-		background-color: $accent-color;
+		// background-color: $accent-color;
 		text-align: center;
 	}
 

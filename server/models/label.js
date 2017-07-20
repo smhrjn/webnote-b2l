@@ -1,3 +1,4 @@
+const colors = require('../../src/js/colors');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -8,7 +9,7 @@ const labelSchema = new Schema({
 	},
 	color: {
 		type: String,
-		default: 'Orange'
+		default: colors[0].hex
 	}
 });
 

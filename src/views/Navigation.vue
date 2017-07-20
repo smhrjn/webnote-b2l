@@ -42,6 +42,7 @@
 				localStorage.removeItem('userId');
 				localStorage.removeItem('labels');
 				this.$store.dispatch('clearUserData');
+				this.alertify.success('Logged Out and Removed Your Data.');
 				this.$router.push('/');
 				// window.location.reload();
 			}
