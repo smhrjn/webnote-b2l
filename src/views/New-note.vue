@@ -9,7 +9,8 @@
 					</option>
 				</select>
 				<p v-if="errorsNewNote.title !== undefined" class="card-content__error">{{ errorsNewNote.title }}</p>
-				<textarea rows="8" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea><br>
+				<textarea v-bind:rows="textAreaHeight" type="text" name="body" v-model="body" class="new-note-component__text" placeholder="Type content here"></textarea>
+				<br>
 				<p v-if="errorsNewNote.body !== undefined" class="card-content__error">{{ errorsNewNote.body }}</p>
 				<button type="submit" class="button-general">Save</button>
 				<button @click.prevent="onCancel" class="button-general">Cancel</button>
@@ -58,6 +59,7 @@
 				showModal: false,
 				selectedLabel: { name: 'default', color: '#FF7F50' },
 				showUrlGet: false,
+				textAreaHeight: 8
 			};
 		},
 		computed: {
@@ -123,10 +125,16 @@
 				if (errorCount === 0) {
 					notesApi.readWeb(this.urlToRead)
 						.then(response => {
-							this.title = response.result.title;
-							this.body = response.result.content.replace(/\\n/g, '\n');
-							console.log(this.body);
-							this.alertify.success('Text Fetched.');
+							if (response.error) {
+								this.errorsNewNote.url = response.error;
+								this.alertify.error(response.error);
+							} else {
+								this.title = response.result.title;
+								this.body = response.result.content.replace(/\\n/g, '\n');
+								// console.log(this.body);
+								this.textAreaHeight = Math.min(this.body.split(/\r\n|\r|\n/).length, 40);
+								this.alertify.success('Text Fetched.');
+							}
 						})
 						.catch(err => {
 							this.errorsNewNote.url = err;
@@ -170,6 +178,7 @@
 
 	.new-note-component {
 		// background-color: $accent-color;
+		// align-self: stretch;
 		text-align: center;
 		flex-grow: 1;
 
