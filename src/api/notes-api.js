@@ -63,7 +63,7 @@ export default {
 		return new Promise((resolve, reject) => {
 			axios.get(`/web-reader?urlToRead=${url}`, { headers: { 'x-access-token': store.state.token } })
 				.then(response => {
-					console.log(response.data.result.content);
+					// console.log(response.data.result.content);
 					resolve(response.data);
 				})
 				.catch(err => {

@@ -5,6 +5,7 @@ const tokenCheck = require('../middleware/token-check.js');
 const pass = require('../../config/config.js');
 const jwt = require('jsonwebtoken');
 const webReader = require('../middleware/web-reader.js');
+const chalk = require('chalk');
 
 module.exports = (app) => {
 	/*
@@ -257,19 +258,23 @@ module.exports = (app) => {
 		});
 		console.log('New note created.');
 	});
+
 	// scrape | read a page pointed by the user and send back its text.
 	app.get('/web-reader', tokenCheck, (req, res) => {
-		console.log('Reading Website');
+		console.log(chalk.blue('### Reading Website ###'));
 		webReader(req.query.urlToRead, (err, doc) => {
 			if (err) {
 				console.log(err);
+				console.log('### Error Occured ###');
 				return res.json({ error: err });
 			};
+			console.log(chalk.blue('### Sending Document ###'));
 			res.json({
 				result: doc
 			});
 		});
 	});
+
 	// get note details
 	app.get('/user/:id/:noteid', tokenCheck, (req, res) => {
 		Note.findById(req.params.noteid, (err, note) => {
