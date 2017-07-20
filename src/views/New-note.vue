@@ -191,7 +191,7 @@
 
 		&__label {
 			font-size: 1.0rem;
-			width: 6rem;
+			// width: 6rem;
 			max-width: 90%;
 			margin: 2px;
 		}

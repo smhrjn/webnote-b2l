@@ -211,7 +211,7 @@
 			text-align: right;
 			margin: 0px;
 			display: inline-block;
-			width: 40%;
+			width: 30%;
 			color: yellowgreen;
 			font-size: 0.8rem;
 		}
@@ -262,7 +262,7 @@
 
 		&__label {
 			font-size: 1.0rem;
-			width: 6rem;
+			// width: 6rem;
 			max-width: 90%;
 			margin: 2px;
 		}
