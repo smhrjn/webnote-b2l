@@ -5,7 +5,7 @@
 			<hr>
 			<form @submit.prevent="onSubmit" @input="resetError" class="pw-change-form">
 				<label for="oldpassword">Old Password</label><br>
-				<input type="text" name="oldpassword" v-model="oldPassword"><br>
+				<input type="password" name="oldpassword" v-model="oldPassword"><br>
 				<p v-if="errorsChange.oldPassword !== undefined" class="card-content__error">{{ errorsChange.oldPassword }}</p>
 				<label for="newpassword1">New Password</label><br>
 				<input type="password" name="password" v-model="newPassword1"><br>

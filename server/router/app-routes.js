@@ -93,14 +93,32 @@ module.exports = (app) => {
 	// delete user
 	app.delete('/user/:id', tokenCheck, (req, res) => {
 		User.findByIdAndRemove(req.params.id,
-			(err) => {
+			(err, user) => {
 				if (err) {
 					console.log(err);
 					return res.json({ error: err });
 				};
+
+				for (const noteid of user.notelist) {
+					Note.findByIdAndRemove(noteid, (err, note) => {
+						if (err) {
+							console.log(err);
+						};
+						console.log(`note ${note._id} deleted`);
+					});
+				}
+				for (const labelid of user.labels) {
+					Label.findByIdAndRemove(labelid, (err, label) => {
+						if (err) {
+							console.log(err);
+						};
+						console.log(`label ${label._id} deleted`);
+					});
+				}
 				res.json({
 					message: 'user deleted'
 				});
+
 			});
 	});
 
