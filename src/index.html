@@ -19,14 +19,14 @@
 
 			<headerview class="header row">Header</headerview>
 			<div class="nav-icon-container hidden-sm-up"><navicon class="main-nav-icon" v-on:navtoggle="toggleNav"></navicon></div>
-            <div class="dropdown-container"><dropdown v-model="userName" :text="userName"></dropdown></div>
+      <div class="dropdown-container"><dropdown v-model="userName" :text="userName"></dropdown></div>
 
 			<section class="main-container row">
 				<transition name="slide-fade">
-					<router-view name="nav" v-if="showNav" class="router-view col-xs-12 navigation hidden-sm-up"></router-view>
+					<router-view name="nav" v-if="showNav" class="router-view col-xs-12 navigation marginTop5 hidden-sm-up"></router-view>
 				</transition>
-				<router-view name="nav" class="router-view col-sm-3 navigation hidden-xs-down"></router-view>
-				<router-view class="router-view col-sm-9 col-xs-12 main-content"></router-view>
+				<router-view name="nav" class="router-view col-sm-3 navigation hidden-xs-down marginTop5"></router-view>
+				<router-view class="router-view col-sm-9 col-xs-12 main-content" v-bind:class="{ marginTop5 : !showNav }"></router-view>
 			</section>
 
 			<footerview class="footer row">Footer</footerview>

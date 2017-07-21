@@ -119,7 +119,6 @@ module.exports = (app) => {
 				res.json({
 					message: 'user deleted'
 				});
-
 			});
 	});
 

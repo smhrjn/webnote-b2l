@@ -14,6 +14,8 @@
 	@import "~styles/variables.scss";
 
 	.header-component {
+		position: fixed;
+		width: 100%;
 		background-color: $primary-color;
 		font-size: 2rem;
 		color: $accent-color;
@@ -22,5 +24,6 @@
 		min-height: 5rem;
 		margin: 0px;
 		padding: 0px;
+		z-index: 2;
 	}
 </style>
