@@ -16,8 +16,6 @@ Vue.filter('formatDate', formatDate);
 
 import headerview from './views/Header.vue';
 import footerview from './views/Footer.vue';
-import navicon from './components/Nav-icon.vue';
-import dropdown from './components/Dropdown.vue';
 
 new Vue({
 	el: '#app',
@@ -26,7 +24,7 @@ new Vue({
 
 	store,
 
-	components: { headerview, footerview, navicon, dropdown },
+	components: { headerview, footerview },
 
 	data() {
 		return {

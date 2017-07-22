@@ -93,7 +93,7 @@
 				this.modalNote.modified = true;
 			},
 			editNote() {
-				console.log('clicked to edit');
+				// console.log('clicked to edit');
 				this.modalNote = {
 					_id: this.note._id,
 					title: this.note.title,
@@ -104,14 +104,14 @@
 				this.showEditModal = true;
 			},
 			editNoteLabel() {
-				console.log('clicked label to change');
+				// console.log('clicked label to change');
 				this.modalNote = {
 					_id: this.note._id,
 					title: this.note.title,
 					body: this.note.body,
 					label: this.label
 				};
-				console.log(this.modalNote);
+				// console.log(this.modalNote);
 			},
 			updateNote() {
 				this.showEditModal = false;
