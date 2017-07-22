@@ -132,7 +132,7 @@ select::-ms-expand {
   transition: all .5s ease;
 }
 .slide-fade-leave-active {
-  transition: all .5s ease;
+  transition: all .01s ease;
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active for <2.1.8 */ {
