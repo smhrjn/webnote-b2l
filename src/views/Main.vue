@@ -8,6 +8,8 @@
 			If you do not have account yet.
 			<br>
 			<button class="button-general" @click="$router.push('/signup')">Sign Up</button>
+			<hr>
+			<div class="text--special">For Demo <br> User: me <br> Password: me </div>
 		</card>
 
     <div v-else-if="notes && notes.length" class="row center-xs center-s center-md center-lg notes-container">

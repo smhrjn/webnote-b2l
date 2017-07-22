@@ -10,6 +10,8 @@
 				<p v-if="errorsLogin.password !== undefined" class="card-content__error">{{ errorsLogin.password }}</p>
 				<button type="submit" class="button-general">To My Notes</button>
 			</form>
+			<hr>
+			<div class="text--special">For Demo <br> User: me <br> Password: me </div>
 		</card>
 		<card class="card-content" v-if="errorApi">
 			<div>{{ errorApi }}</div>

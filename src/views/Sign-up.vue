@@ -11,7 +11,7 @@
 				<label for="password">Password</label><br>
 				<input type="password" name="password" v-model="password"><br>
 				<p v-if="errorsSignUp.password !== undefined" class="card-content__error">{{ errorsSignUp.password }}</p>
-				<label for="passwordRepeat">Confirm Passwort</label><br>
+				<label for="passwordRepeat">Confirm Password</label><br>
 				<input type="password" name="passwordRepeat" v-model="passwordRepeat"><br>
 				<p v-if="errorsSignUp.passwordRepeat !== undefined" class="card-content__error">{{ errorsSignUp.passwordRepeat }}</p>
 				<button type="submit" class="button-general">Submit</button>
